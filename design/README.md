@@ -207,3 +207,20 @@ design/
   support.js                    Runtime the .dc.html references need to render
   assets/icons/*.png            App icons used on Home
 ```
+
+## Design updates since the handoff
+These override the references and the sections above where they differ.
+
+1. **Tagline: "Fitness for the long run."**
+   - Homepage `<title>`: "Fledg · Fitness for the long run".
+   - Other pages: "{Page name} · Fledg", e.g. "Members · Fledg", "Where the money goes · Fledg". Profiles: "{Name}, {title} · Fledg".
+2. **Logo mark** for the favicon, social avatars and app icons.
+   - A lowercase "f" in Newsreader weight 500, ink `#1f1a15` on duck egg `#b7dee3`, in a square tile.
+   - Centre the "f" by eye, not by its outline: equal space above and below, with the stem slightly left of centre to balance the crossbar and hook. In CSS (1em box, `line-height:1`, `display:grid; place-items:center`) that is `position:relative; left:-0.03em; top:0.14em` on the glyph.
+   - Exports: `favicon.svg`, `favicon.ico` (16/32/48), `apple-touch-icon.png` (180px), manifest icons (192px and 512px), social avatars (400px and 1080px). They live in `public/` and `public/brand/`.
+   - The "fledg" wordmark is unchanged: the font's default f–l joining, no letter-spacing tweaks.
+3. **Homepage hero**
+   - The whole hero section has a full-width duck egg background, `#b7dee3`. The header stays paper `#f8f5f0` with its bottom border.
+   - Muted text inside the hero is `oklch(0.30 0.02 220)` (≈ `#1e3a44`) instead of `#554f49`, for contrast on duck egg.
+   - Photo tile placeholder background in the hero: `oklch(0.80 0.035 205)` (≈ `#a3c9cf`).
+   - No top border on the "How it works" section; the change of colour separates the two sections.

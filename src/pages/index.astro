@@ -60,39 +60,41 @@ const benefits = [
 ];
 ---
 <BaseLayout
-  title="Fledg: get fit with a coach, stay fit without one"
+  title="Fledg · Fitness for the long run"
   description="One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract."
 >
   <!-- Hero -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1 class="hero-h1"><span>Get fit with a coach.</span><em>Stay fit without one.</em></h1>
-      <div class="hero-sub">
-        <p class="hero-lead">One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract. Your coach teaches you to train, eat and recover, then sets you up to go it alone.</p>
-        <div class="hero-ctas">
-          <Button href={links.members}>Find your coach</Button>
-          <Button href="#how" variant="secondary">How it works</Button>
+  <section class="hero-band">
+    <div class="hero">
+      <div class="hero-text">
+        <h1 class="hero-h1"><span>Get fit with a coach.</span><em>Stay fit without one.</em></h1>
+        <div class="hero-sub">
+          <p class="hero-lead">One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract. Your coach teaches you to train, eat and recover, then sets you up to go it alone.</p>
+          <div class="hero-ctas">
+            <Button href={links.members}>Find your coach</Button>
+            <Button href="#how" variant="secondary">How it works</Button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <figure class="montage">
-      <div class="montage-head">
-        <h2 class="montage-title">Recent <em>graduates.</em></h2>
-        <PlaceholderNote class="muted">Placeholder photos (Pexels) and names</PlaceholderNote>
-      </div>
-      <div class="montage-grid">
-        {montage.map((t) => (
-          <Photo photo={t.photo} width={t.width} alt={t.alt} position={t.position} eager={!t.compactOnly} class:list={['tile', { 'tile--compact-only': t.compactOnly }]}>
-            <span class="tag">{t.name}{t.year && <span class="tag-year"> · class of {t.year}</span>}</span>
-          </Photo>
-        ))}
-      </div>
-    </figure>
+      <figure class="montage">
+        <div class="montage-head">
+          <h2 class="montage-title">Recent <em>graduates.</em></h2>
+          <PlaceholderNote class="hero-muted">Placeholder photos (Pexels) and names</PlaceholderNote>
+        </div>
+        <div class="montage-grid">
+          {montage.map((t) => (
+            <Photo photo={t.photo} width={t.width} alt={t.alt} position={t.position} eager={!t.compactOnly} class:list={['tile', { 'tile--compact-only': t.compactOnly }]}>
+              <span class="tag">{t.name}{t.year && <span class="tag-year"> · class of {t.year}</span>}</span>
+            </Photo>
+          ))}
+        </div>
+      </figure>
+    </div>
   </section>
 
   <!-- How it works -->
-  <section id="how" class="how">
+  <section id="how">
     <div class="container section-pad">
       <div class="split">
         <div class="split-main">
@@ -403,7 +405,9 @@ const benefits = [
   }
   figure { margin: 0; }
 
-  /* Hero */
+  /* Hero: a full-width duck egg band; muted text and photo placeholders are tuned for it. */
+  .hero-band { background: var(--duck-egg); }
+  .hero-muted { color: var(--duck-muted); }
   .hero {
     max-width: var(--max);
     min-height: calc(100vh - var(--header-h));
@@ -442,7 +446,7 @@ const benefits = [
     font-family: var(--serif);
     font-size: clamp(18px, 1.45vw, 22px);
     line-height: 1.45;
-    color: var(--slate);
+    color: var(--duck-muted);
     text-wrap: pretty;
   }
   .hero-ctas {
@@ -486,6 +490,7 @@ const benefits = [
     max-height: 440px;
     gap: 10px;
   }
+  .tile { background: var(--duck-photo-bg); }
   .tile--compact-only { display: none; }
   .tag {
     position: absolute;
@@ -534,7 +539,6 @@ const benefits = [
   }
 
   /* How it works */
-  .how { border-top: 1px solid var(--rule); }
   .how-key {
     margin-top: clamp(48px, 6vw, 88px);
     display: flex;

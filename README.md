@@ -44,6 +44,7 @@ src/
   pages/                   one file per route
   styles/global.css        design tokens (colour, type, spacing) and shared classes
 public/icons/              app icons used on the homepage
+public/favicon.*, icon-*    logo mark (lowercase "f" on duck egg); social avatars in public/brand/
 design/                    the original design references and spec (not deployed)
 ```
 
