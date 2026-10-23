@@ -1,0 +1,431 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PlaceholderNote from '../components/PlaceholderNote.astro';
+import {
+  costs,
+  costsPeriod,
+  expectedNewMembers,
+  gbp,
+  joiningFee,
+  lastUpdated,
+  perMember,
+  totalPerYear,
+} from '../data/money';
+
+const notDone = [
+  { title: 'No commission.', text: 'Members keep 100% of their fees. No booking fee or platform fee either.' },
+  { title: 'No paid placement.', text: 'Members are listed in random order. Nobody can pay to appear higher.' },
+  { title: 'No advertising.', text: 'No ads, no sponsored posts and no affiliate links to supplements or kit.' },
+  { title: 'No subscriptions.', text: 'Members pay once. Clients never pay Fledg anything at all.' },
+  { title: 'No data.', text: 'Your programme and logs stay in your own apps. We never hold them.' },
+];
+
+const questions = [
+  { q: 'Is Fledg a charity?', a: 'No. Fledg is a not-for-profit collective, but it isn’t a registered charity. Clients never pay Fledg, and the joining fee only covers running costs.' },
+  { q: 'How do I pay my coach?', a: 'Directly, by bank transfer or however you agree between you. Every member’s prices are on their profile, so you know the cost before you start.' },
+  { q: 'What happens to money left over?', a: 'It’s carried into next year and lowers the joining fee for new members. We don’t save beyond the reserve.' },
+  { q: 'What if costs go up?', a: 'We’ll explain why on this page before the fee changes. Existing members never pay again.' },
+];
+---
+<BaseLayout
+  title="Where the money goes · Fledg"
+  description="Fledg takes nothing from what clients pay. Members pay a one-time joining fee that covers running costs, and every cost is listed here."
+  current="money"
+>
+  <section class="container intro">
+    <div class="intro-inner">
+      <div class="eyebrow">Where the money goes</div>
+      <h1 class="h1 intro-h1">Fledg takes nothing. Here’s what it costs to run.</h1>
+      <p class="intro-lead">Clients pay their coach directly. Members pay a one-time fee when they join, and that fee covers running costs and nothing else. Every cost is listed below, and we update this page when they change.</p>
+      <div class="updated"><span>Last updated {lastUpdated}</span><PlaceholderNote swatch>Highlighted figures are placeholders</PlaceholderNote></div>
+    </div>
+  </section>
+
+  <section class="container flows">
+    <div class="flow-grid">
+      <article class="flow">
+        <div class="flow-head"><h2>When you pay for coaching</h2><span>For clients</span></div>
+        <div class="path">
+          <span class="node">You</span>
+          <span class="link"><span>Direct, nobody in between</span><span class="line"></span></span>
+          <span class="node node--coach">Your coach</span>
+        </div>
+        <div class="shares">
+          <div class="share"><span class="big">100%</span><span class="share-label">to your coach</span></div>
+          <div class="share"><span class="big big--none">0%</span><span class="share-label">to Fledg</span></div>
+        </div>
+        <div class="full-bar"><span class="bar"></span><span class="bar-key"><span>Your coach</span><span>Fledg: nothing</span></span></div>
+        <p class="flow-text">You pay your coach by bank transfer, or however you agree between you. Fledg never handles the money and never takes a share. Specialists you work with are paid the same way.</p>
+      </article>
+
+      <article class="flow">
+        <div class="flow-head"><h2>When a member joins</h2><span>For members</span></div>
+        <div class="fee"><span class="big"><span class="ph ph--big">{gbp(joiningFee)}</span></span><span class="share-label">once, when they join</span></div>
+        <div class="stack" aria-hidden="true">
+          {costs.map((c) => <span style={`flex:${perMember(c.perYear)} 1 0; background:${c.colour}`}></span>)}
+        </div>
+        <ul class="legend">
+          {costs.map((c) => (
+            <li><span class="key" style={`background:${c.colour}`}></span><span class="legend-name">{c.name}</span><span class="ph num">{gbp(perMember(c.perYear), true)}</span></li>
+          ))}
+        </ul>
+        <p class="flow-text">Members pay this once. It covers the collective’s running costs and nothing else. Nobody pays it again to stay a member.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="ruled">
+    <div class="container costs-section">
+      <div class="costs-head">
+        <div class="costs-title">
+          <div class="eyebrow">Itemised</div>
+          <h2 class="h2 h2--md">This year’s running costs</h2>
+        </div>
+        <p class="costs-intro">{costsPeriod}. Not on the list: advertising, an office, an app or anyone’s profit.</p>
+      </div>
+
+      <div role="table" aria-label="Running costs" class="table">
+        <div role="row" class="row row--head">
+          <span role="columnheader" class="c-item">Item</span>
+          <span role="columnheader" class="c-year">Per year</span>
+          <span role="columnheader" class="c-member">Per new member</span>
+        </div>
+        {costs.map((c) => (
+          <div role="row" class="row row--item">
+            <div role="cell" class="c-item item">
+              <span class="item-name">{c.name}</span>
+              <span class="item-desc">{c.description}</span>
+            </div>
+            <span role="cell" class="c-year num"><span class="ph">{gbp(c.perYear)}</span></span>
+            <span role="cell" class="c-member num"><span class="ph">{gbp(perMember(c.perYear), true)}</span></span>
+          </div>
+        ))}
+        <div role="row" class="row row--total">
+          <span role="cell" class="c-item total-label">Total</span>
+          <span role="cell" class="c-year num"><span class="ph">{gbp(totalPerYear)}</span></span>
+          <span role="cell" class="c-member num"><span class="ph">{gbp(joiningFee, true)}</span></span>
+        </div>
+      </div>
+      <p class="basis">Based on <span class="ph">{expectedNewMembers}</span> new members joining this year. The joining fee is the year’s expected costs divided by the number of members we expect to join.</p>
+    </div>
+  </section>
+
+  <section class="band-ink">
+    <div class="container dont">
+      <h2 class="h2 h2--md balance" style="max-width:760px">Ways other people make money from coaching. We don’t.</h2>
+      <div class="dont-grid">
+        {notDone.map((d) => <div class="dont-item"><h3>{d.title}</h3><p>{d.text}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="container questions">
+    <div class="q-side">
+      <h2 class="h2 h2--sm">Questions about money</h2>
+      <a href="#" class="pdf">
+        <span class="pdf-icon" aria-hidden="true">PDF</span>
+        <span class="pdf-text"><span>Accounts, 2025 to 2026</span><span>Placeholder file · published once filed</span></span>
+      </a>
+    </div>
+    <dl class="faq">
+      {questions.map((item) => <div><dt>{item.q}</dt><dd>{item.a}</dd></div>)}
+    </dl>
+  </section>
+</BaseLayout>
+
+<style>
+  .ruled { border-top: 1px solid var(--rule); }
+  .band-ink { background: var(--ink); color: var(--paper); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Intro */
+  .intro { padding-block: clamp(40px, 5vw, 80px) clamp(48px, 6vw, 80px); }
+  .intro-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 980px;
+  }
+  .intro-h1 { font-size: clamp(44px, 5.8vw, 88px); }
+  .intro-lead {
+    margin: 0;
+    max-width: 680px;
+    font-family: var(--serif);
+    font-size: clamp(19px, 1.55vw, 23px);
+    line-height: 1.5;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+  .updated {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--slate);
+  }
+
+  /* Two flows */
+  .flows { padding-bottom: clamp(72px, 9vw, 128px); }
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+    gap: 24px;
+  }
+  .flow {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: clamp(24px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .flow-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .flow-head h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 2.4vw, 34px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .flow-head span { font-size: 13px; color: var(--slate); }
+  .path {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .node {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+  }
+  .node--coach { border: 0; background: var(--teal); color: var(--white); }
+  .link {
+    flex: 1;
+    min-width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .link span:first-child { font-size: 13px; font-weight: 400; color: var(--slate); }
+  .line { display: block; width: 100%; height: 1.5px; background: var(--ink); }
+  .shares {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+    align-items: flex-end;
+  }
+  .share { display: flex; flex-direction: column; gap: 6px; }
+  .big {
+    font-family: var(--serif);
+    font-size: clamp(72px, 7vw, 104px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+  }
+  .big--none { color: oklch(0.62 0.01 75); }
+  .share-label { font-size: 15px; color: var(--slate); }
+  .full-bar { display: flex; flex-direction: column; gap: 8px; }
+  .bar { display: block; height: 14px; border-radius: 3px; background: var(--teal); }
+  .bar-key {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--slate);
+  }
+  .flow-text { margin: 0; font-size: 16px; line-height: 1.55; color: var(--slate); }
+  .fee {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .ph--big { padding: 0 8px; border-radius: 4px; }
+  .stack { display: flex; height: 14px; gap: 2px; }
+  .stack span:first-child { border-radius: 3px 0 0 3px; }
+  .stack span:last-child { border-radius: 0 3px 3px 0; }
+  .legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 10px 28px;
+    font-size: 14px;
+  }
+  .legend li { display: flex; align-items: center; gap: 10px; }
+  .key { width: 10px; height: 10px; flex: none; border-radius: 2px; }
+  .legend-name { flex: 1; }
+
+  /* Running costs */
+  .costs-section { padding-block: clamp(72px, 9vw, 128px); }
+  .costs-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 64px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .costs-title {
+    flex: 1 1 520px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .costs-intro {
+    flex: 1 1 320px;
+    max-width: 440px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--slate);
+  }
+  .table {
+    margin-top: clamp(36px, 4vw, 56px);
+    border-top: 1px solid var(--ink);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 8px 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .row--head {
+    align-items: normal;
+    gap: 4px 24px;
+    padding: 12px 0;
+    font-size: 13px;
+    color: var(--slate);
+  }
+  .c-item { flex: 1 1 380px; }
+  .c-year { flex: 0 0 112px; text-align: right; }
+  .c-member { flex: 0 0 132px; text-align: right; }
+  .row--item .c-year,
+  .row--item .c-member { font-size: 17px; }
+  .item {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .item-name { font-family: var(--serif); font-size: 23px; line-height: 1.25; }
+  .item-desc { max-width: 620px; font-size: 15px; line-height: 1.5; color: var(--slate); }
+  .row--total { border-bottom: 2px solid var(--ink); }
+  .row--total .total-label { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+  .row--total .c-year, .row--total .c-member { font-size: 19px; font-weight: 600; }
+  .basis {
+    margin: 20px 0 0;
+    max-width: 720px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--slate);
+  }
+
+  /* What we don't do */
+  .dont {
+    padding-block: clamp(72px, 9vw, 128px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 5vw, 64px);
+  }
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 36px 32px;
+  }
+  .dont-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid oklch(0.42 0.01 65);
+  }
+  .dont-item h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.15;
+  }
+  .dont-item p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--on-ink-muted); }
+
+  /* Questions */
+  .questions {
+    padding-block: clamp(72px, 9vw, 128px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px clamp(40px, 6vw, 96px);
+  }
+  .q-side {
+    flex: 1 1 300px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .pdf {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color var(--ease);
+  }
+  .pdf:hover { border-color: var(--ink); color: var(--ink); }
+  .pdf-icon {
+    width: 34px;
+    height: 42px;
+    flex: none;
+    border: 1.5px solid var(--ink);
+    border-radius: 2px;
+    display: grid;
+    place-items: end center;
+    padding-bottom: 5px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .pdf-text { display: flex; flex-direction: column; }
+  .pdf-text span:first-child { font-weight: 600; }
+  .pdf-text span:last-child { font-size: 13px; color: var(--slate); }
+  .faq {
+    flex: 2 1 560px;
+    min-width: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .faq > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq dt { font-family: var(--serif); font-size: 24px; line-height: 1.25; }
+  .faq dd {
+    margin: 0;
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--slate);
+  }
+</style>

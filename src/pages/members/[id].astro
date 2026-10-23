@@ -1,0 +1,642 @@
+---
+/**
+ * Member profile, generated for every member in src/content/members.
+ * Ruth Adeyemi's file has every field the design uses. Sections whose data is
+ * missing are left out, so a profile can start with the basics and fill in.
+ */
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Photo from '../../components/Photo.astro';
+import { links, memberUrl } from '../../data/site';
+import { getMembers, getMember, firstName, type Member } from '../../data/members';
+
+export async function getStaticPaths() {
+  const members = await getMembers();
+  return members.map((member) => ({ params: { id: member.id }, props: { member } }));
+}
+
+interface Props {
+  member: Member;
+}
+
+const { member } = Astro.props;
+const m = member.data;
+const p = m.profile ?? {};
+const first = firstName(member);
+const { Content } = await render(member);
+const hasAbout = Boolean(member.body?.trim());
+const gallery = p.gallery ?? [];
+const howIWork = p.howIWork ?? [];
+const outcomes = p.outcomes ?? [];
+
+const credentials = p.credentials ?? m.qualifications.map((name) => ({ name, detail: undefined }));
+const bringsIn = await Promise.all(
+  (p.bringsIn ?? []).map(async (b) => ({ ...b, member: await getMember(b.member) })),
+);
+
+const roleNoun = m.role === 'coach' ? 'coach' : m.title.toLowerCase();
+const payCadence = /month/.test(m.price) ? ' each month' : /session/.test(m.price) ? ' for each session' : '';
+const whatsappHref = p.contact?.whatsapp && `https://wa.me/44${p.contact.whatsapp.replace(/\s+/g, '').replace(/^0/, '')}`;
+
+const contactRows = [
+  { kind: 'Video', title: 'Book an intro call', note: p.contact?.hours, href: '#' },
+  p.contact?.whatsapp && {
+    kind: 'WhatsApp',
+    title: `Message ${first}`,
+    note: [p.contact.whatsapp, p.contact.whatsappNote].filter(Boolean).join(' · '),
+    href: whatsappHref,
+  },
+  p.contact?.email && {
+    kind: 'Email',
+    title: p.contact.email,
+    note: p.contact.emailNote,
+    href: `mailto:${p.contact.email}`,
+  },
+].filter(Boolean) as { kind: string; title: string; note?: string; href: string }[];
+
+const pad2 = (n: number) => String(n).padStart(2, '0');
+---
+<BaseLayout
+  title={`${m.name}, ${m.title.toLowerCase()} · Fledg`}
+  description={p.quote ?? `${m.name} is a ${m.title.toLowerCase()} in ${m.city}. ${m.qualifications.join(', ')}.`}
+  current="members"
+  exact={false}
+>
+  <!-- Header -->
+  <section class="container p-header">
+    <nav aria-label="Breadcrumb" class="crumbs"><a href={links.members}>Members</a><span aria-hidden="true">/</span><span aria-current="page">{m.name}</span></nav>
+    <div class="p-header-inner">
+      <figure class="portrait">
+        <Photo photo={m.photo.id} width={1100} alt={p.portrait?.alt ?? m.photo.alt} position={m.photo.position} ratio="4 / 5" eager />
+        {p.portrait?.caption && <figcaption>{p.portrait.caption}</figcaption>}
+      </figure>
+
+      <div class="p-intro">
+        <span class:list={['status', { 'status--full': !m.taking }]}><span class="status-dot"></span>{m.taking ? 'Taking new clients' : 'Full at the moment'}</span>
+        <div class="p-name">
+          <h1>{m.name}</h1>
+          <div class="p-meta"><span class="p-title">{m.title}</span><span>{m.pronouns}</span><span>{p.location ?? m.city}</span></div>
+        </div>
+        {p.quote && <p class="quote">“{p.quote}”</p>}
+
+        <dl class="details">
+          <div><dt>Programme length</dt><dd><span class="ph">{m.length}</span></dd></div>
+          <div>
+            <dt>Price, paid to {first}</dt>
+            <dd><span class="ph">{m.price}</span><span class="dd-note">{p.totalPrice && <>About <span class="ph ph--tight">{p.totalPrice}</span> in total. </>}Nothing to Fledg.</span></dd>
+          </div>
+          {p.calls && <div><dt>Video calls</dt><dd>{p.calls.value}{p.calls.note && <span class="dd-note">{p.calls.note}</span>}</dd></div>}
+          {p.messages && <div><dt>Messages</dt><dd>{p.messages.value}{p.messages.note && <span class="dd-note">{p.messages.note}</span>}</dd></div>}
+        </dl>
+
+        <div class="btn-row">
+          <Button href="#contact">Book a free intro call</Button>
+          {p.contact?.whatsapp && <Button href="#contact" variant="secondary">Message {first} on WhatsApp</Button>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qualifications -->
+  <section class="ruled">
+    <div class="container p-section split-2">
+      <div class="side">
+        <h2 class="h2 h2--sm">Qualifications</h2>
+        {p.checked && <p class="checked"><span class="tick" aria-hidden="true">✓</span>Fledg checked these certificates and {first}’s insurance on {p.checked}.</p>}
+      </div>
+      <ul class="creds">
+        {credentials.map((c) => <li><span class="cred-name">{c.name}</span>{c.detail && <span class="cred-detail">{c.detail}</span>}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- About and how I work -->
+  {(hasAbout || gallery.length > 0 || howIWork.length > 0) && (
+    <section class="ruled">
+      <div class="container p-section about-stack">
+        {hasAbout && (
+          <div class="split-2">
+            <h2 class="h2 h2--sm side">About {first}</h2>
+            <div class="about-text"><Content /></div>
+          </div>
+        )}
+        {gallery.length > 0 && (
+          <div class="gallery">
+            {gallery.map((g) => (
+              <figure>
+                <Photo photo={g.id} width={900} alt={g.alt} position={g.position} ratio="3 / 2" />
+                {g.caption && <figcaption>{g.caption}</figcaption>}
+              </figure>
+            ))}
+          </div>
+        )}
+        {howIWork.length > 0 && (
+          <div class="split-2">
+            <h2 class="h2 h2--sm side">How I work</h2>
+            <div class="how-grid">
+              {howIWork.map((h) => <div class="how-item"><h3>{h.title}</h3><p>{h.text}</p></div>)}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- By the end -->
+  {outcomes.length > 0 && (
+    <section class="band-alt">
+      <div class="container p-section--lg split-2 outcomes-wrap">
+        <div class="side side--gap20">
+          <div class="eyebrow">What you’ll leave with</div>
+          <h2 class="h2 h2--md balance">By the end, you’ll be able to do this on your own.</h2>
+        </div>
+        <ol class="outcomes">
+          {outcomes.map((o, i) => <li><span class="num">{pad2(i + 1)}</span><span class="outcome">{o}</span></li>)}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <!-- Timeline -->
+  {p.timeline && (
+    <section class="container p-section--lg">
+      <div class="tl-head">
+        <h2 class="h2 h2--md tl-h2">Your <span class="ph ph--big">{m.length}</span> with {first}</h2>
+        <p class="tl-intro">{p.timeline.intro}</p>
+      </div>
+      <div class="timeline">
+        {p.timeline.stages.map((s) => (
+          <div class="tl-stage" style={`flex:${s.span} 1 0`}>
+            <span class:list={['tl-bar', `tl-bar--${s.bar}`]}></span>
+            <span class="tl-weeks">{s.weeks}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Who I bring in -->
+  {bringsIn.length > 0 && (
+    <section class="ruled">
+      <div class="container p-section bring">
+        <div class="bring-head">
+          <div class="bring-title">
+            <div class="eyebrow">{first}’s team</div>
+            <h2 class="h2 h2--sm">Who I bring in, and when.</h2>
+          </div>
+          <p class="bring-intro">Specialists set their own fees. You’ll know the cost before you agree, and you pay them directly.</p>
+        </div>
+        <div class="bring-grid">
+          {bringsIn.map((b) => (
+            <a href={memberUrl(b.member.id)} class="bring-card">
+              <Photo photo={b.member.data.photo.id} width={300} alt={b.member.data.name} position={b.member.data.photo.position} ratio="4 / 5" class="bring-photo" />
+              <div class="bring-text">
+                <span class="bring-name">{b.member.data.name}</span>
+                <span class="bring-label">{b.label}</span>
+                <span class="bring-when">{b.when}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Get in touch -->
+  <section id="contact" class="band-duck">
+    <div class="container p-section--lg contact">
+      <div class="contact-copy">
+        <div class="eyebrow eyebrow--duck">Get in touch</div>
+        <h2 class="h2 h2--md balance">Start with a free 20-minute call.</h2>
+        <p class="lead contact-lead">We’ll talk about what you want to be able to do, how much time you have, and whether I’m the right {roleNoun} for it. If I’m not, I’ll suggest someone who is.</p>
+      </div>
+      <div class="contact-list">
+        {contactRows.map((r) => (
+          <a href={r.href} class="contact-row">
+            <span class="contact-text">
+              <span class="contact-kind">{r.kind}</span>
+              <span class="contact-title">{r.title}</span>
+              {r.note && <span class="contact-note">{r.note}</span>}
+            </span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+        <p class="contact-small">No contract. You pay {first} directly{payCadence}, and you can stop whenever you like.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  figure { margin: 0; }
+  .ruled { border-top: 1px solid var(--rule); }
+  .band-alt { background: var(--paper-alt); }
+  .band-duck { background: var(--duck-egg); }
+  .eyebrow--duck { color: var(--on-duck-eyebrow); }
+  .p-section { padding-block: clamp(64px, 8vw, 112px); }
+  .p-section--lg { padding-block: clamp(72px, 9vw, 128px); }
+  .split-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px clamp(40px, 6vw, 96px);
+  }
+  .side {
+    flex: 1 1 300px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .side--gap20 { gap: 20px; }
+
+  /* Header */
+  .p-header { padding-block: 24px clamp(72px, 8vw, 120px); }
+  .crumbs {
+    display: flex;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: clamp(28px, 4vw, 48px);
+  }
+  .crumbs a { color: var(--slate); }
+  .crumbs a:hover { color: var(--ink); }
+  .crumbs [aria-current] { color: var(--ink); }
+  .p-header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px clamp(40px, 6vw, 96px);
+    align-items: flex-start;
+  }
+  .portrait {
+    flex: 1 1 400px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .portrait figcaption {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--slate);
+  }
+  .p-intro {
+    flex: 1 1 500px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .status {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--teal-pale);
+    color: oklch(0.32 0.07 220);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  .status--full { background: oklch(0.93 0.01 80); color: oklch(0.36 0.012 65); }
+  .status--full .status-dot { background: oklch(0.70 0.01 75); }
+  .p-name {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .p-name h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(52px, 6vw, 92px);
+    line-height: 0.96;
+    letter-spacing: -0.032em;
+  }
+  .p-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: 16px;
+    color: var(--slate);
+  }
+  .p-title { color: var(--ink); font-weight: 500; }
+  .quote {
+    margin: 0;
+    max-width: 600px;
+    font-family: var(--serif);
+    font-size: clamp(23px, 2.1vw, 30px);
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .details {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    border-top: 1px solid var(--ink);
+  }
+  .details > div {
+    padding: 16px 16px 16px 0;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .details dt { font-size: 13px; color: var(--slate); }
+  .details dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.25;
+  }
+  .dd-note {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--slate);
+  }
+  .ph--tight { padding: 0 3px; }
+
+  /* Qualifications */
+  .checked {
+    margin: 0;
+    max-width: 360px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--slate);
+  }
+  .tick {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    margin-top: 1px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .creds {
+    flex: 2 1 560px;
+    min-width: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .creds li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cred-name {
+    flex: 1 1 320px;
+    font-family: var(--serif);
+    font-size: 21px;
+    line-height: 1.3;
+  }
+  .cred-detail { font-size: 15px; color: var(--slate); }
+
+  /* About and how I work */
+  .about-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(56px, 7vw, 96px);
+  }
+  .about-stack .side { display: block; }
+  .about-text {
+    flex: 2 1 560px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: var(--serif);
+    font-size: clamp(19px, 1.5vw, 22px);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  .about-text :global(p) { margin: 0; }
+  /* The closing aside about life outside work is set in muted ink. */
+  .about-text :global(p:last-child:not(:first-child)) { color: var(--slate); }
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .gallery figure {
+    flex: 1 1 320px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gallery figcaption { font-size: 13.5px; color: var(--slate); }
+  .how-grid {
+    flex: 2 1 560px;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 36px 40px;
+  }
+  .how-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ink);
+  }
+  .how-item h3 { margin: 0; font-size: 17px; font-weight: 600; }
+  .how-item p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--slate); }
+
+  /* Outcomes */
+  .outcomes-wrap { gap: 40px clamp(40px, 6vw, 96px); }
+  .outcomes {
+    flex: 2 1 560px;
+    min-width: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .outcomes li {
+    display: flex;
+    gap: clamp(16px, 2.4vw, 32px);
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid oklch(0.84 0.012 80);
+  }
+  .num {
+    flex: none;
+    width: 2.2ch;
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--teal);
+  }
+  .outcome {
+    font-family: var(--serif);
+    font-size: clamp(21px, 1.9vw, 26px);
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+
+  /* Timeline */
+  .tl-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 64px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .tl-h2 { flex: 1 1 480px; min-width: 0; }
+  .ph--big { padding: 0 6px; border-radius: 3px; }
+  .tl-intro {
+    flex: 1 1 320px;
+    max-width: 440px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--slate);
+  }
+  .timeline {
+    margin-top: clamp(40px, 5vw, 64px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 36px 16px;
+  }
+  .tl-stage {
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .tl-bar { display: block; height: 14px; border-radius: 3px; }
+  .tl-bar--coach { background: var(--coach-bar); }
+  .tl-bar--together { background: linear-gradient(90deg, var(--coach-bar), var(--teal)); }
+  .tl-bar--you { background: var(--teal); }
+  .tl-bar--after { border: 1.5px dashed var(--teal); }
+  .tl-weeks { font-size: 13px; font-weight: 600; }
+  .tl-stage h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.15;
+  }
+  .tl-stage p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--slate); }
+
+  /* Who I bring in */
+  .bring {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .bring-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 64px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .bring-title {
+    flex: 1 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .bring-intro {
+    flex: 1 1 320px;
+    max-width: 440px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--slate);
+  }
+  .bring-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 24px;
+  }
+  .bring-card {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 20px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color var(--ease);
+  }
+  .bring-card:hover { border-color: var(--ink); color: var(--ink); }
+  .bring-photo { width: 88px; flex: none; }
+  .bring-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .bring-name { font-family: var(--serif); font-size: 23px; line-height: 1.2; }
+  .bring-label { font-size: 14px; font-weight: 500; }
+  .bring-when { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--slate); }
+
+  /* Get in touch */
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px clamp(40px, 6vw, 96px);
+    align-items: flex-start;
+  }
+  .contact-copy {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .contact-lead { max-width: 540px; color: var(--on-duck); }
+  .contact-list {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--ink);
+  }
+  .contact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 0;
+    border-bottom: 1px solid oklch(0.22 0.012 65 / 0.3);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .contact-row:hover { color: var(--on-duck-eyebrow); }
+  .contact-text { display: flex; flex-direction: column; gap: 2px; }
+  .contact-kind { font-size: 13px; color: oklch(0.30 0.03 220); }
+  .contact-title { font-family: var(--serif); font-size: 28px; line-height: 1.2; }
+  .contact-note { font-size: 14px; color: oklch(0.30 0.03 220); }
+  .arrow { font-size: 24px; }
+  .contact-small {
+    margin: 20px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--on-duck);
+  }
+</style>

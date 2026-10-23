@@ -1,0 +1,230 @@
+/*
+ * Fledg design tokens and base styles.
+ * Values come from the design references in /design (see design/README.md).
+ * Colours are kept in OKLCH, as in the source; hex equivalents are in the README.
+ */
+
+:root {
+  /* Colour */
+  --paper: oklch(0.972 0.008 85);          /* #f8f5f0 page background */
+  --paper-alt: oklch(0.945 0.012 85);      /* #f0ece4 "chalk" bands and panels */
+  --ink: oklch(0.22 0.012 65);             /* #1f1a15 text, dark bands, primary button */
+  --slate: oklch(0.43 0.012 65);           /* #554f49 muted text */
+  --rule: oklch(0.86 0.01 80);             /* #d4d0ca borders */
+  --rule-strong: oklch(0.80 0.01 80);      /* outlined pills and dashed boxes */
+  --photo-bg: oklch(0.915 0.01 80);        /* #e6e2dc photo placeholder */
+  --duck-egg: oklch(0.875 0.042 205);      /* #b7dee3 accent band */
+  --teal: oklch(0.40 0.07 220);            /* #075062 links, eyebrows, "you" */
+  --teal-pale: oklch(0.93 0.025 205);      /* #d6edf0 chips */
+  --teal-ink: oklch(0.36 0.07 220);        /* #004556 chip text */
+  --on-duck: oklch(0.26 0.02 220);         /* #19262b text on duck egg */
+  --on-duck-eyebrow: oklch(0.30 0.06 220); /* #003442 eyebrow on duck egg */
+  --on-ink-muted: oklch(0.82 0.01 80);     /* #c7c3bd muted text on ink */
+  --footer-label: oklch(0.68 0.01 80);     /* #9b9891 */
+  --highlight: oklch(0.93 0.085 95);       /* #f9e8a7 placeholder figures */
+  --coach-bar: oklch(0.86 0.012 80);       /* "your coach" in programme bars */
+  --leave-red: oklch(0.55 0.14 28);        /* #b54b41 */
+  --nutrition: oklch(0.45 0.09 45);        /* #7e4328 nutritionist label in chat */
+  --white: #fff;
+
+  /* Type */
+  --serif: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+  --sans: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Layout */
+  --max: 1320px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --header-h: 72px;
+  --section-pad: clamp(72px, 9vw, 136px);
+
+  /* Effects */
+  --shadow-card: 0 1px 2px oklch(0.22 0.012 65 / 0.06), 0 32px 64px -32px oklch(0.22 0.012 65 / 0.28);
+  --shadow-tile: 0 1px 2px oklch(0.22 0.012 65 / 0.10), 0 10px 24px -12px oklch(0.22 0.012 65 / 0.35);
+  --ease: 0.2s ease;
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+html, body { margin: 0; padding: 0; background: var(--paper); }
+
+body {
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--teal);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition: color var(--ease);
+}
+a:hover { color: var(--ink); }
+
+button { font: inherit; }
+
+::selection { background: var(--duck-egg); }
+
+[id] { scroll-margin-top: var(--header-h); }
+
+img { display: block; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layout */
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.section-pad { padding-block: var(--section-pad); }
+
+/* Type */
+.serif { font-family: var(--serif); }
+.balance { text-wrap: balance; }
+.pretty { text-wrap: pretty; }
+
+.eyebrow {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--teal);
+}
+
+.h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(38px, 4.6vw, 68px);
+  line-height: 1.03;
+  letter-spacing: -0.022em;
+}
+.h2--md { font-size: clamp(38px, 4.2vw, 62px); }
+.h2--sm {
+  font-size: clamp(34px, 3.4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(26px, 2.2vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.lead {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.5;
+  color: var(--slate);
+  text-wrap: pretty;
+}
+
+.muted { color: var(--slate); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  height: 54px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--ease), color var(--ease);
+}
+.btn--primary { background: var(--ink); color: var(--paper); }
+.btn--primary:hover { background: var(--teal); color: var(--paper); }
+.btn--secondary { padding: 0 26px; border: 1px solid var(--ink); color: var(--ink); }
+.btn--secondary:hover { background: var(--ink); color: var(--paper); }
+.btn--light { background: var(--paper); color: var(--ink); }
+.btn--light:hover { background: var(--duck-egg); color: var(--ink); }
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+}
+
+/* Placeholder figures (yellow highlighter) and notes. Remove before launch. */
+.ph {
+  background: var(--highlight);
+  padding: 0 4px;
+  border-radius: 2px;
+}
+.ph-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.ph-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.ph-key::before {
+  content: '';
+  width: 14px;
+  height: 10px;
+  flex: none;
+  border-radius: 2px;
+  background: var(--highlight);
+}
+
+/* Photos */
+.photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--photo-bg);
+}
+.photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Bullet dot used in lists */
+.dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--teal);
+}

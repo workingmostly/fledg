@@ -1,0 +1,135 @@
+---
+import Photo from './Photo.astro';
+import { memberUrl } from '../data/site';
+import type { Member } from '../data/members';
+
+interface Props {
+  member: Member;
+}
+
+const { member } = Astro.props;
+const m = member.data;
+---
+<a
+  href={memberUrl(member.id)}
+  class="member-card"
+  data-member-card
+  data-role={m.role}
+  data-discipline={m.discipline}
+  data-specialisms={m.specialisms.join('|')}
+  data-gender={m.gender}
+  data-taking={String(m.taking)}
+>
+  <Photo photo={m.photo.id} width={600} alt={m.photo.alt} position={m.photo.position} ratio="4 / 5">
+    <span class:list={['status', { 'status--full': !m.taking }]}><span class="status-dot"></span>{m.taking ? 'Taking clients' : 'Full at the moment'}</span>
+  </Photo>
+  <div class="body">
+    <div class="top"><span class="name">{m.name}</span><span class="pronouns">{m.pronouns}</span></div>
+    <div class="title">{m.title}<span> · {m.city}</span></div>
+    <div class="quals">{m.qualifications.join(' · ')}</div>
+    <div class="chips">
+      <span class:list={['role', `role--${m.role}`]}>{m.role === 'coach' ? 'Coach' : 'Specialist'}</span>
+      {m.specialisms.map((s) => <span class="spec">{s}</span>)}
+    </div>
+    <div class="price"><span class="ph">{m.price}</span><span class="length">{m.length}</span></div>
+  </div>
+</a>
+
+<style>
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform var(--ease);
+  }
+  .member-card:hover {
+    color: var(--ink);
+    transform: translateY(-3px);
+  }
+  .member-card[hidden] { display: none; }
+  .status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--paper);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  .status--full .status-dot { background: oklch(0.70 0.01 75); }
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .name {
+    font-family: var(--serif);
+    font-size: 25px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .pronouns {
+    font-size: 13px;
+    color: var(--slate);
+    white-space: nowrap;
+  }
+  .title {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .title span {
+    font-weight: 400;
+    color: var(--slate);
+  }
+  .quals {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--slate);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .role, .spec {
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+  .role { font-weight: 500; }
+  .role--coach { background: var(--teal-pale); color: oklch(0.34 0.07 220); }
+  .role--specialist { background: oklch(0.93 0.01 80); color: oklch(0.36 0.012 65); }
+  .spec {
+    border: 1px solid var(--rule);
+    color: oklch(0.36 0.012 65);
+  }
+  .price {
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 14px;
+  }
+  .length { color: var(--slate); }
+</style>

@@ -1,0 +1,1268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Photo from '../components/Photo.astro';
+import PlaceholderNote from '../components/PlaceholderNote.astro';
+import { links, memberUrl } from '../data/site';
+import { getMember, getMembers } from '../data/members';
+import { gbp, joiningFee } from '../data/money';
+
+const members = await getMembers();
+const featured = await Promise.all(['ruth', 'helen', 'dan', 'priya', 'jo'].map(getMember));
+
+/* Hero montage. The two `compactOnly` tiles appear only in the 2-column phone grid. */
+const montage = [
+  { photo: 38615519, width: 700, position: '50% 45%', alt: 'A woman deadlifting on her own in a gym', name: 'Chloe, 31', year: 2025 },
+  { photo: 3752928, width: 900, position: '50% 35%', alt: 'A woman cycling through a city, smiling', name: 'Marta, 38', year: 2024 },
+  { photo: 4854275, width: 600, position: '50% 40%', alt: 'Two friends stretching together in a gym, laughing', name: 'Tom and Ana', compactOnly: true },
+  { photo: 7869513, width: 900, position: '60% 40%', alt: 'An older man running beside the water', name: 'Desmond, 67', year: 2024 },
+  { photo: 4587349, width: 700, position: '40% 35%', alt: 'An older woman doing lunges with dumbbells', name: 'Wendy, 58', year: 2023 },
+  { photo: 347134, width: 600, position: '35% 50%', alt: 'A woman running in a park at sunset', name: 'Leah, 27', compactOnly: true },
+];
+
+/* Who writes the programme, stage by stage: [coach, you] shares of the bar. */
+const stages = [
+  { n: 1, tag: 'Coach writes', coach: 100, you: 0, title: 'Your coach writes it.', text: 'Your coach writes your first programme and explains why every part of it is there. You learn the reasons, not just the routine.' },
+  { n: 2, tag: 'Together', coach: 50, you: 50, title: 'You write it together.', text: 'You plan the next block side by side on a video call. Each time, you make more of the decisions.' },
+  { n: 3, tag: 'You write, coach checks', coach: 18, you: 82, coachLabel: 'Coach checks', title: 'You write it. Your coach checks it.', text: 'Your final block is written by you. Your coach reads it, asks questions and suggests changes before you start.' },
+  { n: 4, tag: 'On your own', coach: 0, you: 100, title: 'You’re on your own.', text: 'The programme ends on the date you agreed. You know how to train, eat and recover, and what to change when life does.' },
+];
+
+/* The "Your team" card is an illustration of a client's view, not live data. */
+const specialists = [
+  { name: 'Helen Marsh', role: 'Registered nutritionist', photo: 8844892, zoom: { scale: 3.5, origin: '33% 40%' }, badge: 'Diet, weeks 4–9', active: true },
+  { name: 'Priya Shah', role: 'Physiotherapist', photo: 5793895, zoom: { scale: 2.2, origin: '60% 2%' }, badge: 'If needed' },
+  { name: 'Dan Hughes', role: 'Running coach', photo: 5067669, zoom: { scale: 4, origin: '50% 33%' }, badge: 'If needed' },
+  { name: 'Callum Fraser', role: 'Sports therapist', photo: 20860595, zoom: { scale: 3, origin: '52% 15%' }, badge: 'If needed' },
+];
+
+const ruthAvatar = { photo: 8770421, zoom: { scale: 2.6, origin: '50% 10%' } };
+const helenAvatar = { photo: 8844892, zoom: { scale: 3.5, origin: '33% 40%' } };
+
+const facts = [
+  { title: 'Sessions', text: 'One to one, in a gym near you. Or all on video if you’re further away.' },
+  { title: 'Messages', text: 'On WhatsApp, with your coach and anyone they bring in.' },
+  { title: 'Calls', text: 'On video, face to face, usually every week or two.' },
+  { title: 'Timing', text: 'Early mornings, lunch breaks and evenings.' },
+];
+
+const apps = [
+  { name: 'Hevy', icon: '/icons/hevy.png' },
+  { name: 'Strong', icon: '/icons/strong.png' },
+  { name: 'MyFitnessPal', icon: '/icons/mfp.png' },
+  { name: 'Cronometer', icon: '/icons/crono.png' },
+];
+
+const benefits = [
+  'Keep 100% of what your clients pay you.',
+  'Set your own prices, hours and programme lengths.',
+  'Bring in other members when a client needs more than you.',
+];
+---
+<BaseLayout
+  title="Fledg: get fit with a coach, stay fit without one"
+  description="One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract."
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1 class="hero-h1"><span>Get fit with a coach.</span><em>Stay fit without one.</em></h1>
+      <div class="hero-sub">
+        <p class="hero-lead">One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract. Your coach teaches you to train, eat and recover, then sets you up to go it alone.</p>
+        <div class="hero-ctas">
+          <Button href={links.members}>Find your coach</Button>
+          <Button href="#how" variant="secondary">How it works</Button>
+        </div>
+      </div>
+    </div>
+
+    <figure class="montage">
+      <div class="montage-head">
+        <h2 class="montage-title">Recent <em>graduates.</em></h2>
+        <PlaceholderNote class="muted">Placeholder photos (Pexels) and names</PlaceholderNote>
+      </div>
+      <div class="montage-grid">
+        {montage.map((t) => (
+          <Photo photo={t.photo} width={t.width} alt={t.alt} position={t.position} eager={!t.compactOnly} class:list={['tile', { 'tile--compact-only': t.compactOnly }]}>
+            <span class="tag">{t.name}{t.year && <span class="tag-year"> · class of {t.year}</span>}</span>
+          </Photo>
+        ))}
+      </div>
+    </figure>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="how">
+    <div class="container section-pad">
+      <div class="split">
+        <div class="split-main">
+          <div class="eyebrow">How it works</div>
+          <h2 class="h2 balance" style="max-width:820px">Nobody keeps their driving instructor after they pass.</h2>
+        </div>
+        <p class="lead split-aside">Coaching should work the same way. Every programme has an end date, agreed before you start, and each block your coach hands over a little more.</p>
+      </div>
+
+      <div class="how-key">
+        <span class="how-key-title">Who writes the programme</span>
+        <span class="how-legend">
+          <span><span class="swatch swatch--coach"></span>Your coach</span>
+          <span><span class="swatch swatch--you"></span>You</span>
+        </span>
+      </div>
+      <div class="stages">
+        {[stages.slice(0, 2), stages.slice(2)].map((pair) => (
+          <div class="stage-pair">
+            {pair.map((s) => (
+              <div class="stage">
+                <div class="stage-bar">
+                  {s.coach > 0 && <div class:list={['seg seg--coach', { 'seg--slim': s.coachLabel }]} style={`flex:${s.coach} 1 0`}>{s.coachLabel ?? 'Coach'}</div>}
+                  {s.you > 0 && <div class="seg seg--you" style={`flex:${s.you} 1 0`}>You</div>}
+                </div>
+                <div class="stage-meta"><span>Stage {s.n}</span><span class="muted">{s.tag}</span></div>
+                <h3 class="h3">{s.title}</h3>
+                <p class="body-muted">{s.text}</p>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <p class="how-close">Every programme has an end date. There’s nothing to renew and nothing to cancel.</p>
+    </div>
+  </section>
+
+  <!-- Your team -->
+  <section id="team" class="band-alt">
+    <div class="container section-pad">
+      <div class="team">
+        <div class="team-copy">
+          <div class="eyebrow">Your team</div>
+          <h2 class="h2 balance">One coach who knows you. A whole collective behind them.</h2>
+          <p class="lead" style="max-width:560px">You choose one coach. They write your programme with you, answer your messages and get to know how you train.</p>
+          <p class="lead" style="max-width:560px">When your goals need something outside their field, they bring in another member. A nutritionist might help with your diet while your coach handles your training.</p>
+          <p class="small-muted" style="max-width:560px">You only pay the people you work with, and you’ll know what it costs before you agree.</p>
+        </div>
+
+        <div class="team-visual">
+          <div class="team-card">
+            <div class="tc-head">
+              <div><div class="tc-client">Sam Whitaker</div><div class="tc-title">Your team</div></div>
+              <div class="tc-progress"><span>Week 6 of 16 · ends 13 March</span><span class="tc-track"><span style="width:37.5%"></span></span></div>
+            </div>
+            <div class="tc-coach">
+              <Photo photo={ruthAvatar.photo} width={300} alt="Ruth Adeyemi" position="50% 10%" zoom={ruthAvatar.zoom} class="avatar" style="width:84px; height:84px" />
+              <div class="tc-coach-info">
+                <span class="tc-chip">Your coach</span>
+                <span class="tc-coach-name">Ruth Adeyemi</span>
+                <span class="tc-coach-quals">Strength coach · Level 3 Personal Trainer · BSc Sport and Exercise Science</span>
+              </div>
+              <div class="tc-actions">
+                <span class="tc-btn tc-btn--dark">Message</span>
+                <span class="tc-btn">Book a video call</span>
+              </div>
+            </div>
+            <div class="tc-list-head"><span>Specialists Ruth can bring in</span><span>From the collective</span></div>
+            {specialists.map((s) => (
+              <div class="tc-row">
+                <Photo photo={s.photo} width={300} alt={s.name} position={s.zoom.origin} zoom={s.zoom} class="avatar" style="width:40px; height:40px" />
+                <span class="tc-row-info"><span class="tc-row-name">{s.name}</span><span class="tc-row-role">{s.role}</span></span>
+                <span class:list={['tc-badge', { 'tc-badge--active': s.active }]}>{s.badge}</span>
+              </div>
+            ))}
+            <div class="tc-foot">And 10 more members of the collective</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="featured">
+        <div class="featured-head">
+          <div class="featured-title">
+            <h3>Some of the collective</h3>
+            <PlaceholderNote class="muted">Placeholder photos and names</PlaceholderNote>
+          </div>
+          <a href={links.members}>Browse all {members.length} members by discipline, specialism or gender →</a>
+        </div>
+        <div class="featured-row">
+          {featured.map((m) => (
+            <a href={memberUrl(m.id)} class="featured-card">
+              <Photo photo={m.data.photo.id} width={600} alt={m.data.photo.alt} position={m.data.photo.position} ratio="3 / 4" />
+              <div class="fc-text">
+                <span class="fc-name">{m.data.name}</span>
+                <span class="fc-title">{m.data.title}</span>
+                <span class="fc-quals">{m.data.shortQualifications ?? m.data.qualifications.join(' · ')}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Working with your coach -->
+  <section id="contact" class="band-duck">
+    <div class="container section-pad">
+      <div class="coach-intro">
+        <div class="eyebrow eyebrow--duck">Working with your coach</div>
+        <h2 class="h2 balance">Train together in person. Keep in touch in between.</h2>
+        <p class="lead lead--duck" style="max-width:640px">Your coach trains with you one to one in the gym. Between sessions, you message them on WhatsApp and talk face to face on video. If you live further away, it can all happen on video. Real people every time, built around a full-time job.</p>
+      </div>
+
+      <figure class="session">
+        <Photo photo={6456323} width={1600} alt="Kwame Mensah coaching a client one to one in the gym" position="50% 40%" ratio="16 / 7" class="session-photo" />
+        <figcaption><span>In person: Kwame Mensah talks a client through her next set. Nottingham.</span><PlaceholderNote>Placeholder photo and name</PlaceholderNote></figcaption>
+      </figure>
+
+      <div class="mockups">
+        <figure class="phone-fig">
+          <div class="phone">
+            <div class="screen">
+              <div class="status"><span>20:12</span><span class="battery"><span></span></span></div>
+              <div class="chat-head">
+                <span class="back" aria-hidden="true">‹</span>
+                <span class="chat-avatars">
+                  <Photo photo={ruthAvatar.photo} width={300} alt="Ruth Adeyemi" position="50% 10%" zoom={ruthAvatar.zoom} class="avatar chat-avatar" />
+                  <Photo photo={helenAvatar.photo} width={300} alt="Helen Marsh" position="33% 40%" zoom={helenAvatar.zoom} class="avatar chat-avatar" />
+                </span>
+                <span class="chat-title"><span>Training with Ruth</span><span>Ruth, Helen, you</span></span>
+              </div>
+              <div class="messages">
+                <div class="msg msg--out">Quick one. Do I need a protein shake after evening sessions, or is dinner enough?<span class="time">19:42</span></div>
+                <div class="msg msg--in"><span class="sender">Ruth · coach</span>Good question. Helen’s our nutritionist, so I’ll let her answer. Adding her now.<span class="time">19:50</span></div>
+                <span class="msg-system">Ruth added Helen Marsh</span>
+                <div class="msg msg--in"><span class="sender sender--nutrition">Helen · nutritionist</span>Hi Sam. If dinner’s within a couple of hours of training and has decent protein in it, you don’t need the shake.<span class="time">20:04</span></div>
+                <div class="msg msg--in msg--cont">Send me photos of this week’s dinners and we’ll go through them on Thursday’s call.<span class="time">20:05</span></div>
+                <div class="msg msg--out">Will do. Thanks both.<span class="time">20:11</span></div>
+              </div>
+              <div class="composer"><span class="composer-input">Message</span><span class="composer-send" aria-hidden="true">↑</span></div>
+            </div>
+          </div>
+          <figcaption>Ruth brings Helen, a nutritionist, into the chat to answer a food question.</figcaption>
+        </figure>
+
+        <div class="mockups-side">
+          <figure class="call-fig">
+            <div class="call">
+              <div class="call-top"><span>Block 3 review</span><span>Sam and Ruth · 24:16</span></div>
+              <div class="call-grid">
+                <Photo photo={8770421} width={700} alt="Ruth Adeyemi on a video call" position="50% 6%" zoom={{ scale: 1.5, origin: '50% 10%' }} ratio="4 / 5" class="call-tile">
+                  <span class="call-name">Ruth Adeyemi</span>
+                </Photo>
+                <Photo photo={6937693} width={700} alt="Sam on a video call at home" position="55% 30%" zoom={{ scale: 1.3, origin: '55% 30%' }} ratio="4 / 5" class="call-tile">
+                  <span class="call-name">Sam (you)</span>
+                </Photo>
+              </div>
+              <div class="call-controls"><span>Mute</span><span>Camera</span><span>Share screen</span><span class="leave">Leave</span></div>
+            </div>
+            <figcaption>Every fortnight, Sam and Ruth go through the block he wrote himself.</figcaption>
+          </figure>
+          <div class="facts">
+            {facts.map((f) => (
+              <div class="fact"><span class="fact-title">{f.title}</span><span class="fact-text">{f.text}</span></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- No app, no lock-in -->
+  <section id="apps">
+    <div class="container section-pad apps">
+      <div class="apps-copy">
+        <div class="eyebrow">No app, no lock-in</div>
+        <h2 class="h2 balance">Use what you already use. We don’t have an app.</h2>
+        <p class="lead" style="max-width:540px">Your coach writes your programme wherever suits you: the notes on your phone, a notebook in your gym bag, or an app you already know.</p>
+        <p class="lead" style="max-width:540px">There’s nothing new to download and nothing to log in to. When your programme ends, it stays with you. Nothing gets switched off, because there’s nothing of ours to switch off.</p>
+        <p class="small-muted" style="max-width:540px">Clients use Hevy, Strong, MyFitnessPal, Cronometer, Google Sheets and Apple Notes, as well as pen and paper. If you use something else, that’s fine too.</p>
+      </div>
+      <div class="apps-visual">
+        <div class="apps-panel">
+          {apps.map((a) => (
+            <div class="app"><span class="app-icon"><img src={a.icon} alt={a.name} loading="lazy" /></span><span class="app-name">{a.name}</span></div>
+          ))}
+          <div class="app">
+            <span class="app-icon app-icon--notes" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <span class="app-name">Notes</span>
+          </div>
+          <div class="app">
+            <span class="app-icon app-icon--sheet" aria-hidden="true"><span></span></span>
+            <span class="app-name">A spreadsheet</span>
+          </div>
+          <div class="app">
+            <span class="app-icon app-icon--notebook" aria-hidden="true"><span></span><span></span></span>
+            <span class="app-name">A notebook</span>
+          </div>
+          <div class="app">
+            <span class="app-icon app-icon--none" aria-hidden="true"></span>
+            <span class="app-name">Fledg app<span class="muted">Doesn’t exist</span></span>
+          </div>
+        </div>
+        <span class="apps-note">App icons belong to their makers. Fledg isn’t connected to any of them.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- The money -->
+  <section id="money" class="band-ink">
+    <div class="container section-pad">
+      <div class="money-top">
+        <div class="money-copy">
+          <div class="eyebrow eyebrow--ink">The money</div>
+          <h2 class="h2 balance" style="max-width:800px">Every penny goes to the people coaching you. Fledg takes nothing.</h2>
+          <p class="lead lead--ink" style="max-width:620px">Fledg is not for profit. It takes no share of what you pay, and it never holds your data.</p>
+        </div>
+        <div class="money-zero">
+          <span class="zero">£0</span>
+          <span class="zero-caption">Fledg’s share of what you pay your coach.</span>
+        </div>
+      </div>
+      <div class="money-points">
+        <div class="point"><h3>You pay your coach directly.</h3><p>Fees go from you to them. Fledg never handles client money.</p></div>
+        <div class="point"><h3>Members keep 100%.</h3><p>No commission, no platform fee, no cut. Each member sets their own prices.</p></div>
+        <div class="point"><h3>Members pay once to join.</h3><p>A one-time fee of <span class="ph">{gbp(joiningFee)}</span> covers running costs and nothing else. We publish every item it pays for.</p></div>
+      </div>
+      <div class="money-cta">
+        <Button href={links.money} variant="light">See where the money goes</Button>
+        <PlaceholderNote swatch class="on-ink-muted">Placeholder figure</PlaceholderNote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join the collective -->
+  <section id="join" class="band-alt">
+    <div class="container section-pad join">
+      <figure class="join-fig">
+        <Photo photo={39219674} width={1200} alt="Marek Nowak coaching a client’s deadlift" position="50% 35%" ratio="5 / 4" style="background:oklch(0.90 0.011 80)" />
+        <figcaption><span>Marek Nowak, strength coach, with a client in her final block. Bristol.</span><PlaceholderNote>Placeholder photo and name</PlaceholderNote></figcaption>
+      </figure>
+      <div class="join-copy">
+        <div class="eyebrow">For coaches and specialists</div>
+        <h2 class="h2 balance">Change people’s lives for good.</h2>
+        <p class="lead" style="max-width:560px">If you’re a qualified trainer, nutritionist, physiotherapist or other health and fitness specialist, this is work that lasts. Your clients finish fitter, healthier and happier, and they know how to stay that way.</p>
+        <p class="join-statement">Fledg is not for profit. Nobody makes money from the collective itself, and it never takes a cut of yours.</p>
+        <ul class="benefits">
+          {benefits.map((b) => <li><span class="dot"></span>{b}</li>)}
+        </ul>
+        <div class="apply">
+          <span class="apply-title">Membership is by application</span>
+          <p>Not everyone who applies joins. As well as the right qualifications, members need to share the collective’s principles.</p>
+          <ol>
+            <li><span class="step">1</span><span>Apply with your qualifications and a short note on how you coach.</span></li>
+            <li><span class="step">2</span><span>Talk it through with members of the collective on a video call, so you can both check it’s a good fit.</span></li>
+            <li><span class="step">3</span><span>If it is, pay the one-time joining fee of {gbp(joiningFee)}, which only covers running costs, and set up your profile. <a href={links.money}>See where every penny goes</a>.</span></li>
+          </ol>
+        </div>
+        <div class="btn-row">
+          <Button href={links.apply}>Apply to join</Button>
+          <Button href={links.principles} variant="secondary">Read our principles</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Shared bits */
+  .band-alt { background: var(--paper-alt); }
+  .band-duck { background: var(--duck-egg); }
+  .band-ink { background: var(--ink); color: var(--paper); }
+  .eyebrow--duck { color: var(--on-duck-eyebrow); }
+  .eyebrow--ink { color: var(--duck-egg); }
+  .lead--duck { color: var(--on-duck); }
+  .lead--ink { color: var(--on-ink-muted); }
+  .on-ink-muted { color: var(--on-ink-muted); }
+  .small-muted {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--slate);
+  }
+  .body-muted {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+  .split {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 64px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .split-main {
+    flex: 1 1 560px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .split-aside {
+    flex: 1 1 320px;
+    max-width: 440px;
+  }
+  figure { margin: 0; }
+
+  /* Hero */
+  .hero {
+    max-width: var(--max);
+    min-height: calc(100vh - var(--header-h));
+    margin: 0 auto;
+    padding: clamp(40px, 8vh, 120px) var(--gutter) clamp(28px, 4vh, 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(32px, 5vh, 72px);
+  }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 40px);
+  }
+  .hero-h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(44px, min(6.4vw, 10.5vh), 96px);
+    line-height: 0.98;
+    letter-spacing: -0.032em;
+    text-wrap: balance;
+  }
+  .hero-h1 span, .hero-h1 em { display: block; }
+  .hero-h1 em { font-style: italic; }
+  .hero-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+  .hero-lead {
+    max-width: 660px;
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(18px, 1.45vw, 22px);
+    line-height: 1.45;
+    color: var(--slate);
+    text-wrap: pretty;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 14px;
+    align-items: center;
+  }
+
+  .montage {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 14px;
+  }
+  .montage-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .montage-title {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2.2vw, 30px);
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+  }
+  .montage-title em { font-style: italic; }
+  .montage-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    flex: 1 1 auto;
+    min-height: clamp(180px, 22vh, 240px);
+    max-height: 440px;
+    gap: 10px;
+  }
+  .tile--compact-only { display: none; }
+  .tag {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+    padding: 5px 10px;
+    border-radius: 10px;
+    background: oklch(0.972 0.008 85 / 0.94);
+    font-size: 12.5px;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  /* Name tags only on the wide strip and the phone grid. */
+  @media (max-width: 1099.98px) {
+    .tag { display: none; }
+  }
+  @media (max-width: 759.98px) {
+    .montage {
+      flex: 0 1 auto;
+      min-height: auto;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+    .montage-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 156px;
+      flex: none;
+      min-height: 0;
+      max-height: none;
+      gap: 8px;
+    }
+    .tile--compact-only { display: block; }
+    .tile:nth-child(1) { grid-row: span 2; }
+    .tile:nth-child(4) { grid-column: span 2; }
+    .tag {
+      display: block;
+      left: 7px;
+      bottom: 7px;
+      max-width: calc(100% - 14px);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+    }
+    .tag-year { display: none; }
+  }
+
+  /* How it works */
+  .how { border-top: 1px solid var(--rule); }
+  .how-key {
+    margin-top: clamp(48px, 6vw, 88px);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--slate);
+  }
+  .how-key-title { font-weight: 600; color: var(--ink); }
+  .how-legend { display: flex; gap: 20px; flex-wrap: wrap; }
+  .how-legend > span { display: inline-flex; align-items: center; gap: 8px; }
+  .swatch { width: 12px; height: 12px; border-radius: 2px; }
+  .swatch--coach { background: var(--coach-bar); }
+  .swatch--you { background: var(--teal); }
+  .stages {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+    gap: 48px 24px;
+  }
+  .stage-pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 48px 24px;
+  }
+  .stage {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .stage-bar {
+    height: clamp(104px, 11vw, 168px);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .seg {
+    min-height: 0;
+    padding: 10px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .seg--coach { background: var(--coach-bar); }
+  .seg--slim { padding: 6px 12px; line-height: 1.2; }
+  .seg--you { background: var(--teal); color: var(--paper); }
+  .stage-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--ink);
+    font-size: 13px;
+  }
+  .stage-meta > span:first-child { font-weight: 600; }
+  .how-close {
+    margin: clamp(48px, 6vw, 72px) 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--serif);
+    font-size: clamp(21px, 1.8vw, 26px);
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  /* Your team */
+  .team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+  .team-copy {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .team-visual { flex: 1 1 460px; min-width: 0; }
+  .team-card {
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .tc-head {
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid oklch(0.90 0.01 80);
+  }
+  .tc-client { font-size: 12px; color: var(--slate); }
+  .tc-title { font-size: 17px; font-weight: 600; }
+  .tc-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--slate);
+  }
+  .tc-track {
+    display: block;
+    width: 150px;
+    height: 4px;
+    border-radius: 2px;
+    background: oklch(0.92 0.01 80);
+    overflow: hidden;
+  }
+  .tc-track span { display: block; height: 100%; background: var(--teal); }
+  .tc-coach {
+    padding: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+  }
+  .avatar { flex: none; border-radius: 50%; }
+  .tc-coach-info {
+    flex: 1 1 220px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .tc-chip {
+    align-self: flex-start;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--teal-pale);
+    color: var(--teal-ink);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .tc-coach-name {
+    font-family: var(--serif);
+    font-size: 27px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .tc-coach-quals { font-size: 13px; line-height: 1.45; color: var(--slate); }
+  .tc-actions { display: flex; gap: 8px; width: 100%; }
+  .tc-btn {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--rule-strong);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .tc-btn--dark { border: 0; background: var(--ink); color: var(--white); }
+  .tc-list-head {
+    padding: 14px 22px 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid oklch(0.90 0.01 80);
+    font-size: 12px;
+    color: var(--slate);
+  }
+  .tc-list-head span:first-child { font-weight: 600; color: var(--ink); }
+  .tc-row {
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid oklch(0.94 0.008 80);
+  }
+  .tc-row-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .tc-row-name { font-size: 15px; font-weight: 600; }
+  .tc-row-role { font-size: 13px; color: var(--slate); }
+  .tc-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    color: var(--slate);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .tc-badge--active {
+    border: 0;
+    background: var(--teal);
+    color: var(--white);
+    font-weight: 500;
+  }
+  .tc-foot {
+    padding: 14px 22px;
+    border-top: 1px solid oklch(0.90 0.01 80);
+    font-size: 13px;
+    color: var(--teal);
+    font-weight: 500;
+  }
+
+  .featured {
+    margin-top: clamp(72px, 8vw, 120px);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .featured-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px 24px;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid var(--ink);
+  }
+  .featured-head > a { font-size: 15px; font-weight: 500; }
+  .featured-title {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    color: var(--slate);
+  }
+  .featured-title h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 2.2vw, 32px);
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .featured-row {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+  }
+  .featured-card {
+    flex: 1 0 210px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .featured-card:hover { color: var(--teal); }
+  .fc-text { display: flex; flex-direction: column; gap: 2px; }
+  .fc-name { font-family: var(--serif); font-size: 23px; line-height: 1.2; }
+  .fc-title { font-size: 15px; color: var(--ink); }
+  .fc-quals { font-size: 13px; color: var(--slate); }
+
+  /* Working with your coach */
+  .coach-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
+  }
+  .session {
+    margin-top: clamp(48px, 6vw, 80px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .session :global(.session-photo) {
+    min-height: 260px;
+    background: oklch(0.80 0.03 205);
+  }
+  .session figcaption, .join-fig figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 20px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--on-duck);
+  }
+  .mockups {
+    margin-top: clamp(48px, 6vw, 80px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px clamp(32px, 5vw, 80px);
+    align-items: flex-start;
+  }
+  .phone-fig {
+    flex: 0 1 340px;
+    min-width: 0;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .phone-fig > figcaption {
+    max-width: 300px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--on-duck);
+    text-align: center;
+  }
+  .phone {
+    width: 100%;
+    max-width: 330px;
+    background: oklch(0.20 0.01 65);
+    border-radius: 48px;
+    padding: 11px;
+    box-shadow: 0 40px 80px -40px oklch(0.20 0.04 220 / 0.55);
+  }
+  .screen {
+    height: 712px;
+    border-radius: 38px;
+    overflow: hidden;
+    background: oklch(0.955 0.008 85);
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .status {
+    height: 46px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    font-size: 14px;
+    font-weight: 600;
+    background: oklch(0.985 0.005 85);
+  }
+  .battery {
+    display: block;
+    width: 22px;
+    height: 11px;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    padding: 1px;
+  }
+  .battery span {
+    display: block;
+    width: 70%;
+    height: 100%;
+    border-radius: 1px;
+    background: var(--ink);
+  }
+  .chat-head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 14px 12px;
+    background: oklch(0.985 0.005 85);
+    border-bottom: 1px solid oklch(0.90 0.01 80);
+  }
+  .back {
+    font-size: 26px;
+    line-height: 1;
+    color: var(--teal);
+    margin-top: -3px;
+  }
+  .chat-avatars { display: flex; }
+  .chat-avatars :global(.chat-avatar) {
+    width: 32px;
+    height: 32px;
+    border: 2px solid oklch(0.985 0.005 85);
+  }
+  .chat-avatars :global(.chat-avatar + .chat-avatar) { margin-left: -8px; }
+  .chat-title { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .chat-title span:first-child { font-size: 15px; font-weight: 600; }
+  .chat-title span:last-child { font-size: 12px; color: var(--slate); }
+  .messages {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 7px;
+    padding: 12px;
+  }
+  .msg { max-width: 84%; }
+  .msg--out {
+    align-self: flex-end;
+    max-width: 82%;
+    padding: 8px 11px 6px;
+    border-radius: 16px 16px 4px 16px;
+    background: var(--duck-egg);
+  }
+  .msg--in {
+    align-self: flex-start;
+    padding: 7px 11px 6px;
+    border-radius: 16px 16px 16px 4px;
+    background: var(--white);
+    box-shadow: 0 1px 0 oklch(0.88 0.01 80);
+  }
+  .msg--cont { padding: 8px 11px 6px; border-radius: 4px 16px 16px 4px; }
+  .sender { display: block; font-size: 12px; font-weight: 600; color: var(--teal); }
+  .sender--nutrition { color: var(--nutrition); }
+  .time {
+    display: block;
+    margin-top: 2px;
+    text-align: right;
+    font-size: 10.5px;
+    color: oklch(0.50 0.01 70);
+  }
+  .msg--out .time { color: oklch(0.36 0.03 220); }
+  .msg-system {
+    align-self: center;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: oklch(0.92 0.01 85);
+    font-size: 11.5px;
+    color: var(--slate);
+  }
+  .composer {
+    flex: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 12px 20px;
+    background: oklch(0.985 0.005 85);
+    border-top: 1px solid oklch(0.90 0.01 80);
+  }
+  .composer-input {
+    flex: 1;
+    height: 38px;
+    border-radius: 19px;
+    background: var(--white);
+    border: 1px solid oklch(0.88 0.01 80);
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    color: oklch(0.50 0.01 70);
+  }
+  .composer-send {
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .mockups-side {
+    flex: 1 1 520px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .call-fig { display: flex; flex-direction: column; gap: 16px; }
+  .call-fig > figcaption { font-size: 14px; line-height: 1.45; color: var(--on-duck); }
+  .call {
+    background: oklch(0.19 0.01 65);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: oklch(0.93 0.008 85);
+    box-shadow: 0 40px 80px -40px oklch(0.20 0.04 220 / 0.55);
+  }
+  .call-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 2px 6px;
+    font-size: 13px;
+  }
+  .call-top span:first-child { font-weight: 600; }
+  .call-top span:last-child { color: oklch(0.72 0.01 80); }
+  .call-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .call-grid :global(.call-tile) { border-radius: 10px; background: oklch(0.30 0.01 65); }
+  .call-name {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 4px 9px;
+    border-radius: 6px;
+    background: oklch(0.15 0.01 65 / 0.75);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .call-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 2px 0 4px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .call-controls span {
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: oklch(0.30 0.01 65);
+  }
+  .call-controls .leave { background: var(--leave-red); color: var(--white); }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: 24px;
+    border-top: 1px solid oklch(0.22 0.012 65 / 0.35);
+    padding-top: 24px;
+  }
+  .fact { display: flex; flex-direction: column; gap: 6px; }
+  .fact-title { font-weight: 600; }
+  .fact-text { font-size: 15px; line-height: 1.5; color: var(--on-duck); }
+
+  /* Apps */
+  .apps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 56px clamp(48px, 7vw, 120px);
+  }
+  .apps-copy {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .apps-visual {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .apps-panel {
+    padding: clamp(28px, 4vw, 48px) clamp(20px, 3vw, 40px);
+    border-radius: 28px;
+    background: var(--paper-alt);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px clamp(10px, 2vw, 24px);
+  }
+  .app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    text-align: center;
+  }
+  .app-icon {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 76px;
+    aspect-ratio: 1 / 1;
+    border-radius: 22%;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: var(--shadow-tile);
+  }
+  .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+  .app-icon span { position: absolute; }
+  .app-name { display: flex; flex-direction: column; font-size: 13px; line-height: 1.3; }
+
+  .app-icon--notes span:nth-child(1) { left: 0; right: 0; top: 0; height: 24%; background: oklch(0.87 0.11 92); }
+  .app-icon--notes span:nth-child(n + 2) { left: 18%; right: 18%; height: 7%; border-radius: 2px; background: oklch(0.84 0.01 80); }
+  .app-icon--notes span:nth-child(2) { top: 38%; }
+  .app-icon--notes span:nth-child(3) { top: 53%; }
+  .app-icon--notes span:nth-child(4) { top: 68%; right: 40%; }
+
+  .app-icon--sheet {
+    background-color: var(--white);
+    background-image:
+      linear-gradient(oklch(0.84 0.01 80) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.84 0.01 80) 1px, transparent 1px);
+    background-size: 25% 20%;
+  }
+  .app-icon--sheet span { left: 0; right: 0; top: 0; height: 20%; background: var(--duck-egg); }
+
+  .app-icon--notebook { background: oklch(0.34 0.03 55); }
+  .app-icon--notebook span:nth-child(1) { left: 20%; top: 26%; width: 42%; height: 16%; border-radius: 2px; background: oklch(0.93 0.02 85); }
+  .app-icon--notebook span:nth-child(2) { top: 0; bottom: 0; right: 22%; width: 7%; background: oklch(0.58 0.12 35); }
+
+  .app-icon--none {
+    background: transparent;
+    box-shadow: none;
+    border: 2px dashed oklch(0.74 0.01 80);
+  }
+  .apps-note { font-size: 12.5px; line-height: 1.45; color: var(--slate); }
+
+  /* The money */
+  .money-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px clamp(48px, 6vw, 96px);
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .money-copy {
+    flex: 1 1 560px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .money-zero {
+    flex: 0 1 340px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid oklch(0.42 0.01 65);
+  }
+  .zero {
+    font-family: var(--serif);
+    font-size: clamp(128px, 15vw, 216px);
+    line-height: 0.78;
+    letter-spacing: -0.045em;
+  }
+  .zero-caption { font-size: 15px; line-height: 1.45; color: var(--on-ink-muted); }
+  .money-points {
+    margin-top: clamp(56px, 6vw, 96px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 40px 32px;
+    padding-top: 32px;
+    border-top: 1px solid oklch(0.38 0.01 65);
+  }
+  .point { display: flex; flex-direction: column; gap: 10px; }
+  .point h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .point p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--on-ink-muted); }
+  .point .ph { color: var(--ink); }
+  .money-cta {
+    margin-top: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Join */
+  .join {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    gap: 48px clamp(48px, 6vw, 96px);
+    align-items: center;
+  }
+  .join-fig {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .join-fig figcaption { font-size: 13.5px; color: var(--slate); }
+  .join-copy {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .join-statement {
+    margin: 0;
+    max-width: 560px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(23px, 2vw, 28px);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+    max-width: 560px;
+  }
+  .benefits li {
+    display: flex;
+    gap: 14px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 16px;
+  }
+  .benefits .dot { transform: translateY(-2px); }
+  .apply {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 560px;
+  }
+  .apply-title { font-size: 16px; font-weight: 600; }
+  .apply p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--slate); }
+  .apply ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--slate);
+  }
+  .apply li { display: flex; gap: 14px; align-items: baseline; }
+  .step { flex: none; width: 16px; font-weight: 600; color: var(--teal); }
+</style>
