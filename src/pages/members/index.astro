@@ -1,0 +1,509 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import MemberCard from '../../components/MemberCard.astro';
+import PlaceholderNote from '../../components/PlaceholderNote.astro';
+import { links } from '../../data/site';
+import { getMembers, DISCIPLINES, SPECIALISMS, ROLES, GENDERS } from '../../data/members';
+
+const members = await getMembers();
+const total = members.length;
+const disciplineCount = (d: string) => members.filter((m) => m.data.discipline === d).length;
+const specialismCount = (s: string) => members.filter((m) => (m.data.specialisms as string[]).includes(s)).length;
+---
+<BaseLayout
+  title="Members · Fledg"
+  description="Choose one coach and meet the specialists behind them. Every member is qualified, sets their own prices and is paid by you directly."
+  current="members"
+>
+  <section class="container intro">
+    <div class="intro-top">
+      <div class="intro-main">
+        <div class="eyebrow">The collective</div>
+        <h1 class="h1 intro-h1">Choose one coach. Meet the people behind them.</h1>
+      </div>
+      <p class="lead intro-lead">Your coach is the person you talk to every week. When your goals need it, they’ll bring in a specialist from this page.</p>
+    </div>
+    <div class="promises">
+      <p><strong>Everyone is qualified.</strong> We check certificates and insurance before anyone joins.</p>
+      <p><strong>You pay your coach directly.</strong> Each member sets their own prices and Fledg takes none of it.</p>
+      <p><strong>No lock-in.</strong> You can change coach, or stop, whenever you like.</p>
+    </div>
+  </section>
+
+  <section class="container browse" data-members data-total={total}>
+    <div class="browse-inner">
+      <aside class="filters" data-filters aria-label="Filter members">
+        <button type="button" class="filters-toggle" aria-expanded="false" aria-controls="filter-panel" data-filters-toggle>
+          <span data-filters-label>Filter members</span><span class="filters-hint" data-filters-hint>Discipline, specialism, gender</span>
+        </button>
+
+        <div class="filter-panel" id="filter-panel">
+          <div class="group">
+            <span class="group-label" id="f-role">Looking for</span>
+            <div class="chips" role="group" aria-labelledby="f-role">
+              {ROLES.map(([value, label]) => (
+                <button type="button" class="chip" data-filter="role" data-value={value} aria-pressed={value === 'all' ? 'true' : 'false'}>{label}</button>
+              ))}
+            </div>
+            <span class="group-note">Coaches can be your main coach. Specialists are brought in by coaches.</span>
+          </div>
+
+          <div class="group">
+            <span class="group-label" id="f-disc">Discipline</span>
+            <div class="chips" role="group" aria-labelledby="f-disc">
+              {DISCIPLINES.map((d) => (
+                <button type="button" class="chip chip--count" data-filter="disc" data-value={d} aria-pressed="false">{d}<span class="count" data-count>{disciplineCount(d)}</span></button>
+              ))}
+            </div>
+          </div>
+
+          <div class="group">
+            <span class="group-label" id="f-spec">Specialism</span>
+            <div class="chips" role="group" aria-labelledby="f-spec">
+              {SPECIALISMS.map((s) => (
+                <button type="button" class="chip chip--count" data-filter="spec" data-value={s} aria-pressed="false">{s}<span class="count" data-count>{specialismCount(s)}</span></button>
+              ))}
+            </div>
+          </div>
+
+          <div class="group">
+            <span class="group-label" id="f-gender">Gender</span>
+            <div class="chips" role="group" aria-labelledby="f-gender">
+              {GENDERS.map(([value, label]) => (
+                <button type="button" class="chip" data-filter="gender" data-value={value} aria-pressed={value === 'any' ? 'true' : 'false'}>{label}</button>
+              ))}
+            </div>
+          </div>
+
+          <button type="button" class="switch" role="switch" aria-checked="false" data-taking-switch>
+            <span>Only members taking new clients</span>
+            <span class="track" aria-hidden="true"><span class="knob"></span></span>
+          </button>
+
+          <button type="button" class="clear-link" data-clear hidden>Clear all filters</button>
+        </div>
+      </aside>
+
+      <div class="results">
+        <div class="results-head">
+          <span class="results-label" data-result-label aria-live="polite">All {total} members</span>
+          <span class="results-note">In random order. Nobody can pay to be listed higher.</span>
+        </div>
+
+        <div class="grid" data-member-grid>
+          {members.map((m) => <MemberCard member={m} />)}
+        </div>
+        <script is:inline>
+          // Shuffle before first paint so nobody is listed first by default.
+          (() => {
+            const grid = document.querySelector('[data-member-grid]');
+            const cards = [...grid.children];
+            for (let i = cards.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            grid.append(...cards);
+          })();
+        </script>
+
+        <div class="empty" data-empty hidden>
+          <p class="empty-title">No one matches all of those at the moment.</p>
+          <p class="empty-text">Try removing a filter, or ask us and we’ll suggest someone.</p>
+          <button type="button" class="empty-clear" data-clear>Clear all filters</button>
+        </div>
+
+        <PlaceholderNote swatch class="results-ph">Placeholder prices. Names, photos (from Pexels) and qualifications are placeholders too.</PlaceholderNote>
+      </div>
+    </div>
+  </section>
+
+  <section class="help">
+    <div class="container help-inner">
+      <div class="help-copy">
+        <h2 class="help-h2">Not sure who to choose?</h2>
+        <p class="lead" style="max-width:620px">Tell us what you’d like to work on. A member will reply with two or three people who would suit you, and why. It’s a message, not a sales call.</p>
+      </div>
+      <Button href={links.suggest}>Ask for a suggestion</Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  type Role = 'all' | 'coach' | 'specialist';
+  type Gender = 'any' | 'woman' | 'man' | 'nonbinary';
+  type Skip = 'role' | 'disc' | 'spec' | 'gender';
+
+  const root = document.querySelector<HTMLElement>('[data-members]');
+  if (root) {
+    const total = Number(root.dataset.total);
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-member-card]')].map((el) => ({
+      el,
+      role: el.dataset.role as Role,
+      discipline: el.dataset.discipline!,
+      specialisms: el.dataset.specialisms!.split('|'),
+      gender: el.dataset.gender as Gender,
+      taking: el.dataset.taking === 'true',
+    }));
+    type Card = (typeof cards)[number];
+
+    const state = {
+      role: 'all' as Role,
+      disc: [] as string[],
+      spec: [] as string[],
+      gender: 'any' as Gender,
+      taking: false,
+      filtersOpen: false,
+    };
+
+    const matches = (m: Card, skip?: Skip) =>
+      (skip === 'role' || state.role === 'all' || m.role === state.role) &&
+      (skip === 'disc' || !state.disc.length || state.disc.includes(m.discipline)) &&
+      (skip === 'spec' || !state.spec.length || m.specialisms.some((s) => state.spec.includes(s))) &&
+      (skip === 'gender' || state.gender === 'any' || m.gender === state.gender) &&
+      (!state.taking || m.taking);
+
+    const facet = (skip: Skip, test: (m: Card) => boolean) => cards.filter((m) => matches(m, skip) && test(m)).length;
+
+    const chips = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const toggleSwitch = root.querySelector<HTMLButtonElement>('[data-taking-switch]')!;
+    const clearButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-clear]')];
+    const clearLink = root.querySelector<HTMLButtonElement>('.clear-link')!;
+    const resultLabel = root.querySelector<HTMLElement>('[data-result-label]')!;
+    const grid = root.querySelector<HTMLElement>('[data-member-grid]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const aside = root.querySelector<HTMLElement>('[data-filters]')!;
+    const filtersToggle = root.querySelector<HTMLButtonElement>('[data-filters-toggle]')!;
+    const filtersLabel = root.querySelector<HTMLElement>('[data-filters-label]')!;
+    const filtersHint = root.querySelector<HTMLElement>('[data-filters-hint]')!;
+
+    const render = () => {
+      let shown = 0;
+      for (const m of cards) {
+        const show = matches(m);
+        m.el.hidden = !show;
+        if (show) shown++;
+      }
+      grid.hidden = shown === 0;
+      empty.hidden = shown !== 0;
+      resultLabel.textContent = shown === total ? `All ${total} members` : `${shown} of ${total} members`;
+
+      for (const chip of chips) {
+        const { filter, value = '' } = chip.dataset;
+        let active = false;
+        if (filter === 'role') active = state.role === value;
+        if (filter === 'gender') active = state.gender === value;
+        if (filter === 'disc' || filter === 'spec') {
+          active = state[filter].includes(value);
+          const count = filter === 'disc'
+            ? facet('disc', (m) => m.discipline === value)
+            : facet('spec', (m) => m.specialisms.includes(value));
+          chip.querySelector('[data-count]')!.textContent = String(count);
+          chip.toggleAttribute('data-empty', count === 0);
+        }
+        chip.setAttribute('aria-pressed', String(active));
+      }
+
+      toggleSwitch.setAttribute('aria-checked', String(state.taking));
+
+      const activeCount =
+        (state.role !== 'all' ? 1 : 0) + state.disc.length + state.spec.length +
+        (state.gender !== 'any' ? 1 : 0) + (state.taking ? 1 : 0);
+      clearLink.hidden = activeCount === 0;
+
+      aside.toggleAttribute('data-open', state.filtersOpen);
+      filtersToggle.setAttribute('aria-expanded', String(state.filtersOpen));
+      filtersLabel.textContent = state.filtersOpen ? 'Hide filters' : activeCount ? `Filters (${activeCount})` : 'Filter members';
+      filtersHint.textContent = state.filtersOpen ? '' : 'Discipline, specialism, gender';
+    };
+
+    const toggleIn = (list: string[], value: string) =>
+      list.includes(value) ? list.filter((x) => x !== value) : [...list, value];
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        const { filter, value = '' } = chip.dataset;
+        if (filter === 'role') state.role = value as Role;
+        if (filter === 'gender') state.gender = value as Gender;
+        if (filter === 'disc') state.disc = toggleIn(state.disc, value);
+        if (filter === 'spec') state.spec = toggleIn(state.spec, value);
+        render();
+      });
+    }
+    toggleSwitch.addEventListener('click', () => {
+      state.taking = !state.taking;
+      render();
+    });
+    for (const button of clearButtons) {
+      button.addEventListener('click', () => {
+        Object.assign(state, { role: 'all', disc: [], spec: [], gender: 'any', taking: false });
+        render();
+      });
+    }
+    filtersToggle.addEventListener('click', () => {
+      state.filtersOpen = !state.filtersOpen;
+      render();
+    });
+
+    render();
+  }
+</script>
+
+<style>
+  /* Intro */
+  .intro { padding-block: clamp(40px, 5vw, 80px) clamp(40px, 5vw, 64px); }
+  .intro-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 64px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .intro-main {
+    flex: 1 1 600px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .intro-h1 {
+    max-width: 880px;
+    font-size: clamp(44px, 5.6vw, 84px);
+  }
+  .intro-lead { flex: 1 1 320px; max-width: 440px; }
+  .promises {
+    margin-top: clamp(36px, 4vw, 56px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 16px 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--slate);
+  }
+  .promises p { margin: 0; }
+  .promises strong { color: var(--ink); font-weight: 600; }
+
+  /* Browse */
+  .browse { padding-bottom: var(--section-pad); }
+  .browse-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px 56px;
+    align-items: flex-start;
+  }
+  .filters {
+    flex: 1 1 260px;
+    min-width: 0;
+    position: sticky;
+    top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .filters-toggle {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 52px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .filters-hint { font-size: 14px; color: var(--slate); }
+  .filter-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  @media (max-width: 1099.98px) {
+    .filters { position: static; }
+    .filters-toggle { display: flex; }
+    .filters:not([data-open]) .filter-panel { display: none; }
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .group-label { font-size: 13px; font-weight: 600; }
+  .group-note { font-size: 13px; line-height: 1.45; color: var(--slate); }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .chip--count {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 13px;
+  }
+  .count { font-size: 12px; color: var(--slate); }
+  .chip[data-empty] { color: oklch(0.66 0.01 75); }
+  .chip[data-empty] .count { color: oklch(0.72 0.01 75); }
+  .chip[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .chip[aria-pressed='true'] .count { color: oklch(0.80 0.01 80); }
+
+  .switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 16px 0;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink);
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .track {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    flex: none;
+    border-radius: 999px;
+    background: oklch(0.82 0.01 80);
+  }
+  .knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 1px 2px oklch(0.22 0.012 65 / 0.3);
+    transition: transform 0.15s ease;
+  }
+  .switch[aria-checked='true'] .track { background: var(--teal); }
+  .switch[aria-checked='true'] .knob { transform: translateX(18px); }
+
+  .clear-link {
+    align-self: flex-start;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--teal);
+    font-size: 15px;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+  }
+  .clear-link[hidden] { display: none; }
+
+  /* Results */
+  .results {
+    flex: 999 1 600px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .results-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px 24px;
+    flex-wrap: wrap;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .results-label {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2vw, 28px);
+    letter-spacing: -0.01em;
+  }
+  .results-note { font-size: 14px; color: var(--slate); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: 48px 24px;
+  }
+  .grid[hidden] { display: none; }
+  .empty {
+    padding: 56px 32px;
+    border: 1px dashed var(--rule-strong);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .empty[hidden] { display: none; }
+  .empty-title {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.25;
+  }
+  .empty-text { margin: 0; font-size: 16px; color: var(--slate); }
+  .empty-clear {
+    height: 46px;
+    padding: 0 22px;
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .results-ph {
+    display: flex;
+    gap: 10px;
+    color: var(--slate);
+  }
+
+  /* Help choosing */
+  .help { background: var(--paper-alt); }
+  .help-inner {
+    padding-block: clamp(64px, 7vw, 104px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 64px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .help-copy {
+    flex: 1 1 520px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .help-h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(34px, 3.6vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+</style>

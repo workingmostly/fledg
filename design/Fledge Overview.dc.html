@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Schibsted+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:oklch(0.905 0.008 80)}
+body{-webkit-font-smoothing:antialiased}
+a{color:oklch(0.40 0.07 220);text-underline-offset:0.18em}
+a:hover{color:oklch(0.22 0.012 65)}
+</style>
+</helmet>
+<div data-screen-label="Overview" style="width:max-content; padding:80px; display:flex; flex-direction:column; gap:96px; color:oklch(0.22 0.012 65); font-family:'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5">
+
+<section data-screen-label="Overview – System" style="width:1870px; display:grid; grid-template-columns:520px 1fr; gap:72px; padding:56px; background:oklch(0.972 0.008 85); border-radius:6px; box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.08)">
+<div style="display:flex; flex-direction:column; gap:24px">
+<span style="font-family:'Newsreader', Georgia, serif; font-size:132px; font-weight:500; letter-spacing:-0.035em; line-height:0.9">fledg</span>
+<span style="font-size:14px; color:oklch(0.43 0.012 65)">Website, first pass · October 2026</span>
+<p style="margin:0; font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.42; text-wrap:pretty">Calm, editorial and plain-spoken. It should read like a well-made local paper, not a fitness brand: big serif headlines, real names in every caption, and nothing to buy.</p>
+<p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.43 0.012 65)">Every page below is live and responsive. Each is shown at 1440 and 390 wide. Click any link inside a frame, or open a page on its own.</p>
+</div>
+<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:40px">
+
+<div style="display:flex; flex-direction:column; gap:14px; padding-top:16px; border-top:1px solid oklch(0.22 0.012 65)">
+<span style="font-size:13px; font-weight:600">Logo</span>
+<p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.43 0.012 65)">A plain lowercase wordmark in Newsreader, set tight. No symbol and no app icon, because there’s no app.</p>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:14px; padding-top:16px; border-top:1px solid oklch(0.22 0.012 65)">
+<span style="font-size:13px; font-weight:600">Type</span>
+<span style="font-family:'Newsreader', Georgia, serif; font-size:34px; line-height:1.05; letter-spacing:-0.02em">Newsreader, for headlines and reading</span>
+<span style="font-size:16px">Schibsted Grotesk, for labels, buttons and interface</span>
+<span style="font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:oklch(0.43 0.012 65)">IBM Plex Mono, placeholder notes only</span>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:14px; padding-top:16px; border-top:1px solid oklch(0.22 0.012 65)">
+<span style="font-size:13px; font-weight:600">Colour</span>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; font-size:13px">
+<span style="display:flex; align-items:center; gap:10px"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:inset 0 0 0 1px oklch(0.84 0.01 80)"></span>Paper</span>
+<span style="display:flex; align-items:center; gap:10px"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.945 0.012 85); box-shadow:inset 0 0 0 1px oklch(0.84 0.01 80)"></span>Chalk</span>
+<span style="display:flex; align-items:center; gap:10px"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.22 0.012 65)"></span>Ink</span>
+<span style="display:flex; align-items:center; gap:10px"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.43 0.012 65)"></span>Slate</span>
+<span style="display:flex; align-items:center; gap:10px"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.875 0.042 205)"></span>Duck egg</span>
+<span style="display:flex; align-items:center; gap:10px"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.40 0.07 220)"></span>Deep teal</span>
+<span style="display:flex; align-items:center; gap:10px; grid-column:1 / -1"><span style="width:28px; height:28px; flex:none; border-radius:4px; background:oklch(0.93 0.085 95)"></span>Highlighter: placeholder figures only</span>
+</div>
+<p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.43 0.012 65)">Warm paper so the photos carry the colour. Duck egg for the ‘you’ side of things, ink for the money.</p>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:14px; padding-top:16px; border-top:1px solid oklch(0.22 0.012 65)">
+<span style="font-size:13px; font-weight:600">Photography</span>
+<ul style="margin:0; padding:0 0 0 18px; display:flex; flex-direction:column; gap:8px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">
+<li>Reportage of the actual members at work: council gyms, parks, kitchens, front rooms.</li>
+<li>Natural light, unposed, other people in frame.</li>
+<li>Every photo gets a caption with a name, a role and a place.</li>
+<li>Never before-and-afters, bare torsos, stock or studio backdrops.</li>
+</ul>
+</div>
+
+<div style="grid-column:1 / -1; display:grid; grid-template-columns:repeat(3, 1fr); gap:40px; padding-top:16px; border-top:1px solid oklch(0.86 0.01 80); font-size:15px; line-height:1.55; color:oklch(0.43 0.012 65)">
+<p style="margin:0"><strong style="color:oklch(0.22 0.012 65)">Placeholders.</strong> All names, qualifications, prices and figures. Photos are free Pexels stand-ins, chosen to show the feel; the shot list below says what should replace them. Figures are highlighted.</p>
+<p style="margin:0"><strong style="color:oklch(0.22 0.012 65)">Not designed yet.</strong> How it works, Principles, Join the collective and FAQ. Their nav links point nowhere for now.</p>
+<p style="margin:0"><strong style="color:oklch(0.22 0.012 65)">Try.</strong> The member filters work. Homepage tweaks: two headline options, name tags on the hero photos, and a switch that hides the placeholder labels.</p>
+</div>
+<div style="grid-column:1 / -1; display:flex; flex-direction:column; gap:20px; padding-top:28px; border-top:1px solid oklch(0.22 0.012 65); font-size:15px; line-height:1.55; color:oklch(0.43 0.012 65)">
+<div style="display:flex; flex-direction:column; gap:6px"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">Shot list</span><p style="margin:0; max-width:760px; font-family:'Newsreader', Georgia, serif; font-size:22px; line-height:1.4; color:oklch(0.22 0.012 65)">Real people in real places, caught mid-task. Natural light, nobody performing for the camera.</p></div>
+<div style="display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:24px 40px">
+<div style="display:flex; flex-direction:column; gap:6px; padding-top:14px; border-top:1px solid oklch(0.86 0.01 80)"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">1. Homepage montage</span><span>Six to eight former clients training on their own, with their permission. A mix of ages, bodies and settings: cycling to work, lifting in a council gym, running in a park, a home workout. Shoot both portrait and landscape.</span></div>
+<div style="display:flex; flex-direction:column; gap:6px; padding-top:14px; border-top:1px solid oklch(0.86 0.01 80)"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">2. Member portraits</span><span>Every member at work in their own setting: gym floor, clinic, kitchen, park. Waist up, 4:5, face visible, looking at the work rather than the lens. One light treatment across everyone.</span></div>
+<div style="display:flex; flex-direction:column; gap:6px; padding-top:14px; border-top:1px solid oklch(0.86 0.01 80)"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">3. Member profiles</span><span>Three per member: the portrait plus two 3:2 shots of them coaching, demonstrating or on a call.</span></div>
+<div style="display:flex; flex-direction:column; gap:6px; padding-top:14px; border-top:1px solid oklch(0.86 0.01 80)"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">4. Video calls</span><span>Real call screenshots, with permission, or staged at home in daylight. Head and shoulders, webcam angle.</span></div>
+<div style="display:flex; flex-direction:column; gap:6px; padding-top:14px; border-top:1px solid oklch(0.86 0.01 80)"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">5. Join the collective</span><span>Two members working through a shared client’s programme together.</span></div>
+<div style="display:flex; flex-direction:column; gap:6px; padding-top:14px; border-top:1px solid oklch(0.86 0.01 80)"><span style="font-size:13px; font-weight:600; color:oklch(0.22 0.012 65)">6. Avoid</span><span>Before-and-after shots, mirror selfies, thumbs-up poses, gym-advert lighting and bare six-packs.</span></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section data-screen-label="Overview – Pages" style="display:flex; gap:120px; align-items:flex-start">
+
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-family:'IBM Plex Mono', monospace; font-size:12px; padding:3px 8px; border-radius:4px; background:oklch(0.22 0.012 65); color:#fff">01</span><span style="font-family:'Newsreader', Georgia, serif; font-size:30px">Home</span><span style="font-size:14px; color:oklch(0.43 0.012 65)">Desktop · 1440</span><a href="Home.dc.html" style="font-size:14px">Open page</a></div>
+<iframe data-frame="home-d" data-src="Home.dc.html" title="Home, desktop" style="display:block; width:1440px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-size:14px; color:oklch(0.43 0.012 65)">Mobile · 390</span></div>
+<iframe data-frame="home-m" data-src="Home.dc.html" title="Home, mobile" style="display:block; width:390px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+</div>
+
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-family:'IBM Plex Mono', monospace; font-size:12px; padding:3px 8px; border-radius:4px; background:oklch(0.22 0.012 65); color:#fff">02</span><span style="font-family:'Newsreader', Georgia, serif; font-size:30px">Members</span><span style="font-size:14px; color:oklch(0.43 0.012 65)">Desktop · 1440</span><a href="Members.dc.html" style="font-size:14px">Open page</a></div>
+<iframe data-frame="members-d" data-src="Members.dc.html" title="Members, desktop" style="display:block; width:1440px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-size:14px; color:oklch(0.43 0.012 65)">Mobile · 390</span></div>
+<iframe data-frame="members-m" data-src="Members.dc.html" title="Members, mobile" style="display:block; width:390px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+</div>
+
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-family:'IBM Plex Mono', monospace; font-size:12px; padding:3px 8px; border-radius:4px; background:oklch(0.22 0.012 65); color:#fff">03</span><span style="font-family:'Newsreader', Georgia, serif; font-size:30px">Member profile</span><span style="font-size:14px; color:oklch(0.43 0.012 65)">Desktop · 1440</span><a href="Member%20Profile.dc.html" style="font-size:14px">Open page</a></div>
+<iframe data-frame="profile-d" data-src="Member%20Profile.dc.html" title="Member profile, desktop" style="display:block; width:1440px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-size:14px; color:oklch(0.43 0.012 65)">Mobile · 390</span></div>
+<iframe data-frame="profile-m" data-src="Member%20Profile.dc.html" title="Member profile, mobile" style="display:block; width:390px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+</div>
+
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-family:'IBM Plex Mono', monospace; font-size:12px; padding:3px 8px; border-radius:4px; background:oklch(0.22 0.012 65); color:#fff">04</span><span style="font-family:'Newsreader', Georgia, serif; font-size:30px">Where the money goes</span><span style="font-size:14px; color:oklch(0.43 0.012 65)">Desktop · 1440</span><a href="Where%20the%20Money%20Goes.dc.html" style="font-size:14px">Open page</a></div>
+<iframe data-frame="money-d" data-src="Where%20the%20Money%20Goes.dc.html" title="Where the money goes, desktop" style="display:block; width:1440px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:baseline; gap:14px"><span style="font-size:14px; color:oklch(0.43 0.012 65)">Mobile · 390</span></div>
+<iframe data-frame="money-m" data-src="Where%20the%20Money%20Goes.dc.html" title="Where the money goes, mobile" style="display:block; width:390px; height:2400px; border:0; border-radius:4px; background:oklch(0.972 0.008 85); box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.1), 0 24px 64px -24px oklch(0.22 0.012 65 / 0.25)"></iframe>
+</div>
+</div>
+
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const frames = [...document.querySelectorAll('iframe[data-src]')];
+    this.ros = [];
+    const measure = (f) => {
+      try {
+        const d = f.contentDocument;
+        if (!d || !d.body) return;
+        const foot = d.querySelector('footer');
+        const h = Math.ceil(foot ? foot.getBoundingClientRect().bottom + (d.defaultView.scrollY || 0) : d.body.scrollHeight);
+        if (h > 400 && Math.abs(h - (parseFloat(f.style.height) || 0)) > 2) f.style.height = h + 'px';
+      } catch (e) {}
+    };
+    let i = 0;
+    const next = () => {
+      if (i >= frames.length || this.dead) return;
+      const f = frames[i++];
+      f.addEventListener('load', () => {
+        measure(f);
+        try {
+          const ro = new f.contentWindow.ResizeObserver(() => measure(f));
+          ro.observe(f.contentDocument.body);
+          this.ros.push(ro);
+          if (f.contentDocument.fonts) f.contentDocument.fonts.ready.then(() => measure(f));
+        } catch (e) {}
+        setTimeout(next, 200);
+      }, { once: true });
+      f.src = f.getAttribute('data-src');
+    };
+    next();
+    this.timer = setInterval(() => frames.forEach(measure), 2500);
+  }
+  componentWillUnmount() {
+    this.dead = true;
+    clearInterval(this.timer);
+    this.ros.forEach(r => r.disconnect());
+  }
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

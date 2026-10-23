@@ -1,0 +1,16 @@
+---
+/**
+ * Small mono note flagging placeholder content. Hidden everywhere at once by
+ * `showPlaceholderNotes` in src/data/site.ts.
+ */
+import { showPlaceholderNotes } from '../data/site';
+
+interface Props {
+  /** Show the yellow swatch that marks highlighted figures. */
+  swatch?: boolean;
+  class?: string;
+}
+
+const { swatch = false, class: className } = Astro.props;
+---
+{showPlaceholderNotes && <span class:list={['ph-note', { 'ph-key': swatch }, className]}><slot /></span>}

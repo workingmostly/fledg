@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Schibsted+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:oklch(0.972 0.008 85)}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:oklch(0.40 0.07 220);text-underline-offset:0.18em;text-decoration-thickness:1px}
+a:hover{color:oklch(0.22 0.012 65)}
+::selection{background:oklch(0.875 0.042 205)}
+</style>
+</helmet>
+<div data-screen-label="Where the money goes" style="min-height:100vh; background:oklch(0.972 0.008 85); color:oklch(0.22 0.012 65); font-family:'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5">
+
+<header style="position:sticky; top:0; z-index:30; background:oklch(0.972 0.008 85 / 0.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid oklch(0.86 0.01 80)">
+<div style="max-width:1320px; margin:0 auto; padding:0 clamp(20px, 4vw, 48px); height:72px; display:flex; align-items:center; justify-content:space-between; gap:32px">
+<a href="Home.dc.html" aria-label="Fledg home" style="color:oklch(0.22 0.012 65); text-decoration:none; font-family:'Newsreader', Georgia, serif; font-size:32px; font-weight:500; letter-spacing:-0.035em; line-height:1; padding-top:2px">fledg</a>
+<sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+<nav style="display:flex; align-items:center; gap:clamp(20px, 2.2vw, 32px); font-size:15px">
+<a href="Home.dc.html#how" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">How it works</a>
+<a href="Members.dc.html" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">Members</a>
+<a href="#" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">Principles</a>
+<a href="Where%20the%20Money%20Goes.dc.html" aria-current="page" style="color:oklch(0.40 0.07 220); text-decoration:underline; text-underline-offset:8px; text-decoration-thickness:1.5px">Where the money goes</a>
+<a href="#" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">FAQ</a>
+<span style="width:1px; height:22px; background:oklch(0.86 0.01 80)"></span>
+<a href="Home.dc.html#join" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">Join the collective</a>
+<a href="Members.dc.html" style="display:inline-flex; align-items:center; height:42px; padding:0 20px; border-radius:999px; background:oklch(0.22 0.012 65); color:oklch(0.972 0.008 85); text-decoration:none; font-weight:500" style-hover="background:oklch(0.40 0.07 220); color:oklch(0.972 0.008 85)">Find a coach</a>
+</nav>
+</sc-if>
+<sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ toggleMenu }}" style="display:inline-flex; align-items:center; gap:10px; height:44px; padding:0 18px; border:1px solid oklch(0.80 0.01 80); border-radius:999px; background:transparent; color:oklch(0.22 0.012 65); font-family:'Schibsted Grotesk', sans-serif; font-size:15px; font-weight:500; cursor:pointer"><span style="display:flex; flex-direction:column; gap:4px"><span style="display:block; width:16px; height:1.5px; background:currentColor"></span><span style="display:block; width:16px; height:1.5px; background:currentColor"></span></span>{{ menuLabel }}</button>
+</sc-if>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<nav style="border-top:1px solid oklch(0.86 0.01 80); padding:4px clamp(20px, 4vw, 48px) 28px; display:flex; flex-direction:column; background:oklch(0.972 0.008 85)">
+<a href="Home.dc.html#how" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">How it works</a>
+<a href="Members.dc.html" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">Members</a>
+<a href="#" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">Principles</a>
+<a href="Where%20the%20Money%20Goes.dc.html" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.40 0.07 220); text-decoration:none">Where the money goes</a>
+<a href="#" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">FAQ</a>
+<a href="Home.dc.html#join" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">Join the collective</a>
+</nav>
+</sc-if>
+</header>
+
+<main>
+<section data-screen-label="Money – Intro" style="max-width:1320px; margin:0 auto; padding:clamp(40px, 5vw, 80px) clamp(20px, 4vw, 48px) clamp(48px, 6vw, 80px)">
+<div style="display:flex; flex-direction:column; gap:24px; max-width:980px">
+<div style="font-size:15px; font-weight:500; color:oklch(0.40 0.07 220)">Where the money goes</div>
+<h1 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(44px, 5.8vw, 88px); line-height:1; letter-spacing:-0.03em; text-wrap:balance">Fledg takes nothing. Here’s what it costs to run.</h1>
+<p style="margin:0; max-width:680px; font-family:'Newsreader', Georgia, serif; font-size:clamp(19px, 1.55vw, 23px); line-height:1.5; color:oklch(0.43 0.012 65); text-wrap:pretty">Clients pay their coach directly. Members pay a one-time fee when they join, and that fee covers running costs and nothing else. Every cost is listed below, and we update this page when they change.</p>
+<div style="display:flex; flex-wrap:wrap; gap:10px 28px; align-items:center; font-size:14px; color:oklch(0.43 0.012 65)"><span>Last updated 1 October 2026</span><span style="display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:11px; letter-spacing:0.05em; text-transform:uppercase"><span style="width:14px; height:10px; border-radius:2px; background:oklch(0.93 0.085 95)"></span>Highlighted figures are placeholders</span></div>
+</div>
+</section>
+
+<section data-screen-label="Money – Two flows" style="max-width:1320px; margin:0 auto; padding:0 clamp(20px, 4vw, 48px) clamp(72px, 9vw, 128px)">
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap:24px">
+
+<article style="background:#fff; border:1px solid oklch(0.86 0.01 80); border-radius:8px; padding:clamp(24px, 3vw, 40px); display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap"><h2 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(26px, 2.4vw, 34px); line-height:1.1; letter-spacing:-0.015em">When you pay for coaching</h2><span style="font-size:13px; color:oklch(0.43 0.012 65)">For clients</span></div>
+<div style="display:flex; align-items:center; gap:12px; font-size:15px; font-weight:500">
+<span style="padding:8px 14px; border-radius:999px; border:1px solid oklch(0.22 0.012 65)">You</span>
+<span style="flex:1; min-width:40px; display:flex; flex-direction:column; align-items:center; gap:4px"><span style="font-size:13px; font-weight:400; color:oklch(0.43 0.012 65)">Direct, nobody in between</span><span style="display:block; width:100%; height:1.5px; background:oklch(0.22 0.012 65)"></span></span>
+<span style="padding:8px 14px; border-radius:999px; background:oklch(0.40 0.07 220); color:#fff">Your coach</span>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:24px 48px; align-items:flex-end">
+<div style="display:flex; flex-direction:column; gap:6px"><span style="font-family:'Newsreader', Georgia, serif; font-size:clamp(72px, 7vw, 104px); line-height:0.85; letter-spacing:-0.04em">100%</span><span style="font-size:15px; color:oklch(0.43 0.012 65)">to your coach</span></div>
+<div style="display:flex; flex-direction:column; gap:6px"><span style="font-family:'Newsreader', Georgia, serif; font-size:clamp(72px, 7vw, 104px); line-height:0.85; letter-spacing:-0.04em; color:oklch(0.62 0.01 75)">0%</span><span style="font-size:15px; color:oklch(0.43 0.012 65)">to Fledg</span></div>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px"><span style="display:block; height:14px; border-radius:3px; background:oklch(0.40 0.07 220)"></span><span style="display:flex; justify-content:space-between; font-size:13px; color:oklch(0.43 0.012 65)"><span>Your coach</span><span>Fledg: nothing</span></span></div>
+<p style="margin:0; font-size:16px; line-height:1.55; color:oklch(0.43 0.012 65)">You pay your coach by bank transfer, or however you agree between you. Fledg never handles the money and never takes a share. Specialists you work with are paid the same way.</p>
+</article>
+
+<article style="background:#fff; border:1px solid oklch(0.86 0.01 80); border-radius:8px; padding:clamp(24px, 3vw, 40px); display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap"><h2 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(26px, 2.4vw, 34px); line-height:1.1; letter-spacing:-0.015em">When a member joins</h2><span style="font-size:13px; color:oklch(0.43 0.012 65)">For members</span></div>
+<div style="display:flex; align-items:baseline; gap:16px; flex-wrap:wrap"><span style="font-family:'Newsreader', Georgia, serif; font-size:clamp(72px, 7vw, 104px); line-height:0.85; letter-spacing:-0.04em"><span style="background:oklch(0.93 0.085 95); padding:0 8px; border-radius:4px">£150</span></span><span style="font-size:15px; color:oklch(0.43 0.012 65)">once, when they join</span></div>
+<div style="display:flex; height:14px; gap:2px">
+<span style="flex:45 1 0; border-radius:3px 0 0 3px; background:oklch(0.40 0.07 220)"></span>
+<span style="flex:37.5 1 0; background:oklch(0.52 0.065 215)"></span>
+<span style="flex:27.5 1 0; background:oklch(0.64 0.055 210)"></span>
+<span style="flex:15 1 0; background:oklch(0.76 0.045 205)"></span>
+<span style="flex:13.5 1 0; background:oklch(0.86 0.035 205)"></span>
+<span style="flex:6 1 0; background:oklch(0.78 0.012 80)"></span>
+<span style="flex:5.5 1 0; border-radius:0 3px 3px 0; background:oklch(0.64 0.012 75)"></span>
+</div>
+<ul style="list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap:10px 28px; font-size:14px">
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.40 0.07 220)"></span><span style="flex:1">Qualification checks</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£45.00</span></li>
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.52 0.065 215)"></span><span style="flex:1">Member photography</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£37.50</span></li>
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.64 0.055 210)"></span><span style="flex:1">Accounts and filing</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£27.50</span></li>
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.76 0.045 205)"></span><span style="flex:1">Website and email</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£15.00</span></li>
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.86 0.035 205)"></span><span style="flex:1">Insurance</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£13.50</span></li>
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.78 0.012 80)"></span><span style="flex:1">Bank and payment fees</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£6.00</span></li>
+<li style="display:flex; align-items:center; gap:10px"><span style="width:10px; height:10px; flex:none; border-radius:2px; background:oklch(0.64 0.012 75)"></span><span style="flex:1">Reserve</span><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px; font-variant-numeric:tabular-nums">£5.50</span></li>
+</ul>
+<p style="margin:0; font-size:16px; line-height:1.55; color:oklch(0.43 0.012 65)">Members pay this once. It covers the collective’s running costs and nothing else. Nobody pays it again to stay a member.</p>
+</article>
+
+</div>
+</section>
+
+<section data-screen-label="Money – Running costs" style="border-top:1px solid oklch(0.86 0.01 80)">
+<div style="max-width:1320px; margin:0 auto; padding:clamp(72px, 9vw, 128px) clamp(20px, 4vw, 48px)">
+<div style="display:flex; flex-wrap:wrap; gap:20px 64px; align-items:flex-end; justify-content:space-between">
+<div style="flex:1 1 520px; min-width:0; display:flex; flex-direction:column; gap:16px">
+<div style="font-size:15px; font-weight:500; color:oklch(0.40 0.07 220)">Itemised</div>
+<h2 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(38px, 4.2vw, 62px); line-height:1.03; letter-spacing:-0.022em">This year’s running costs</h2>
+</div>
+<p style="flex:1 1 320px; max-width:440px; margin:0; font-size:16px; line-height:1.55; color:oklch(0.43 0.012 65)">April 2026 to March 2027. Not on the list: advertising, an office, an app or anyone’s profit.</p>
+</div>
+
+<div role="table" aria-label="Running costs" style="margin-top:clamp(36px, 4vw, 56px); border-top:1px solid oklch(0.22 0.012 65)">
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; gap:4px 24px; padding:12px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-size:13px; color:oklch(0.43 0.012 65)"><span role="columnheader" style="flex:1 1 380px">Item</span><span role="columnheader" style="flex:0 0 112px; text-align:right">Per year</span><span role="columnheader" style="flex:0 0 132px; text-align:right">Per new member</span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Qualification checks</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">Checking every new member’s certificates, registrations and insurance with the bodies that issued them.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£1,080</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£45.00</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Member photography</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">A local photographer spends half a day with each new member, so every face on this site is real.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£900</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£37.50</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Accounts and filing</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">An independent accountant prepares and files our annual accounts.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£660</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£27.50</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Website and email</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">Hosting, the domain name and one shared inbox.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£360</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£15.00</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Insurance</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">Public liability cover for Fledg itself. Members hold their own professional insurance.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£324</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£13.50</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Bank and payment fees</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">A business bank account, and card fees on joining payments.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£144</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£6.00</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><div role="cell" style="flex:1 1 380px; min-width:0; display:flex; flex-direction:column; gap:4px"><span style="font-family:'Newsreader', Georgia, serif; font-size:23px; line-height:1.25">Reserve</span><span style="max-width:620px; font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">Set aside for costs we didn’t expect. Capped at three months of running costs.</span></div><span role="cell" style="flex:0 0 112px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£132</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:17px; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£5.50</span></span></div>
+
+<div role="row" style="display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:baseline; gap:8px 24px; padding:22px 0; border-bottom:2px solid oklch(0.22 0.012 65)"><span role="cell" style="flex:1 1 380px; font-family:'Newsreader', Georgia, serif; font-size:26px; font-weight:500">Total</span><span role="cell" style="flex:0 0 112px; text-align:right; font-size:19px; font-weight:600; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£3,600</span></span><span role="cell" style="flex:0 0 132px; text-align:right; font-size:19px; font-weight:600; font-variant-numeric:tabular-nums"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">£150.00</span></span></div>
+</div>
+<p style="margin:20px 0 0; max-width:720px; font-size:15px; line-height:1.55; color:oklch(0.43 0.012 65)">Based on <span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">24</span> new members joining this year. The joining fee is the year’s expected costs divided by the number of members we expect to join.</p>
+</div>
+</section>
+
+<section data-screen-label="Money – What we don't do" style="background:oklch(0.22 0.012 65); color:oklch(0.972 0.008 85)">
+<div style="max-width:1320px; margin:0 auto; padding:clamp(72px, 9vw, 128px) clamp(20px, 4vw, 48px); display:flex; flex-direction:column; gap:clamp(40px, 5vw, 64px)">
+<h2 style="margin:0; max-width:760px; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(38px, 4.2vw, 62px); line-height:1.03; letter-spacing:-0.022em; text-wrap:balance">Ways other people make money from coaching. We don’t.</h2>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap:36px 32px">
+<div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid oklch(0.42 0.01 65)"><h3 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:26px; line-height:1.15">No commission.</h3><p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.82 0.01 80)">Members keep 100% of their fees. No booking fee or platform fee either.</p></div>
+<div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid oklch(0.42 0.01 65)"><h3 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:26px; line-height:1.15">No paid placement.</h3><p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.82 0.01 80)">Members are listed in random order. Nobody can pay to appear higher.</p></div>
+<div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid oklch(0.42 0.01 65)"><h3 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:26px; line-height:1.15">No advertising.</h3><p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.82 0.01 80)">No ads, no sponsored posts and no affiliate links to supplements or kit.</p></div>
+<div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid oklch(0.42 0.01 65)"><h3 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:26px; line-height:1.15">No subscriptions.</h3><p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.82 0.01 80)">Members pay once. Clients never pay Fledg anything at all.</p></div>
+<div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid oklch(0.42 0.01 65)"><h3 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:26px; line-height:1.15">No data.</h3><p style="margin:0; font-size:15px; line-height:1.55; color:oklch(0.82 0.01 80)">Your programme and logs stay in your own apps. We never hold them.</p></div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Money – Questions" style="max-width:1320px; margin:0 auto; padding:clamp(72px, 9vw, 128px) clamp(20px, 4vw, 48px); display:flex; flex-wrap:wrap; gap:32px clamp(40px, 6vw, 96px)">
+<div style="flex:1 1 300px; min-width:0; display:flex; flex-direction:column; gap:20px; align-items:flex-start">
+<h2 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(34px, 3.4vw, 48px); line-height:1.05; letter-spacing:-0.02em">Questions about money</h2>
+<a href="#" style="display:flex; align-items:center; gap:14px; padding:14px 18px; border:1px solid oklch(0.86 0.01 80); border-radius:6px; background:#fff; color:oklch(0.22 0.012 65); text-decoration:none" style-hover="border-color:oklch(0.22 0.012 65)"><span style="width:34px; height:42px; flex:none; border:1.5px solid oklch(0.22 0.012 65); border-radius:2px; display:grid; place-items:end center; padding-bottom:5px; font-size:8px; font-weight:700; letter-spacing:0.04em">PDF</span><span style="display:flex; flex-direction:column"><span style="font-weight:600">Accounts, 2025 to 2026</span><span style="font-size:13px; color:oklch(0.43 0.012 65)">Placeholder file · published once filed</span></span></a>
+</div>
+<dl style="flex:2 1 560px; min-width:0; margin:0; border-top:1px solid oklch(0.22 0.012 65)">
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><dt style="font-family:'Newsreader', Georgia, serif; font-size:24px; line-height:1.25">Is Fledg a charity?</dt><dd style="margin:0; max-width:680px; font-size:16px; line-height:1.6; color:oklch(0.43 0.012 65)">No. Fledg is a not-for-profit collective, but it isn’t a registered charity. Clients never pay Fledg, and the joining fee only covers running costs.</dd></div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><dt style="font-family:'Newsreader', Georgia, serif; font-size:24px; line-height:1.25">How do I pay my coach?</dt><dd style="margin:0; max-width:680px; font-size:16px; line-height:1.6; color:oklch(0.43 0.012 65)">Directly, by bank transfer or however you agree between you. Every member’s prices are on their profile, so you know the cost before you start.</dd></div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><dt style="font-family:'Newsreader', Georgia, serif; font-size:24px; line-height:1.25">What happens to money left over?</dt><dd style="margin:0; max-width:680px; font-size:16px; line-height:1.6; color:oklch(0.43 0.012 65)">It’s carried into next year and lowers the joining fee for new members. We don’t save beyond the reserve.</dd></div>
+<div style="display:flex; flex-direction:column; gap:8px; padding:22px 0; border-bottom:1px solid oklch(0.86 0.01 80)"><dt style="font-family:'Newsreader', Georgia, serif; font-size:24px; line-height:1.25">What if costs go up?</dt><dd style="margin:0; max-width:680px; font-size:16px; line-height:1.6; color:oklch(0.43 0.012 65)">We’ll explain why on this page before the fee changes. Existing members never pay again.</dd></div>
+</dl>
+</section>
+</main>
+
+<footer style="background:oklch(0.22 0.012 65); color:oklch(0.85 0.01 80)">
+<div style="max-width:1320px; margin:0 auto; padding:72px clamp(20px, 4vw, 48px) 40px; display:flex; flex-direction:column; gap:56px">
+<div style="display:flex; flex-wrap:wrap; gap:48px; justify-content:space-between">
+<div style="flex:1 1 300px; max-width:400px; display:flex; flex-direction:column; gap:16px">
+<span style="font-family:'Newsreader', Georgia, serif; font-size:40px; font-weight:500; letter-spacing:-0.035em; line-height:1; color:oklch(0.972 0.008 85)">fledg</span>
+<p style="margin:0; font-family:'Newsreader', Georgia, serif; font-size:19px; line-height:1.45">A not-for-profit collective of qualified coaches and specialists. Every programme ends.</p>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:40px 72px; font-size:15px">
+<div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:13px; color:oklch(0.68 0.01 80)">For clients</span><a href="Home.dc.html#how" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">How it works</a><a href="Members.dc.html" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Find a coach</a><a href="#" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Principles</a><a href="#" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">FAQ</a></div>
+<div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:13px; color:oklch(0.68 0.01 80)">For professionals</span><a href="Home.dc.html#join" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Join the collective</a><a href="Where%20the%20Money%20Goes.dc.html" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Where the money goes</a></div>
+<div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:13px; color:oklch(0.68 0.01 80)">Contact</span><a href="#" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">hello@fledg.org</a></div>
+</div>
+</div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; padding-top:24px; border-top:1px solid oklch(0.36 0.01 65); font-size:13px; color:oklch(0.68 0.01 80)"><span>© 2026 Fledg</span><span>No app. No contracts. No commission.</span></div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { narrow: typeof window !== 'undefined' ? window.innerWidth < 1100 : false, menuOpen: false };
+  componentDidMount() {
+    this.onResize = () => {
+      const narrow = window.innerWidth < 1100;
+      if (narrow !== this.state.narrow) this.setState({ narrow, menuOpen: false });
+    };
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+  renderVals() {
+    return {
+      wide: !this.state.narrow,
+      narrow: this.state.narrow,
+      menuOpen: this.state.menuOpen,
+      menuLabel: this.state.menuOpen ? 'Close' : 'Menu',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+    };
+  }
+}
+</script>
+</body>
+</html>

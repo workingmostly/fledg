@@ -1,0 +1,120 @@
+---
+import { links, contactEmail } from '../data/site';
+
+const columns = [
+  {
+    label: 'For clients',
+    links: [
+      { label: 'How it works', href: links.how },
+      { label: 'Find a coach', href: links.members },
+      { label: 'Principles', href: links.principles },
+      { label: 'FAQ', href: links.faq },
+    ],
+  },
+  {
+    label: 'For coaches and specialists',
+    links: [
+      { label: 'Join the collective', href: links.join },
+      { label: 'Where the money goes', href: links.money },
+    ],
+  },
+  {
+    label: 'Contact',
+    links: [{ label: contactEmail, href: links.email }],
+  },
+];
+---
+<footer class="site-footer">
+  <div class="inner">
+    <div class="top">
+      <div class="brand">
+        <span class="wordmark">fledg</span>
+        <p>A not-for-profit collective of qualified coaches and specialists. Every programme ends.</p>
+      </div>
+      <div class="cols">
+        {columns.map((col) => (
+          <div class="col">
+            <span class="label">{col.label}</span>
+            {col.links.map((l) => <a href={l.href}>{l.label}</a>)}
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="bottom"><span>© 2026 Fledg</span><span>No app. No contracts. No commission.</span></div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: oklch(0.85 0.01 80);
+  }
+  .inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 72px var(--gutter) 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    justify-content: space-between;
+  }
+  .brand {
+    flex: 1 1 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: var(--paper);
+  }
+  .brand p {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.45;
+  }
+  .cols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px 72px;
+    font-size: 15px;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .label {
+    font-size: 13px;
+    color: var(--footer-label);
+  }
+  .col a {
+    color: oklch(0.95 0.008 85);
+    text-decoration: none;
+  }
+  .col a:hover {
+    color: oklch(0.95 0.008 85);
+    text-decoration: underline;
+  }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid oklch(0.36 0.01 65);
+    font-size: 13px;
+    color: var(--footer-label);
+  }
+</style>

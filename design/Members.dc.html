@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Schibsted+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:oklch(0.972 0.008 85)}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:oklch(0.40 0.07 220);text-underline-offset:0.18em;text-decoration-thickness:1px}
+a:hover{color:oklch(0.22 0.012 65)}
+button{font:inherit}
+::selection{background:oklch(0.875 0.042 205)}
+</style>
+</helmet>
+<div data-screen-label="Members" style="min-height:100vh; background:oklch(0.972 0.008 85); color:oklch(0.22 0.012 65); font-family:'Schibsted Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:16px; line-height:1.5">
+
+<header style="position:sticky; top:0; z-index:30; background:oklch(0.972 0.008 85 / 0.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid oklch(0.86 0.01 80)">
+<div style="max-width:1320px; margin:0 auto; padding:0 clamp(20px, 4vw, 48px); height:72px; display:flex; align-items:center; justify-content:space-between; gap:32px">
+<a href="Home.dc.html" aria-label="Fledg home" style="color:oklch(0.22 0.012 65); text-decoration:none; font-family:'Newsreader', Georgia, serif; font-size:32px; font-weight:500; letter-spacing:-0.035em; line-height:1; padding-top:2px">fledg</a>
+<sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+<nav style="display:flex; align-items:center; gap:clamp(20px, 2.2vw, 32px); font-size:15px">
+<a href="Home.dc.html#how" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">How it works</a>
+<a href="Members.dc.html" aria-current="page" style="color:oklch(0.40 0.07 220); text-decoration:underline; text-underline-offset:8px; text-decoration-thickness:1.5px">Members</a>
+<a href="#" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">Principles</a>
+<a href="Where%20the%20Money%20Goes.dc.html" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">Where the money goes</a>
+<a href="#" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">FAQ</a>
+<span style="width:1px; height:22px; background:oklch(0.86 0.01 80)"></span>
+<a href="Home.dc.html#join" style="color:oklch(0.22 0.012 65); text-decoration:none" style-hover="color:oklch(0.40 0.07 220)">Join the collective</a>
+<a href="Members.dc.html" style="display:inline-flex; align-items:center; height:42px; padding:0 20px; border-radius:999px; background:oklch(0.22 0.012 65); color:oklch(0.972 0.008 85); text-decoration:none; font-weight:500" style-hover="background:oklch(0.40 0.07 220); color:oklch(0.972 0.008 85)">Find a coach</a>
+</nav>
+</sc-if>
+<sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ toggleMenu }}" style="display:inline-flex; align-items:center; gap:10px; height:44px; padding:0 18px; border:1px solid oklch(0.80 0.01 80); border-radius:999px; background:transparent; color:oklch(0.22 0.012 65); font-size:15px; font-weight:500; cursor:pointer"><span style="display:flex; flex-direction:column; gap:4px"><span style="display:block; width:16px; height:1.5px; background:currentColor"></span><span style="display:block; width:16px; height:1.5px; background:currentColor"></span></span>{{ menuLabel }}</button>
+</sc-if>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<nav style="border-top:1px solid oklch(0.86 0.01 80); padding:4px clamp(20px, 4vw, 48px) 28px; display:flex; flex-direction:column; background:oklch(0.972 0.008 85)">
+<a href="Home.dc.html#how" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">How it works</a>
+<a href="Members.dc.html" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.40 0.07 220); text-decoration:none">Members</a>
+<a href="#" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">Principles</a>
+<a href="Where%20the%20Money%20Goes.dc.html" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">Where the money goes</a>
+<a href="#" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">FAQ</a>
+<a href="Home.dc.html#join" style="padding:16px 0; border-bottom:1px solid oklch(0.86 0.01 80); font-family:'Newsreader', Georgia, serif; font-size:28px; line-height:1.1; color:oklch(0.22 0.012 65); text-decoration:none">Join the collective</a>
+</nav>
+</sc-if>
+</header>
+
+<main>
+<section data-screen-label="Members – Intro" style="max-width:1320px; margin:0 auto; padding:clamp(40px, 5vw, 80px) clamp(20px, 4vw, 48px) clamp(40px, 5vw, 64px)">
+<div style="display:flex; flex-wrap:wrap; gap:24px 64px; align-items:flex-end; justify-content:space-between">
+<div style="flex:1 1 600px; min-width:0; display:flex; flex-direction:column; gap:20px">
+<div style="font-size:15px; font-weight:500; color:oklch(0.40 0.07 220)">The collective</div>
+<h1 style="margin:0; max-width:880px; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(44px, 5.6vw, 84px); line-height:1; letter-spacing:-0.03em; text-wrap:balance">Choose one coach. Meet the people behind them.</h1>
+</div>
+<p style="flex:1 1 320px; max-width:440px; margin:0; font-family:'Newsreader', Georgia, serif; font-size:clamp(19px, 1.5vw, 22px); line-height:1.5; color:oklch(0.43 0.012 65); text-wrap:pretty">Your coach is the person you talk to every week. When your goals need it, they’ll bring in a specialist from this page.</p>
+</div>
+<div style="margin-top:clamp(36px, 4vw, 56px); display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap:16px 40px; padding-top:20px; border-top:1px solid oklch(0.86 0.01 80); font-size:15px; line-height:1.5; color:oklch(0.43 0.012 65)">
+<p style="margin:0"><strong style="color:oklch(0.22 0.012 65); font-weight:600">Everyone is qualified.</strong> We check certificates and insurance before anyone joins.</p>
+<p style="margin:0"><strong style="color:oklch(0.22 0.012 65); font-weight:600">You pay your coach directly.</strong> Each member sets their own prices and Fledg takes none of it.</p>
+<p style="margin:0"><strong style="color:oklch(0.22 0.012 65); font-weight:600">No lock-in.</strong> You can change coach, or stop, whenever you like.</p>
+</div>
+</section>
+
+<section data-screen-label="Members – Browse" style="max-width:1320px; margin:0 auto; padding:0 clamp(20px, 4vw, 48px) clamp(72px, 9vw, 136px)">
+<div style="display:flex; flex-wrap:wrap; gap:28px 56px; align-items:flex-start">
+
+<aside style="flex:1 1 260px; min-width:0; position:{{ sidePos }}; top:96px; display:flex; flex-direction:column; gap:20px">
+<sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ toggleFilters }}" style="display:flex; justify-content:space-between; align-items:center; width:100%; height:52px; padding:0 20px; border-radius:999px; border:1px solid oklch(0.22 0.012 65); background:transparent; color:oklch(0.22 0.012 65); font-size:16px; font-weight:500; cursor:pointer"><span>{{ filterButtonLabel }}</span><span style="font-size:14px; color:oklch(0.43 0.012 65)">{{ filterButtonHint }}</span></button>
+</sc-if>
+<sc-if value="{{ showFilters }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex; flex-direction:column; gap:28px">
+
+<div style="display:flex; flex-direction:column; gap:12px">
+<span style="font-size:13px; font-weight:600">Looking for</span>
+<div style="display:flex; flex-wrap:wrap; gap:6px">
+<sc-for list="{{ roleOpts }}" as="o" hint-placeholder-count="3">
+<button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="height:36px; padding:0 14px; border-radius:999px; border-width:1px; border-style:solid; border-color:{{ o.bd }}; background:{{ o.bg }}; color:{{ o.fg }}; font-size:14px; cursor:pointer">{{ o.label }}</button>
+</sc-for>
+</div>
+<span style="font-size:13px; line-height:1.45; color:oklch(0.43 0.012 65)">Coaches can be your main coach. Specialists are brought in by coaches.</span>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:12px">
+<span style="font-size:13px; font-weight:600">Discipline</span>
+<div style="display:flex; flex-wrap:wrap; gap:6px">
+<sc-for list="{{ discOpts }}" as="o" hint-placeholder-count="8">
+<button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="display:inline-flex; align-items:center; gap:7px; height:36px; padding:0 13px; border-radius:999px; border-width:1px; border-style:solid; border-color:{{ o.bd }}; background:{{ o.bg }}; color:{{ o.fg }}; font-size:14px; cursor:pointer">{{ o.label }}<span style="font-size:12px; color:{{ o.cnt }}">{{ o.count }}</span></button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:12px">
+<span style="font-size:13px; font-weight:600">Specialism</span>
+<div style="display:flex; flex-wrap:wrap; gap:6px">
+<sc-for list="{{ specOpts }}" as="o" hint-placeholder-count="8">
+<button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="display:inline-flex; align-items:center; gap:7px; height:36px; padding:0 13px; border-radius:999px; border-width:1px; border-style:solid; border-color:{{ o.bd }}; background:{{ o.bg }}; color:{{ o.fg }}; font-size:14px; cursor:pointer">{{ o.label }}<span style="font-size:12px; color:{{ o.cnt }}">{{ o.count }}</span></button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:12px">
+<span style="font-size:13px; font-weight:600">Gender</span>
+<div style="display:flex; flex-wrap:wrap; gap:6px">
+<sc-for list="{{ genderOpts }}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="height:36px; padding:0 14px; border-radius:999px; border-width:1px; border-style:solid; border-color:{{ o.bd }}; background:{{ o.bg }}; color:{{ o.fg }}; font-size:14px; cursor:pointer">{{ o.label }}</button>
+</sc-for>
+</div>
+</div>
+
+<button type="button" onClick="{{ toggleTaking }}" role="switch" aria-checked="{{ taking }}" style="display:flex; align-items:center; justify-content:space-between; gap:16px; width:100%; padding:16px 0; border:0; border-top:1px solid oklch(0.86 0.01 80); border-bottom:1px solid oklch(0.86 0.01 80); background:transparent; color:oklch(0.22 0.012 65); font-size:15px; text-align:left; cursor:pointer"><span>Only members taking new clients</span><span style="position:relative; width:42px; height:24px; flex:none; border-radius:999px; background:{{ trackBg }}"><span style="position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 2px oklch(0.22 0.012 65 / 0.3); transform:{{ knobX }}; transition:transform 0.15s ease"></span></span></button>
+
+<sc-if value="{{ anyActive }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ clearAll }}" style="align-self:flex-start; padding:0; border:0; background:transparent; color:oklch(0.40 0.07 220); font-size:15px; text-decoration:underline; text-underline-offset:0.18em; cursor:pointer">Clear all filters</button>
+</sc-if>
+</div>
+</sc-if>
+</aside>
+
+<div style="flex:999 1 600px; min-width:0; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px 24px; flex-wrap:wrap; padding-bottom:16px; border-bottom:1px solid oklch(0.22 0.012 65)">
+<span style="font-family:'Newsreader', Georgia, serif; font-size:clamp(24px, 2vw, 28px); letter-spacing:-0.01em">{{ resultLabel }}</span>
+<span style="font-size:14px; color:oklch(0.43 0.012 65)">In random order. Nobody can pay to be listed higher.</span>
+</div>
+
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap:48px 24px">
+<sc-for list="{{ results }}" as="m" hint-placeholder-count="6">
+<a href="Member%20Profile.dc.html" style="display:flex; flex-direction:column; gap:14px; color:oklch(0.22 0.012 65); text-decoration:none; transition:transform 0.2s ease" style-hover="transform:translateY(-3px)">
+<div style="position:relative; aspect-ratio:4 / 5; overflow:hidden; border-radius:2px; background:oklch(0.915 0.01 80)">
+<img src="{{ m.img }}" alt="{{ m.name }}" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:{{ m.pos }}; display:block">
+<span style="position:absolute; top:12px; left:12px; display:inline-flex; align-items:center; gap:7px; padding:5px 10px; border-radius:999px; background:oklch(0.972 0.008 85); font-size:12px; font-weight:500"><span style="width:7px; height:7px; border-radius:50%; background:{{ m.dot }}"></span>{{ m.status }}</span>
+</div>
+<div style="display:flex; flex-direction:column; gap:6px">
+<div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px"><span style="font-family:'Newsreader', Georgia, serif; font-size:25px; line-height:1.15; letter-spacing:-0.01em">{{ m.name }}</span><span style="font-size:13px; color:oklch(0.43 0.012 65); white-space:nowrap">{{ m.pronouns }}</span></div>
+<div style="font-size:15px; font-weight:500">{{ m.title }}<span style="font-weight:400; color:oklch(0.43 0.012 65)"> · {{ m.city }}</span></div>
+<div style="font-size:13px; line-height:1.45; color:oklch(0.43 0.012 65)">{{ m.quals }}</div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px">
+<span style="padding:3px 9px; border-radius:999px; background:{{ m.roleBg }}; color:{{ m.roleFg }}; font-size:12px; font-weight:500">{{ m.roleLabel }}</span>
+<sc-for list="{{ m.specialisms }}" as="s" hint-placeholder-count="2"><span style="padding:3px 9px; border-radius:999px; border:1px solid oklch(0.86 0.01 80); font-size:12px; color:oklch(0.36 0.012 65)">{{ s }}</span></sc-for>
+</div>
+<div style="margin-top:6px; padding-top:12px; border-top:1px solid oklch(0.86 0.01 80); display:flex; justify-content:space-between; gap:8px; font-size:14px"><span style="background:oklch(0.93 0.085 95); padding:0 4px; border-radius:2px">{{ m.price }}</span><span style="color:oklch(0.43 0.012 65)">{{ m.length }}</span></div>
+</div>
+</a>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+<div style="padding:56px 32px; border:1px dashed oklch(0.80 0.01 80); border-radius:4px; display:flex; flex-direction:column; align-items:flex-start; gap:16px">
+<p style="margin:0; font-family:'Newsreader', Georgia, serif; font-size:26px; line-height:1.25">No one matches all of those at the moment.</p>
+<p style="margin:0; font-size:16px; color:oklch(0.43 0.012 65)">Try removing a filter, or ask us and we’ll suggest someone.</p>
+<button type="button" onClick="{{ clearAll }}" style="height:46px; padding:0 22px; border-radius:999px; border:1px solid oklch(0.22 0.012 65); background:transparent; color:oklch(0.22 0.012 65); font-size:15px; font-weight:500; cursor:pointer">Clear all filters</button>
+</div>
+</sc-if>
+
+<div style="display:flex; align-items:center; gap:10px; font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:oklch(0.43 0.012 65)"><span style="width:14px; height:10px; border-radius:2px; background:oklch(0.93 0.085 95)"></span>Placeholder prices. Names, photos (from Pexels) and qualifications are placeholders too.</div>
+</div>
+
+</div>
+</section>
+
+<section data-screen-label="Members – Help choosing" style="background:oklch(0.945 0.012 85)">
+<div style="max-width:1320px; margin:0 auto; padding:clamp(64px, 7vw, 104px) clamp(20px, 4vw, 48px); display:flex; flex-wrap:wrap; gap:32px 64px; align-items:flex-end; justify-content:space-between">
+<div style="flex:1 1 520px; min-width:0; display:flex; flex-direction:column; gap:18px">
+<h2 style="margin:0; font-family:'Newsreader', Georgia, serif; font-weight:400; font-size:clamp(34px, 3.6vw, 52px); line-height:1.05; letter-spacing:-0.02em">Not sure who to choose?</h2>
+<p style="margin:0; max-width:620px; font-family:'Newsreader', Georgia, serif; font-size:clamp(19px, 1.5vw, 22px); line-height:1.5; color:oklch(0.43 0.012 65); text-wrap:pretty">Tell us what you’d like to work on. A member will reply with two or three people who would suit you, and why. It’s a message, not a sales call.</p>
+</div>
+<a href="#" style="display:inline-flex; align-items:center; height:54px; padding:0 28px; border-radius:999px; background:oklch(0.22 0.012 65); color:oklch(0.972 0.008 85); font-size:16px; font-weight:500; text-decoration:none" style-hover="background:oklch(0.40 0.07 220); color:oklch(0.972 0.008 85)">Ask for a suggestion</a>
+</div>
+</section>
+</main>
+
+<footer style="background:oklch(0.22 0.012 65); color:oklch(0.85 0.01 80)">
+<div style="max-width:1320px; margin:0 auto; padding:72px clamp(20px, 4vw, 48px) 40px; display:flex; flex-direction:column; gap:56px">
+<div style="display:flex; flex-wrap:wrap; gap:48px; justify-content:space-between">
+<div style="flex:1 1 300px; max-width:400px; display:flex; flex-direction:column; gap:16px">
+<span style="font-family:'Newsreader', Georgia, serif; font-size:40px; font-weight:500; letter-spacing:-0.035em; line-height:1; color:oklch(0.972 0.008 85)">fledg</span>
+<p style="margin:0; font-family:'Newsreader', Georgia, serif; font-size:19px; line-height:1.45">A not-for-profit collective of qualified coaches and specialists. Every programme ends.</p>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:40px 72px; font-size:15px">
+<div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:13px; color:oklch(0.68 0.01 80)">For clients</span><a href="Home.dc.html#how" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">How it works</a><a href="Members.dc.html" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Find a coach</a><a href="#" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Principles</a><a href="#" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">FAQ</a></div>
+<div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:13px; color:oklch(0.68 0.01 80)">For professionals</span><a href="Home.dc.html#join" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Join the collective</a><a href="Where%20the%20Money%20Goes.dc.html" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">Where the money goes</a></div>
+<div style="display:flex; flex-direction:column; gap:10px"><span style="font-size:13px; color:oklch(0.68 0.01 80)">Contact</span><a href="#" style="color:oklch(0.95 0.008 85); text-decoration:none" style-hover="text-decoration:underline">hello@fledg.org</a></div>
+</div>
+</div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; padding-top:24px; border-top:1px solid oklch(0.36 0.01 65); font-size:13px; color:oklch(0.68 0.01 80)"><span>© 2026 Fledg</span><span>No app. No contracts. No commission.</span></div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const MEMBERS = [
+  { id: 'ruth', name: 'Ruth Adeyemi', pronouns: 'she/her', gender: 'woman', role: 'coach', discipline: 'Strength', title: 'Strength coach', city: 'Manchester', quals: 'Level 3 Personal Trainer · BSc Sport and Exercise Science · UKSCA accredited', specialisms: ['Beginners', 'Desk-based jobs'], price: '£110 a month', length: '16 weeks', taking: true, photo: 'Ruth coaching a client’s deadlift at a community gym in Ancoats' },
+  { id: 'helen', name: 'Helen Marsh', pronouns: 'she/her', gender: 'woman', role: 'specialist', discipline: 'Nutrition', title: 'Nutritionist', city: 'London', quals: 'Registered Nutritionist (AfN) · MSc Human Nutrition', specialisms: ['Plant-based eating', 'Endurance events'], price: '£55 a session', length: 'When needed', taking: true, photo: 'Helen at her kitchen table with a client’s food diary' },
+  { id: 'dan', name: 'Dan Hughes', pronouns: 'he/him', gender: 'man', role: 'coach', discipline: 'Running', title: 'Running coach', city: 'Cardiff', quals: 'England Athletics Coach in Running Fitness · Level 3 Personal Trainer', specialisms: ['Beginners', 'Endurance events'], price: '£85 a month', length: '12 weeks', taking: true, photo: 'Dan running alongside a client in Bute Park, early morning' },
+  { id: 'priya', name: 'Priya Shah', pronouns: 'she/her', gender: 'woman', role: 'specialist', discipline: 'Physiotherapy', title: 'Physiotherapist', city: 'Leeds', quals: 'BSc Physiotherapy · HCPC registered · MCSP', specialisms: ['Back from injury', 'Desk-based jobs'], price: '£65 a session', length: 'When needed', taking: true, photo: 'Priya assessing a client’s knee in her clinic' },
+  { id: 'marek', name: 'Marek Nowak', pronouns: 'he/him', gender: 'man', role: 'coach', discipline: 'Strength', title: 'Strength coach', city: 'Bristol', quals: 'Level 3 Personal Trainer · British Weight Lifting Level 2 Coach', specialisms: ['Over 50s', 'Beginners'], price: '£95 a month', length: '20 weeks', taking: false, photo: 'Marek spotting a bench press in a railway-arch gym' },
+  { id: 'aisha', name: 'Aisha Rahman', pronouns: 'she/her', gender: 'woman', role: 'coach', discipline: 'Pre- and postnatal', title: 'Pre- and postnatal coach', city: 'Birmingham', quals: 'Level 3 Personal Trainer · Level 4 Pre- and Postnatal Exercise', specialisms: ['After pregnancy', 'Beginners'], price: '£90 a month', length: '16 weeks', taking: true, photo: 'Aisha on a video call from her front room' },
+  { id: 'callum', name: 'Callum Fraser', pronouns: 'he/him', gender: 'man', role: 'specialist', discipline: 'Sports therapy', title: 'Sports therapist', city: 'Glasgow', quals: 'BSc Sports Therapy · Society of Sports Therapists', specialisms: ['Back from injury', 'Endurance events'], price: '£50 a session', length: 'When needed', taking: true, photo: 'Callum working on a runner’s calf in a treatment room' },
+  { id: 'grace', name: 'Grace Lin', pronouns: 'she/her', gender: 'woman', role: 'specialist', discipline: 'Nutrition', title: 'Dietitian', city: 'London', quals: 'Registered Dietitian · HCPC registered', specialisms: ['Menopause', 'Plant-based eating'], price: '£70 a session', length: 'When needed', taking: true, photo: 'Grace walking a client round a market, talking through a week’s shop' },
+  { id: 'jo', name: 'Jo Whitfield', pronouns: 'they/them', gender: 'nonbinary', role: 'coach', discipline: 'Strength', title: 'Strength coach', city: 'Sheffield', quals: 'Level 3 Personal Trainer · Level 3 Exercise Referral', specialisms: ['Over 50s', 'Back from injury'], price: '£80 a month', length: '16 weeks', taking: true, photo: 'Jo coaching a goblet squat at a church-hall class' },
+  { id: 'femi', name: 'Femi Adebayo', pronouns: 'he/him', gender: 'man', role: 'coach', discipline: 'Conditioning', title: 'Conditioning coach', city: 'London', quals: 'Level 3 Personal Trainer · BSc Sports Coaching', specialisms: ['Endurance events', 'Desk-based jobs'], price: '£105 a month', length: '12 weeks', taking: true, photo: 'Femi timing intervals on a rowing machine at a leisure centre' },
+  { id: 'sian', name: 'Siân Morgan', pronouns: 'she/her', gender: 'woman', role: 'specialist', discipline: 'Mobility', title: 'Mobility specialist', city: 'Swansea', quals: 'Yoga teacher, 500 hours · Level 3 Personal Trainer', specialisms: ['Desk-based jobs', 'Over 50s'], price: '£45 a session', length: 'When needed', taking: false, photo: 'Siân leading a mobility class in a studio overlooking the bay' },
+  { id: 'niamh', name: 'Niamh Kelly', pronouns: 'she/her', gender: 'woman', role: 'specialist', discipline: 'Physiotherapy', title: 'Women’s health physio', city: 'Belfast', quals: 'MSc Physiotherapy · HCPC registered', specialisms: ['Menopause', 'After pregnancy'], price: '£70 a session', length: 'When needed', taking: true, photo: 'Niamh talking a client through an exercise on a video call' },
+  { id: 'kwame', name: 'Kwame Mensah', pronouns: 'he/him', gender: 'man', role: 'coach', discipline: 'Strength', title: 'Strength coach', city: 'Nottingham', quals: 'Level 3 Personal Trainer · MSc Strength and Conditioning', specialisms: ['Beginners', 'Back from injury'], price: '£120 a month', length: '24 weeks', taking: true, photo: 'Kwame chalking up beside a client before a heavy set' },
+  { id: 'laura', name: 'Laura Bennett', pronouns: 'she/her', gender: 'woman', role: 'coach', discipline: 'Running', title: 'Running coach', city: 'Norwich', quals: 'England Athletics Coach in Running Fitness · Level 3 Personal Trainer', specialisms: ['Over 50s', 'Menopause'], price: '£80 a month', length: '16 weeks', taking: true, photo: 'Laura at the finish of a Saturday park run with a client' },
+  { id: 'alex', name: 'Alex Moreno', pronouns: 'they/them', gender: 'nonbinary', role: 'specialist', discipline: 'Mobility', title: 'Mobility specialist', city: 'Brighton', quals: 'Level 3 Personal Trainer · Level 4 Lower Back Pain Management', specialisms: ['Desk-based jobs', 'Back from injury'], price: '£45 a session', length: 'When needed', taking: true, photo: 'Alex demonstrating a hip stretch on a living-room floor' },
+];
+const PHOTOS = { ruth: [8770421, '50% 0%'], helen: [8844892, '38% 50%'], dan: [5067669, '50% 40%'], priya: [5793895, '30% 50%'], marek: [39219660, '65% 30%'], aisha: [7690849, '50% 30%'], callum: [20860595, '50% 20%'], grace: [6922170, '50% 30%'], jo: [6551074, '35% 50%'], femi: [36510739, '50% 35%'], sian: [4587354, '60% 30%'], niamh: [20860587, '42% 40%'], kwame: [6456323, '85% 40%'], laura: [8455976, '50% 40%'], alex: [6388531, '50% 30%'] };
+const photoUrl = id => 'https://images.pexels.com/photos/' + id + '/pexels-photo-' + id + '.jpeg?auto=compress&cs=tinysrgb&w=600';
+const DISCIPLINES = ['Strength', 'Running', 'Conditioning', 'Nutrition', 'Physiotherapy', 'Sports therapy', 'Mobility', 'Pre- and postnatal'];
+const SPECIALISMS = ['Beginners', 'Over 50s', 'Back from injury', 'Desk-based jobs', 'Endurance events', 'Menopause', 'After pregnancy', 'Plant-based eating'];
+const ROLES = [['all', 'Everyone'], ['coach', 'Coaches'], ['specialist', 'Specialists']];
+const GENDERS = [['any', 'Any'], ['woman', 'Women'], ['man', 'Men'], ['nonbinary', 'Non-binary']];
+const INK = 'oklch(0.22 0.012 65)', PAPER = 'oklch(0.972 0.008 85)', RULE = 'oklch(0.86 0.01 80)', SLATE = 'oklch(0.43 0.012 65)', DEEP = 'oklch(0.40 0.07 220)';
+
+function shuffled(n) {
+  const a = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function chip(active, empty) {
+  return {
+    bg: active ? INK : 'transparent',
+    fg: active ? PAPER : (empty ? 'oklch(0.66 0.01 75)' : INK),
+    bd: active ? INK : RULE,
+    cnt: active ? 'oklch(0.80 0.01 80)' : (empty ? 'oklch(0.72 0.01 75)' : SLATE),
+    pressed: active ? 'true' : 'false',
+  };
+}
+
+class Component extends DCLogic {
+  state = {
+    narrow: typeof window !== 'undefined' ? window.innerWidth < 1100 : false,
+    menuOpen: false, filtersOpen: false,
+    role: 'all', disc: [], spec: [], gender: 'any', taking: false,
+    order: shuffled(MEMBERS.length),
+  };
+  componentDidMount() {
+    this.onResize = () => {
+      const narrow = window.innerWidth < 1100;
+      if (narrow !== this.state.narrow) this.setState({ narrow, menuOpen: false });
+    };
+    window.addEventListener('resize', this.onResize);
+    this.onResize();
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+
+  matches(m, skip) {
+    const s = this.state;
+    return (skip === 'role' || s.role === 'all' || m.role === s.role)
+      && (skip === 'disc' || !s.disc.length || s.disc.includes(m.discipline))
+      && (skip === 'spec' || !s.spec.length || m.specialisms.some(x => s.spec.includes(x)))
+      && (skip === 'gender' || s.gender === 'any' || m.gender === s.gender)
+      && (!s.taking || m.taking);
+  }
+  toggleIn(key, val) {
+    this.setState(s => ({ [key]: s[key].includes(val) ? s[key].filter(x => x !== val) : [...s[key], val] }));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const results = s.order.map(i => MEMBERS[i]).filter(m => this.matches(m)).map(m => ({
+      ...m,
+      img: photoUrl(PHOTOS[m.id][0]),
+      pos: PHOTOS[m.id][1],
+      status: m.taking ? 'Taking clients' : 'Full at the moment',
+      dot: m.taking ? DEEP : 'oklch(0.70 0.01 75)',
+      roleLabel: m.role === 'coach' ? 'Coach' : 'Specialist',
+      roleBg: m.role === 'coach' ? 'oklch(0.93 0.025 205)' : 'oklch(0.93 0.01 80)',
+      roleFg: m.role === 'coach' ? 'oklch(0.34 0.07 220)' : 'oklch(0.36 0.012 65)',
+    }));
+    const facet = (skip, test) => MEMBERS.filter(m => this.matches(m, skip) && test(m)).length;
+    const discOpts = DISCIPLINES.map(d => {
+      const count = facet('disc', m => m.discipline === d), active = s.disc.includes(d);
+      return { label: d, count, ...chip(active, !count), pick: () => this.toggleIn('disc', d) };
+    });
+    const specOpts = SPECIALISMS.map(d => {
+      const count = facet('spec', m => m.specialisms.includes(d)), active = s.spec.includes(d);
+      return { label: d, count, ...chip(active, !count), pick: () => this.toggleIn('spec', d) };
+    });
+    const roleOpts = ROLES.map(([v, label]) => ({ label, ...chip(s.role === v, false), pick: () => this.setState({ role: v }) }));
+    const genderOpts = GENDERS.map(([v, label]) => ({ label, ...chip(s.gender === v, false), pick: () => this.setState({ gender: v }) }));
+    const activeCount = (s.role !== 'all' ? 1 : 0) + s.disc.length + s.spec.length + (s.gender !== 'any' ? 1 : 0) + (s.taking ? 1 : 0);
+    const total = MEMBERS.length, n = results.length;
+    return {
+      wide: !s.narrow, narrow: s.narrow,
+      menuOpen: s.menuOpen, menuLabel: s.menuOpen ? 'Close' : 'Menu',
+      toggleMenu: () => this.setState(p => ({ menuOpen: !p.menuOpen })),
+      sidePos: s.narrow ? 'static' : 'sticky',
+      showFilters: !s.narrow || s.filtersOpen,
+      toggleFilters: () => this.setState(p => ({ filtersOpen: !p.filtersOpen })),
+      filterButtonLabel: s.filtersOpen ? 'Hide filters' : (activeCount ? `Filters (${activeCount})` : 'Filter members'),
+      filterButtonHint: s.filtersOpen ? '' : 'Discipline, specialism, gender',
+      roleOpts, discOpts, specOpts, genderOpts,
+      taking: s.taking ? 'true' : 'false',
+      trackBg: s.taking ? DEEP : 'oklch(0.82 0.01 80)',
+      knobX: s.taking ? 'translateX(18px)' : 'translateX(0px)',
+      toggleTaking: () => this.setState(p => ({ taking: !p.taking })),
+      anyActive: activeCount > 0,
+      clearAll: () => this.setState({ role: 'all', disc: [], spec: [], gender: 'any', taking: false }),
+      results, hasResults: n > 0, noResults: n === 0,
+      resultLabel: n === total ? `All ${total} members` : `${n} of ${total} members`,
+    };
+  }
+}
+</script>
+</body>
+</html>

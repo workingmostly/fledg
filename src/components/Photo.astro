@@ -1,0 +1,42 @@
+---
+/**
+ * A cropped photo tile: placeholder background, object-fit cover and a per-photo
+ * focal point. Overlays (name tags, status pills) go in the default slot.
+ */
+import { pexels, pexelsSrcset } from '../lib/photos';
+
+interface Props {
+  /** Pexels photo id. */
+  photo: number;
+  /** Approximate display width in CSS pixels; a 2x source is added automatically. */
+  width: number;
+  alt: string;
+  /** object-position, e.g. "50% 40%". */
+  position?: string;
+  /** aspect-ratio, e.g. "4 / 5". Leave out when the parent sets the size. */
+  ratio?: string;
+  /** Zoom into the crop, as on the round avatars: "scale(2.6)" with an origin. */
+  zoom?: { scale: number; origin: string };
+  eager?: boolean;
+  class?: string;
+  style?: string;
+}
+
+const { photo, width, alt, position = '50% 50%', ratio, zoom, eager = false, class: className, style } = Astro.props;
+
+const imgStyle = [
+  `object-position:${position}`,
+  zoom && `transform:scale(${zoom.scale}); transform-origin:${zoom.origin}`,
+].filter(Boolean).join('; ');
+const boxStyle = [ratio && `aspect-ratio:${ratio}`, style].filter(Boolean).join('; ');
+---
+<div class:list={['photo', className]} style={boxStyle || undefined}>
+  <img
+    src={pexels(photo, width)}
+    srcset={pexelsSrcset(photo, width)}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    style={imgStyle}
+  />
+  <slot />
+</div>
