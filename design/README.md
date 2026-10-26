@@ -220,7 +220,9 @@ These override the references and the sections above where they differ.
    - Exports: `favicon.svg`, `favicon.ico` (16/32/48), `apple-touch-icon.png` (180px), manifest icons (192px and 512px), social avatars (400px and 1080px). They live in `public/` and `public/brand/`.
    - The "fledg" wordmark is unchanged: the font's default f–l joining, no letter-spacing tweaks.
 3. **Homepage hero**
-   - The whole hero section has a full-width duck egg background, `#b7dee3`. The header stays paper `#f8f5f0` with its bottom border.
-   - Muted text inside the hero is `oklch(0.30 0.02 220)` (≈ `#1e3a44`) instead of `#554f49`, for contrast on duck egg.
-   - Photo tile placeholder background in the hero: `oklch(0.80 0.035 205)` (≈ `#a3c9cf`).
-   - No top border on the "How it works" section; the change of colour separates the two sections.
+   - Copy on the left (headline, lead, calls to action) and recent graduates on the right, one photo at a time, crossfading every 5 seconds. It flex-wraps, so on narrow screens the photo drops below the copy.
+   - The photos are of former clients smiling, not working out: candid, waist up, natural light, a mix of ages. This replaces the "training on their own" brief for the homepage in the shot list.
+   - Each photo has its name tag ("Marta, 38 · class of 2024"). Below the photo sits the title "Recent *graduates.*", with the placeholder note underneath as its subtitle.
+   - A small Pause/Play button sits beside the title. The slideshow also pauses while a mouse is over it, and doesn't play for people who prefer reduced motion.
+   - The hero background stays paper, and "How it works" keeps its top border.
+4. **Primary buttons in duck egg.** Duck egg is used sparingly, on the primary calls to action: duck egg `#b7dee3` with ink text, turning deep teal with paper text on hover. This covers the `btn--primary` buttons and "Find a coach" in the header and mobile menu.

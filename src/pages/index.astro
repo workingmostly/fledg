@@ -10,14 +10,15 @@ import { gbp, joiningFee } from '../data/money';
 const members = await getMembers();
 const featured = await Promise.all(['ruth', 'helen', 'dan', 'priya', 'jo'].map(getMember));
 
-/* Hero montage. The two `compactOnly` tiles appear only in the 2-column phone grid. */
-const montage = [
-  { photo: 38615519, width: 700, position: '50% 45%', alt: 'A woman deadlifting on her own in a gym', name: 'Chloe, 31', year: 2025 },
-  { photo: 3752928, width: 900, position: '50% 35%', alt: 'A woman cycling through a city, smiling', name: 'Marta, 38', year: 2024 },
-  { photo: 4854275, width: 600, position: '50% 40%', alt: 'Two friends stretching together in a gym, laughing', name: 'Tom and Ana', compactOnly: true },
-  { photo: 7869513, width: 900, position: '60% 40%', alt: 'An older man running beside the water', name: 'Desmond, 67', year: 2024 },
-  { photo: 4587349, width: 700, position: '40% 35%', alt: 'An older woman doing lunges with dumbbells', name: 'Wendy, 58', year: 2023 },
-  { photo: 347134, width: 600, position: '35% 50%', alt: 'A woman running in a park at sunset', name: 'Leah, 27', compactOnly: true },
+/* Hero slideshow: recent graduates, one at a time. `width` is larger for landscape originals so the 4:5 crop stays sharp. */
+const graduates = [
+  { photo: 3353573, width: 600, position: '50% 35%', alt: 'Marta laughing on a park bench', name: 'Marta, 38', year: 2024 },
+  { photo: 12335765, width: 600, position: '50% 35%', alt: 'Desmond smiling on a park bench', name: 'Desmond, 67', year: 2024 },
+  { photo: 5176883, width: 600, position: '50% 30%', alt: 'Chloe smiling over a coffee outside a café', name: 'Chloe, 31', year: 2025 },
+  { photo: 18377281, width: 600, position: '50% 30%', alt: 'Wei smiling outdoors in the evening light', name: 'Wei, 54', year: 2024 },
+  { photo: 13871047, width: 600, position: '50% 30%', alt: 'Wendy laughing, one hand on her chest', name: 'Wendy, 58', year: 2023 },
+  { photo: 15309225, width: 1000, position: '50% 40%', alt: 'Tom smiling outdoors in a navy jumper', name: 'Tom, 34', year: 2025 },
+  { photo: 30594879, width: 600, position: '50% 30%', alt: 'Leah smiling with her eyes closed on a windy day', name: 'Leah, 27', year: 2025 },
 ];
 
 /* Who writes the programme, stage by stage: [coach, you] shares of the bar. */
@@ -64,37 +65,40 @@ const benefits = [
   description="One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract."
 >
   <!-- Hero -->
-  <section class="hero-band">
-    <div class="hero">
-      <div class="hero-text">
-        <h1 class="hero-h1"><span>Get fit with a coach.</span><em>Stay fit without one.</em></h1>
-        <div class="hero-sub">
-          <p class="hero-lead">One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract. Your coach teaches you to train, eat and recover, then sets you up to go it alone.</p>
-          <div class="hero-ctas">
-            <Button href={links.members}>Find your coach</Button>
-            <Button href="#how" variant="secondary">How it works</Button>
-          </div>
+  <section class="hero">
+    <div class="hero-text">
+      <h1 class="hero-h1"><span>Get fit with a coach.</span><em>Stay fit without one.</em></h1>
+      <div class="hero-sub">
+        <p class="hero-lead">One-to-one coaching from qualified people, in the gym and on video, around your working week. No subscription and no contract. Your coach teaches you to train, eat and recover, then sets you up to go it alone.</p>
+        <div class="hero-ctas">
+          <Button href={links.members}>Find your coach</Button>
+          <Button href="#how" variant="secondary">How it works</Button>
         </div>
       </div>
-
-      <figure class="montage">
-        <div class="montage-head">
-          <h2 class="montage-title">Recent <em>graduates.</em></h2>
-          <PlaceholderNote class="hero-muted">Placeholder photos (Pexels) and names</PlaceholderNote>
-        </div>
-        <div class="montage-grid">
-          {montage.map((t) => (
-            <Photo photo={t.photo} width={t.width} alt={t.alt} position={t.position} eager={!t.compactOnly} class:list={['tile', { 'tile--compact-only': t.compactOnly }]}>
-              <span class="tag">{t.name}{t.year && <span class="tag-year"> · class of {t.year}</span>}</span>
-            </Photo>
-          ))}
-        </div>
-      </figure>
     </div>
+
+    <figure class="graduates" data-slideshow>
+      <div class="slides">
+        {graduates.map((g, i) => (
+          <Photo photo={g.photo} width={g.width} alt={g.alt} position={g.position} eager={i === 0} class:list={['slide', { 'is-active': i === 0 }]}>
+            <span class="tag">{g.name} · class of {g.year}</span>
+          </Photo>
+        ))}
+      </div>
+      <figcaption class="graduates-caption">
+        <div class="caption-row">
+          <h2 class="graduates-title">Recent <em>graduates.</em></h2>
+          <button type="button" class="slides-toggle" aria-pressed="false" data-slideshow-toggle>
+            <span class="toggle-icon" aria-hidden="true"></span><span data-slideshow-label>Pause</span>
+          </button>
+        </div>
+        <PlaceholderNote class="muted">Placeholder photos (Pexels) and names</PlaceholderNote>
+      </figcaption>
+    </figure>
   </section>
 
   <!-- How it works -->
-  <section id="how">
+  <section id="how" class="how">
     <div class="container section-pad">
       <div class="split">
         <div class="split-main">
@@ -362,6 +366,42 @@ const benefits = [
   </section>
 </BaseLayout>
 
+
+<script>
+  // Hero slideshow: crossfade to the next graduate every few seconds.
+  // Pauses on hover and with the Pause button; doesn't play for reduced motion.
+  const show = document.querySelector<HTMLElement>('[data-slideshow]');
+  if (show) {
+    const slides = [...show.querySelectorAll<HTMLElement>('.slide')];
+    const toggle = show.querySelector<HTMLButtonElement>('[data-slideshow-toggle]')!;
+    const label = show.querySelector<HTMLElement>('[data-slideshow-label]')!;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 0;
+    let paused = false;
+    let hovering = false;
+    let timer: number | undefined;
+
+    const advance = () => {
+      slides[current].classList.remove('is-active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('is-active');
+    };
+    const update = () => {
+      clearInterval(timer);
+      timer = undefined;
+      if (!paused && !hovering && !reduceMotion.matches && slides.length > 1) timer = setInterval(advance, 5000);
+      toggle.setAttribute('aria-pressed', String(paused));
+      label.textContent = paused ? 'Play' : 'Pause';
+    };
+
+    toggle.addEventListener('click', () => { paused = !paused; update(); });
+    // Mouse only: a tap would count as hovering until the next tap elsewhere.
+    show.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hovering = true; update(); } });
+    show.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hovering = false; update(); } });
+    reduceMotion.addEventListener('change', update);
+    update();
+  }
+</script>
 <style>
   /* Shared bits */
   .band-alt { background: var(--paper-alt); }
@@ -405,20 +445,21 @@ const benefits = [
   }
   figure { margin: 0; }
 
-  /* Hero: a full-width duck egg band; muted text and photo placeholders are tuned for it. */
-  .hero-band { background: var(--duck-egg); }
-  .hero-muted { color: var(--duck-muted); }
+  /* Hero: copy on the left, one graduate at a time on the right. */
   .hero {
     max-width: var(--max);
     min-height: calc(100vh - var(--header-h));
     margin: 0 auto;
-    padding: clamp(40px, 8vh, 120px) var(--gutter) clamp(28px, 4vh, 48px);
+    padding: clamp(40px, 8vh, 120px) var(--gutter) clamp(40px, 6vh, 72px);
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: clamp(32px, 5vh, 72px);
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    gap: 48px clamp(40px, 5vw, 80px);
   }
   .hero-text {
+    flex: 1 1 520px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: clamp(24px, 3vw, 40px);
@@ -427,7 +468,7 @@ const benefits = [
     margin: 0;
     font-family: var(--serif);
     font-weight: 400;
-    font-size: clamp(44px, min(6.4vw, 10.5vh), 96px);
+    font-size: clamp(44px, min(5.4vw, 10.5vh), 88px);
     line-height: 0.98;
     letter-spacing: -0.032em;
     text-wrap: balance;
@@ -446,7 +487,7 @@ const benefits = [
     font-family: var(--serif);
     font-size: clamp(18px, 1.45vw, 22px);
     line-height: 1.45;
-    color: var(--duck-muted);
+    color: var(--slate);
     text-wrap: pretty;
   }
   .hero-ctas {
@@ -456,24 +497,57 @@ const benefits = [
     align-items: center;
   }
 
-  .montage {
-    flex: 1 1 auto;
-    min-height: 0;
+  .graduates {
+    flex: 1 1 340px;
+    max-width: 520px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     gap: 14px;
   }
-  .montage-head {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 6px 24px;
-    padding-top: 16px;
-    border-top: 1px solid var(--rule);
+  .slides {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    /* On short screens, trade a little height so the hero still fits the first screen. */
+    max-height: max(360px, calc(100vh - var(--header-h) - 210px));
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--photo-bg);
   }
-  .montage-title {
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .slide.is-active { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+  }
+  .tag {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+    padding: 5px 10px;
+    border-radius: 10px;
+    background: oklch(0.972 0.008 85 / 0.94);
+    font-size: 13px;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .graduates-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .caption-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .graduates-title {
     margin: 0;
     font-family: var(--serif);
     font-weight: 400;
@@ -481,64 +555,44 @@ const benefits = [
     line-height: 1.2;
     letter-spacing: -0.012em;
   }
-  .montage-title em { font-style: italic; }
-  .montage-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    flex: 1 1 auto;
-    min-height: clamp(180px, 22vh, 240px);
-    max-height: 440px;
-    gap: 10px;
-  }
-  .tile { background: var(--duck-photo-bg); }
-  .tile--compact-only { display: none; }
-  .tag {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    max-width: calc(100% - 20px);
-    padding: 5px 10px;
-    border-radius: 10px;
-    background: oklch(0.972 0.008 85 / 0.94);
-    font-size: 12.5px;
-    line-height: 1.3;
+  .graduates-title em { font-style: italic; }
+  .slides-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    background: transparent;
     color: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+    transition: border-color var(--ease);
   }
-  /* Name tags only on the wide strip and the phone grid. */
-  @media (max-width: 1099.98px) {
-    .tag { display: none; }
+  .slides-toggle:hover { border-color: var(--ink); }
+  /* Pause: two bars. Play: a triangle. */
+  .toggle-icon {
+    width: 8px;
+    height: 10px;
+    border-left: 2.5px solid currentColor;
+    border-right: 2.5px solid currentColor;
   }
-  @media (max-width: 759.98px) {
-    .montage {
-      flex: 0 1 auto;
-      min-height: auto;
-      justify-content: flex-start;
-      gap: 12px;
-    }
-    .montage-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-rows: 156px;
-      flex: none;
-      min-height: 0;
-      max-height: none;
-      gap: 8px;
-    }
-    .tile--compact-only { display: block; }
-    .tile:nth-child(1) { grid-row: span 2; }
-    .tile:nth-child(4) { grid-column: span 2; }
-    .tag {
-      display: block;
-      left: 7px;
-      bottom: 7px;
-      max-width: calc(100% - 14px);
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-size: 11px;
-    }
-    .tag-year { display: none; }
+  .slides-toggle[aria-pressed='true'] .toggle-icon {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 0 5px 8px;
+    border-color: transparent transparent transparent currentColor;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slides-toggle { display: none; }
   }
 
   /* How it works */
+  .how { border-top: 1px solid var(--rule); }
   .how-key {
     margin-top: clamp(48px, 6vw, 88px);
     display: flex;
