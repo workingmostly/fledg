@@ -15,3 +15,8 @@ A static Astro site. `README.md` explains the structure and how to edit content.
 
 ## Not designed yet
 How it works (as its own page), Principles, Join the collective (application form) and FAQ. Their links live in `src/data/site.ts`.
+
+## Previews
+- After every change, also push it to a new `preview/<short-name>` branch (e.g. `preview/hero-slideshow`) so it can be viewed on its own.
+- Vercel (project `fledg`, team `will-greens-projects`) builds every branch. A branch's preview lives at `https://fledg-git-<branch, with / as ->-will-greens-projects.vercel.app`. Wait for the build to be READY, then share that link.
+- Previews need a Vercel login (Vercel Authentication is on). To share with someone without access, create a temporary share link.
