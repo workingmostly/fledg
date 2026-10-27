@@ -44,10 +44,11 @@ src/
   pages/                   one file per route
   styles/global.css        design tokens (colour, type, spacing) and shared classes
 public/icons/              app icons used on the homepage
+public/favicon.*, icon-*    logo mark (lowercase "f" on duck egg); social avatars in public/brand/
 design/                    the original design references and spec (not deployed)
 ```
 
-Client-side JavaScript is limited to the mobile menu and the Members filters. Breakpoints are CSS media queries at 1100px (nav collapses, filters fold away) and 760px (hero photos switch to a two-column grid).
+Client-side JavaScript is limited to the mobile menu, the Members filters and the homepage photo slideshow. The one breakpoint is a CSS media query at 1100px (the nav collapses and the filters fold away); everything else reflows with flex-wrap and auto-fit grids.
 
 ## Editing content
 

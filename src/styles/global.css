@@ -165,7 +165,7 @@ img { display: block; }
   text-decoration: none;
   transition: background-color var(--ease), color var(--ease);
 }
-.btn--primary { background: var(--ink); color: var(--paper); }
+.btn--primary { background: var(--duck-egg); color: var(--ink); }
 .btn--primary:hover { background: var(--teal); color: var(--paper); }
 .btn--secondary { padding: 0 26px; border: 1px solid var(--ink); color: var(--ink); }
 .btn--secondary:hover { background: var(--ink); color: var(--paper); }
