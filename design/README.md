@@ -218,6 +218,7 @@ These override the references and the sections above where they differ.
    - A lowercase "f" in Newsreader weight 500, ink `#1f1a15` on duck egg `#b7dee3`, in a square tile.
    - Centre the "f" by eye, not by its outline: equal space above and below, with the stem slightly left of centre to balance the crossbar and hook. In CSS (1em box, `line-height:1`, `display:grid; place-items:center`) that is `position:relative; left:-0.03em; top:0.14em` on the glyph.
    - Exports: `favicon.svg`, `favicon.ico` (16/32/48), `apple-touch-icon.png` (180px), manifest icons (192px and 512px), social avatars (400px and 1080px). They live in `public/` and `public/brand/`.
+   - The browser favicon (`favicon.svg`, `favicon.ico`) has rounded corners, a 22% radius to match the app tiles, with transparent corners. The Apple touch icon, manifest icons and social avatars stay square because the platforms apply their own masks.
    - The "fledg" wordmark is unchanged: the font's default f–l joining, no letter-spacing tweaks.
 3. **Homepage hero**
    - Copy on the left (headline, lead, calls to action) and recent graduates on the right, one photo at a time, crossfading every 5 seconds. It flex-wraps, so on narrow screens the photo drops below the copy.
