@@ -19,4 +19,5 @@ How it works (as its own page), Principles, Join the collective (application for
 ## Previews
 - After every change, also push it to a new `preview/<short-name>` branch (e.g. `preview/hero-slideshow`) so it can be viewed on its own.
 - Vercel (project `fledg`, team `will-greens-projects`) builds every branch. A branch's preview lives at `https://fledg-git-<branch, with / as ->-will-greens-projects.vercel.app`. Wait for the build to be READY, then share that link.
+- Vercel skips a push whose commit it has already built for another branch, so a preview branch pointing at the same commit as the working branch gets no deployment of its own. When that happens, create the deployment for the preview branch through the Vercel API (git source: `workingmostly/fledg`, ref = the preview branch).
 - Previews need a Vercel login (Vercel Authentication is on). To share with someone without access, create a temporary share link.
