@@ -21,7 +21,7 @@ const notDone = [
 ];
 
 const questions = [
-  { q: 'Is Fledg a charity?', a: 'No. Fledg is a not-for-profit collective, but it isn’t a registered charity. Clients never pay Fledg, and the joining fee only covers running costs.' },
+  { q: 'Is Fledg a charity?', a: 'No. Fledg is a not-for-profit group, but it isn’t a registered charity. Clients never pay Fledg, and the joining fee only covers running costs.' },
   { q: 'How do I pay my coach?', a: 'Directly, by bank transfer or however you agree between you. Every member’s prices are on their profile, so you know the cost before you start.' },
   { q: 'What happens to money left over?', a: 'It’s carried into next year and lowers the joining fee for new members. We don’t save beyond the reserve.' },
   { q: 'What if costs go up?', a: 'We’ll explain why on this page before the fee changes. Existing members never pay again.' },
@@ -69,7 +69,7 @@ const questions = [
             <li><span class="key" style={`background:${c.colour}`}></span><span class="legend-name">{c.name}</span><span class="ph num">{gbp(perMember(c.perYear), true)}</span></li>
           ))}
         </ul>
-        <p class="flow-text">Members pay this once. It covers the collective’s running costs and nothing else. Nobody pays it again to stay a member.</p>
+        <p class="flow-text">Members pay this once. It covers the group’s running costs and nothing else. Nobody pays it again to stay a member.</p>
       </article>
     </div>
   </section>

@@ -142,7 +142,7 @@ const benefits = [
       <div class="team">
         <div class="team-copy">
           <div class="eyebrow">Your team</div>
-          <h2 class="h2 balance">One coach who knows you. A whole collective behind them.</h2>
+          <h2 class="h2 balance">One coach who knows you. A whole team behind them.</h2>
           <p class="lead" style="max-width:560px">You choose one coach. They write your programme with you, answer your messages and get to know how you train.</p>
           <p class="lead" style="max-width:560px">When your goals need something outside their field, they bring in another member. A nutritionist might help with your diet while your coach handles your training.</p>
           <p class="small-muted" style="max-width:560px">You only pay the people you work with, and you’ll know what it costs before you agree.</p>
@@ -166,7 +166,7 @@ const benefits = [
                 <span class="tc-btn">Book a video call</span>
               </div>
             </div>
-            <div class="tc-list-head"><span>Specialists Ruth can bring in</span><span>From the collective</span></div>
+            <div class="tc-list-head"><span>Specialists Ruth can bring in</span><span>From the team</span></div>
             {specialists.map((s) => (
               <div class="tc-row">
                 <Photo photo={s.photo} width={300} alt={s.name} position={s.zoom.origin} zoom={s.zoom} class="avatar" style="width:40px; height:40px" />
@@ -174,7 +174,7 @@ const benefits = [
                 <span class:list={['tc-badge', { 'tc-badge--active': s.active }]}>{s.badge}</span>
               </div>
             ))}
-            <div class="tc-foot">And 10 more members of the collective</div>
+            <div class="tc-foot">And 10 more members of the team</div>
           </div>
         </div>
       </div>
@@ -182,7 +182,7 @@ const benefits = [
       <div class="featured">
         <div class="featured-head">
           <div class="featured-title">
-            <h3>Some of the collective</h3>
+            <h3>Some of the group</h3>
             <PlaceholderNote class="muted">Placeholder photos and names</PlaceholderNote>
           </div>
           <a href={links.members}>Browse all {members.length} members by discipline, specialism or gender →</a>
@@ -344,16 +344,16 @@ const benefits = [
         <div class="eyebrow">For coaches and specialists</div>
         <h2 class="h2 balance">Change people’s lives for good.</h2>
         <p class="lead" style="max-width:560px">If you’re a qualified trainer, nutritionist, physiotherapist or other health and fitness specialist, this is work that lasts. Your clients finish fitter, healthier and happier, and they know how to stay that way.</p>
-        <p class="join-statement">Fledg is not for profit. Nobody makes money from the collective itself, and it never takes a cut of yours.</p>
+        <p class="join-statement">Fledg is not for profit. Nobody makes money from the group itself, and it never takes a cut of yours.</p>
         <ul class="benefits">
           {benefits.map((b) => <li><span class="dot"></span>{b}</li>)}
         </ul>
         <div class="apply">
           <span class="apply-title">Membership is by application</span>
-          <p>Not everyone who applies joins. As well as the right qualifications, members need to share the collective’s principles.</p>
+          <p>Not everyone who applies joins. As well as the right qualifications, members need to share the group’s principles.</p>
           <ol>
             <li><span class="step">1</span><span>Apply with your qualifications and a short note on how you coach.</span></li>
-            <li><span class="step">2</span><span>Talk it through with members of the collective on a video call, so you can both check it’s a good fit.</span></li>
+            <li><span class="step">2</span><span>Talk it through with members of the group on a video call, so you can both check it’s a good fit.</span></li>
             <li><span class="step">3</span><span>If it is, pay the one-time joining fee of {gbp(joiningFee)}, which only covers running costs, and set up your profile. <a href={links.money}>See where every penny goes</a>.</span></li>
           </ol>
         </div>
