@@ -212,8 +212,9 @@ design/
 These override the references and the sections above where they differ.
 
 1. **Tagline: "Fitness for the long run."**
-   - Homepage `<title>`: "Fledg · Fitness for the long run".
-   - Other pages: "{Page name} · Fledg", e.g. "Members · Fledg", "Where the money goes · Fledg". Profiles: "{Name}, {title} · Fledg".
+   - Homepage `<title>`: "fledg · Fitness for the long run".
+   - Other pages: "{Page name} · fledg", e.g. "Members · fledg", "Where the money goes · fledg". Profiles: "{Name}, {title} · fledg".
+   - In titles and the web manifest the name is lowercase, like the wordmark. In running copy it keeps its capital ("Fledg takes nothing").
 2. **Logo mark** for the favicon, social avatars and app icons.
    - A lowercase "f" in Newsreader weight 500, ink `#1f1a15` on duck egg `#b7dee3`, in a square tile.
    - Centre the "f" by eye, not by its outline: equal space above and below, with the stem slightly left of centre to balance the crossbar and hook. In CSS (1em box, `line-height:1`, `display:grid; place-items:center`) that is `position:relative; left:-0.03em; top:0.14em` on the glyph.
