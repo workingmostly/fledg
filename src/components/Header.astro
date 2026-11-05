@@ -1,4 +1,5 @@
 ---
+import Wordmark from './Wordmark.astro';
 import { links, type Section } from '../data/site';
 
 interface Props {
@@ -24,7 +25,7 @@ const ariaCurrent = (section?: Section) =>
 ---
 <header class="site-header" data-site-header>
   <div class="bar">
-    <a href={links.home} aria-label="Fledg home" class="logo">fledg</a>
+    <a href={links.home} aria-label="Fledg home" class="logo"><Wordmark /></a>
 
     <nav class="nav-wide" aria-label="Main">
       {items.map((item) => (

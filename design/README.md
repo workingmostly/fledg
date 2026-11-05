@@ -219,7 +219,7 @@ These override the references and the sections above where they differ.
    - Centre the "f" by eye, not by its outline: equal space above and below, with the stem slightly left of centre to balance the crossbar and hook. In CSS (1em box, `line-height:1`, `display:grid; place-items:center`) that is `position:relative; left:-0.03em; top:0.14em` on the glyph.
    - Exports: `favicon.svg`, `favicon.ico` (16/32/48), `apple-touch-icon.png` (180px), manifest icons (192px and 512px), social avatars (400px and 1080px). They live in `public/` and `public/brand/`.
    - The browser favicon (`favicon.svg`, `favicon.ico`) has rounded corners, a 22% radius to match the app tiles, with transparent corners. The Apple touch icon, manifest icons and social avatars stay square because the platforms apply their own masks.
-   - The "fledg" wordmark is unchanged: the font's default f–l joining, no letter-spacing tweaks.
+   - The "fledg" wordmark keeps the f and l apart: it uses Newsreader's display optical size (`opsz` 72), whose f has a slimmer hook, with 0.12em after the f while the other letters keep -0.035em. That leaves a clear gap between the f's hook and the l even on 1x screens. Don't let them join (no fl ligature).
 3. **Homepage hero**
    - Copy on the left (headline, lead, calls to action) and recent graduates on the right, one photo at a time, crossfading every 5 seconds. It flex-wraps, so on narrow screens the photo drops below the copy.
    - The photos are of former clients smiling, not working out: candid, waist up, natural light, a mix of ages. This replaces the "training on their own" brief for the homepage in the shot list.
