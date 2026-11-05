@@ -17,7 +17,7 @@ const items: { label: string; href: string; section?: Section }[] = [
   { label: 'Where the money goes', href: links.money, section: 'money' },
   { label: 'FAQ', href: links.faq },
 ];
-const join: (typeof items)[number] = { label: 'Join the collective', href: links.join };
+const join: (typeof items)[number] = { label: 'Join the group', href: links.join };
 
 const ariaCurrent = (section?: Section) =>
   section && section === current ? (exact ? 'page' : 'true') : undefined;

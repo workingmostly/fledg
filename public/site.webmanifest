@@ -1,6 +1,6 @@
 {
-  "name": "Fledg",
-  "short_name": "Fledg",
+  "name": "fledg",
+  "short_name": "fledg",
   "description": "Fitness for the long run.",
   "start_url": "/",
   "display": "browser",
