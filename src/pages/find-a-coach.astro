@@ -1,8 +1,9 @@
 ---
 /**
- * Find a coach: a few questions, then suggested members. The matching runs
- * in the browser and nothing is sent or stored, in keeping with "we never hold
- * your data". Results are the same member cards as the Members page.
+ * Find a coach: a few questions, suggested members, then sign up. Matching
+ * runs in the browser. Signing up posts to /api/sign-up, which emails the
+ * answers to Fledg and the chosen coach; nothing is stored. Results are the
+ * same member cards as the Members page.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MemberCard from '../components/MemberCard.astro';
@@ -14,12 +15,12 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
 ---
 <BaseLayout
   title="Find a coach · fledg"
-  description="Answer a few questions about what you’d like to work on, and we’ll suggest a coach and the specialists who might help. Your answers stay on your device."
+  description="Answer a few questions about what you’d like to work on, and we’ll suggest a coach and the specialists who might help. Then sign up, and your coach will get in touch."
 >
   <section class="container intro">
     <div class="eyebrow">Find a coach</div>
     <h1 class="h1 intro-h1">Tell us what you need. We’ll suggest who to work with.</h1>
-    <p class="lead intro-lead">A few quick questions, then a coach to start with and the specialists they might bring in. Your answers stay in your browser: Fledg doesn’t store them or send them anywhere.</p>
+    <p class="lead intro-lead">A few quick questions, then a coach to start with and the specialists they might bring in. Sign up, and your coach will get in touch about a free intro call. Nothing is sent until you do.</p>
   </section>
 
   <section class="container chooser">
@@ -93,7 +94,38 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
         <p class="none" data-none hidden>No specialists match that at the moment. Your coach can still suggest someone.</p>
       </div>
 
-      <p class="next">Next, look at their profiles and book a free intro call. Nothing is agreed until you both decide it’s a good fit.</p>
+      <form class="signup" data-signup novalidate>
+        <div class="signup-head">
+          <h3 class="group-title">Sign up</h3>
+          <p class="group-intro">Choose who you’d like to start with. We’ll send them your answers, and copy in Fledg, so they can get in touch about a free intro call. Nothing is agreed until you both decide it’s a good fit.</p>
+        </div>
+
+        <fieldset class="q q--first">
+          <legend>Who would you like to start with?</legend>
+          <div class="options" data-coach-options></div>
+        </fieldset>
+
+        <div class="fields">
+          <label class="field"><span>Your name</span><input name="name" autocomplete="name" required maxlength="120" /></label>
+          <label class="field"><span>Email</span><input type="email" name="email" autocomplete="email" required maxlength="200" /></label>
+          <label class="field"><span>Phone <em>optional</em></span><input type="tel" name="phone" autocomplete="tel" maxlength="40" /></label>
+          <label class="field field--wide"><span>Anything you’d like them to know? <em>optional</em></span><textarea name="note" rows="4" maxlength="2000"></textarea></label>
+          <div class="trap" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label></div>
+        </div>
+
+        <p class="form-error" data-signup-error role="alert" hidden></p>
+        <div class="submit-row">
+          <button type="submit" class="btn btn--primary" data-signup-submit>Sign up</button>
+        </div>
+        <p class="small">Your details go by email to the coach you choose and to Fledg, and nowhere else. Nothing is stored on this website.</p>
+      </form>
+
+      <div class="done" data-signup-done tabindex="-1" hidden>
+        <h3 class="group-title" data-done-title></h3>
+        <p data-done-text></p>
+        <p data-done-booking hidden><a class="btn btn--secondary" data-done-booking-link>Book an intro call now</a></p>
+        <p class="ph-note" data-done-preview hidden></p>
+      </div>
     </div>
 
     <div class="pool" data-pool hidden>
@@ -112,6 +144,8 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
     specialisms: string[];
     gender: string;
     taking: boolean;
+    id: string;
+    booking?: string;
   };
 
   const form = document.querySelector<HTMLFormElement>('[data-chooser]');
@@ -126,9 +160,21 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
       specialisms: el.dataset.specialisms!.split('|'),
       gender: el.dataset.gender!,
       taking: el.dataset.taking === 'true',
+      id: el.dataset.id!,
+      booking: el.dataset.booking,
     }));
     const needError = form.querySelector<HTMLElement>('[data-need-error]')!;
     const title = results.querySelector<HTMLElement>('[data-results-title]')!;
+    const signup = results.querySelector<HTMLFormElement>('[data-signup]')!;
+    const coachOptions = signup.querySelector<HTMLElement>('[data-coach-options]')!;
+    const signupError = signup.querySelector<HTMLElement>('[data-signup-error]')!;
+    const submitButton = signup.querySelector<HTMLButtonElement>('[data-signup-submit]')!;
+    const done = results.querySelector<HTMLElement>('[data-signup-done]')!;
+    const first = (name: string) => name.split(' ')[0];
+
+    // What was asked and suggested, sent along with the sign-up.
+    let answers = { needs: [] as string[], specialisms: [] as string[], city: '', gender: '' };
+    let suggested: Card[] = [];
 
     const suggest = (role: string, disciplines: Set<string>, specialisms: string[], city: string, gender: string, takingOnly: boolean) =>
       cards
@@ -180,11 +226,110 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
       const gender = String(data.get('gender') ?? 'any');
       const takingOnly = data.get('taking') !== null;
 
-      show('coach', suggest('coach', disciplines, specialisms, city, gender, takingOnly));
-      show('specialist', suggest('specialist', disciplines, specialisms, city, gender, takingOnly));
+      const coaches = suggest('coach', disciplines, specialisms, city, gender, takingOnly);
+      const specialists = suggest('specialist', disciplines, specialisms, city, gender, takingOnly);
+      show('coach', coaches);
+      show('specialist', specialists);
+
+      answers = {
+        needs: [...form.querySelectorAll<HTMLInputElement>('input[name=need]:checked')].map((i) => i.nextElementSibling!.textContent!.trim()),
+        specialisms,
+        city,
+        gender: gender === 'any' ? '' : form.querySelector<HTMLInputElement>('input[name=gender]:checked')!.nextElementSibling!.textContent!.trim(),
+      };
+      suggested = [...coaches, ...specialists].map((r) => r.c);
+      const choices = [
+        ...coaches.map(({ c }) => ({ value: c.id, label: c.name })),
+        { value: '', label: 'I’m not sure yet' },
+      ];
+      coachOptions.replaceChildren(
+        ...choices.map((choice, i) => {
+          const label = document.createElement('label');
+          label.className = 'option';
+          const input = Object.assign(document.createElement('input'), { type: 'radio', name: 'coach', value: choice.value, checked: i === 0 });
+          const span = document.createElement('span');
+          span.textContent = choice.label;
+          label.append(input, span);
+          return label;
+        }),
+      );
+      signup.hidden = false;
+      done.hidden = true;
+      signupError.hidden = true;
       results.hidden = false;
       title.focus({ preventScroll: true });
       title.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    });
+
+    const fail = (message: string) => {
+      signupError.replaceChildren();
+      signupError.append(message, ' ');
+      const mail = Object.assign(document.createElement('a'), { href: 'mailto:hello@fledg.org', textContent: 'hello@fledg.org' });
+      signupError.append('Or email ', mail, ' and we’ll help.');
+      signupError.hidden = false;
+    };
+
+    signup.addEventListener('input', () => { signupError.hidden = true; });
+
+    signup.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      signupError.hidden = true;
+      const nameInput = signup.querySelector<HTMLInputElement>('input[name=name]')!;
+      const emailInput = signup.querySelector<HTMLInputElement>('input[name=email]')!;
+      if (!nameInput.value.trim() || !emailInput.checkValidity() || !emailInput.value.trim()) {
+        signupError.textContent = 'Please add your name and a working email address.';
+        signupError.hidden = false;
+        (nameInput.value.trim() ? emailInput : nameInput).focus();
+        return;
+      }
+      const data = new FormData(signup);
+      const coachId = String(data.get('coach') ?? '');
+      const coach = cards.find((c) => c.id === coachId);
+      const payload = {
+        name: String(data.get('name')),
+        email: String(data.get('email')),
+        phone: String(data.get('phone') ?? ''),
+        note: String(data.get('note') ?? ''),
+        coach: coachId,
+        answers,
+        suggested: suggested.map((c) => c.id),
+        website: String(data.get('website') ?? ''),
+      };
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending…';
+      let response: Response | undefined;
+      try {
+        response = await fetch('/api/sign-up', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      } catch {
+        // Network failure: handled below.
+      }
+      submitButton.disabled = false;
+      submitButton.textContent = 'Sign up';
+      const result = response ? await response.json().catch(() => ({})) : {};
+
+      if (!response?.ok) {
+        fail(response?.status === 400 ? 'Please check your name and email address.' : 'Sorry, that didn’t send.');
+        return;
+      }
+
+      const name = first(payload.name.trim());
+      done.querySelector('[data-done-title]')!.textContent = `Thanks, ${name}.`;
+      done.querySelector('[data-done-text]')!.textContent = coach
+        ? `We’ve sent your answers to ${first(coach.name)} and to Fledg. ${first(coach.name)} will be in touch about a free intro call.`
+        : 'We’ve sent your answers to Fledg. Someone will reply with a coach who’d suit you.';
+      const booking = done.querySelector<HTMLElement>('[data-done-booking]')!;
+      booking.hidden = !coach?.booking;
+      if (coach?.booking) booking.querySelector('a')!.href = coach.booking;
+      const preview = done.querySelector<HTMLElement>('[data-done-preview]')!;
+      preview.hidden = !result.dryRun;
+      if (result.dryRun) {
+        preview.textContent = `Preview: no email was sent. It would have gone to ${result.to.join(' and ')}${coach && !result.coachHasEmail ? ` (${coach.name} has no email address on file yet)` : ''}.`;
+      }
+      signup.hidden = true;
+      signup.reset();
+      done.hidden = false;
+      done.focus();
     });
 
     results.querySelector('[data-again]')!.addEventListener('click', () => {
@@ -241,14 +386,15 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
     flex-wrap: wrap;
     gap: 8px;
   }
-  .option { position: relative; cursor: pointer; }
-  .option input {
+  /* :global because the coach choices in the sign-up form are built by the script. */
+  .options :global(.option) { position: relative; cursor: pointer; }
+  .options :global(.option input) {
     position: absolute;
     opacity: 0;
     width: 1px;
     height: 1px;
   }
-  .option span {
+  .options :global(.option span) {
     display: inline-flex;
     align-items: center;
     height: 40px;
@@ -260,13 +406,13 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
     font-size: 15px;
     transition: background-color var(--ease), border-color var(--ease), color var(--ease);
   }
-  .option:hover span { border-color: var(--ink); }
-  .option input:checked + span {
+  .options :global(.option:hover span) { border-color: var(--ink); }
+  .options :global(.option input:checked + span) {
     background: var(--ink);
     border-color: var(--ink);
     color: var(--paper);
   }
-  .option input:focus-visible + span,
+  .options :global(.option input:focus-visible + span),
   .taking input:focus-visible,
   .select:focus-visible {
     outline: 2px solid var(--teal);
@@ -382,13 +528,46 @@ const cities = [...new Set(members.map((m) => m.data.city))].sort();
     line-height: 1.4;
   }
   .none { margin: 0; font-size: 15px; color: var(--slate); }
-  .next {
-    margin: 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--rule);
-    font-family: var(--serif);
-    font-size: clamp(21px, 1.8vw, 26px);
-    line-height: 1.4;
-    text-wrap: balance;
+
+  /* Sign up */
+  .signup, .done {
+    max-width: 880px;
+    padding-top: 28px;
+    border-top: 1px solid var(--ink);
   }
+  .signup[hidden], .done[hidden] { display: none; }
+  .signup-head { display: flex; flex-direction: column; gap: 12px; }
+  .q--first { border-bottom: 0; padding-bottom: 24px; }
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 18px 24px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
+  .field--wide { grid-column: 1 / -1; }
+  .field em { font-style: normal; font-weight: 400; color: var(--slate); }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .field input { height: 46px; }
+  .field textarea { resize: vertical; line-height: 1.5; }
+  .field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form-error { margin: 18px 0 0; font-size: 15px; color: var(--leave-red); }
+  .form-error[hidden] { display: none; }
+  .small { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: var(--slate); }
+  .submit-row .btn:disabled { opacity: 0.6; cursor: default; }
+  .done { display: flex; flex-direction: column; gap: 12px; }
+  .done:focus { outline: none; }
+  .done p { margin: 0; font-size: 16px; line-height: 1.55; }
+  .done p[hidden] { display: none; }
+  .done .ph-note { color: var(--slate); }
 </style>

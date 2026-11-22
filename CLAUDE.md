@@ -1,6 +1,6 @@
 # Fledg website (fledg.org)
 
-A static Astro site. `README.md` explains the structure and how to edit content. `design/README.md` is the original design spec, and `design/*.dc.html` are the design references. The "Design updates since the handoff" section at the end of `design/README.md` overrides the references where they differ (tagline, logo mark, homepage hero slideshow, duck egg primary buttons, and the features from coach feedback).
+An Astro site: every page is static, plus one server route, `/api/sign-up`, which emails sign-ups (see README.md for its setup). `README.md` explains the structure and how to edit content. `design/README.md` is the original design spec, and `design/*.dc.html` are the design references. The "Design updates since the handoff" section at the end of `design/README.md` overrides the references where they differ (tagline, logo mark, homepage hero slideshow, duck egg primary buttons, and the features from coach feedback).
 
 ## Working rules
 - The design references are the source of truth for layout, colour, type and copy. Serve them with `npm run design` and compare side by side at 1440px, 1024px and 390px before and after a visual change.

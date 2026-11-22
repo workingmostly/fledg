@@ -2,7 +2,7 @@
 
 The website for [fledg.org](https://fledg.org): a not-for-profit collective of qualified coaches and specialists. Every programme ends.
 
-A static [Astro](https://astro.build) site built from the Claude Design handoff in [`design/`](design/). The pages match the design references at 1440, 1024 and 390 pixels wide.
+An [Astro](https://astro.build) site built from the Claude Design handoff in [`design/`](design/). The pages match the design references at 1440, 1024 and 390 pixels wide.
 
 ## Pages
 
@@ -29,7 +29,18 @@ npm run check     # type-check
 npm run design    # serve the design references to compare against
 ```
 
-The build output in `dist/` is plain static files and can be deployed to any static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages).
+Every page is pre-rendered to static HTML. The one exception is `/api/sign-up`, a small server function that emails sign-ups from the Find a coach page, which is why the site uses Vercel's Astro adapter. Vercel deploys it from GitHub: every branch gets a preview, and `main` goes to fledg.org.
+
+### Sign-up emails
+
+When a client signs up on `/find-a-coach/`, their answers go by email to hello@fledg.org and to the coach they chose. Nothing is stored. To turn it on:
+
+1. Create a [Resend](https://resend.com) account and verify the fledg.org domain there (it gives you DNS records to add).
+2. Create an API key and add it in Vercel as `RESEND_API_KEY` (Project settings, Environment variables), for Production and, if you want previews to send real email, Preview.
+3. Optional: `SIGNUP_FROM` sets the sender (default `Fledg <hello@fledg.org>`).
+4. Add an `email:` line to each member's file in `src/content/members/`. It's never shown on the site. Sign-ups for a member without one go to Fledg only, with a note to pass them on.
+
+Without a key, previews and local runs do a dry run and say where the email would have gone. Production says it couldn't send and points people to hello@fledg.org.
 
 ## Where things live
 
@@ -66,4 +77,5 @@ Everything below is placeholder content from the design and needs replacing:
 - **App icons** in `public/icons/` were taken from public favicons. Replace them with official brand assets and check each brand's guidelines.
 - **Placeholder notes** (the small grey capitals saying "Placeholder photos and names"). Turn them all off with `showPlaceholderNotes` in `src/data/site.ts`.
 - **Copy to confirm:** qualifications are checked before anyone joins; members are shown in random order; surplus money lowers next year's joining fee; the free 20-minute intro call; the paid photographer for new members; help choosing a coach by message; and the application steps, including the video call with members.
-- **Links still pointing to `#`:** Principles, FAQ, Apply to join, Ask for a suggestion, booking an intro call and the accounts PDF.
+- **Sign-up emails:** set up Resend and members' email addresses (see *Sign-up emails* above). Until then production sign-ups show an error and point to hello@fledg.org.
+- **Links still pointing to `#`:** Principles, FAQ, Apply to join, booking an intro call (for members without a booking link) and the accounts PDF.

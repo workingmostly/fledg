@@ -79,6 +79,11 @@ const members = defineCollection({
     length: z.string(),
     taking: z.boolean(),
     photo,
+    /**
+     * Private: where sign-ups from the Find a coach page are emailed. Never
+     * shown on the site. Without it, sign-ups go to Fledg only.
+     */
+    email: z.email().optional(),
     /** Where clients book an intro call, e.g. a Calendly link. */
     booking: z.url().optional(),
     /** Links to the member's own pages: Instagram, a website and so on. */

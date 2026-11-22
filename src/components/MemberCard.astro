@@ -14,6 +14,7 @@ const m = member.data;
   href={memberUrl(member.id)}
   class="member-card"
   data-member-card
+  data-id={member.id}
   data-name={m.name}
   data-city={m.city}
   data-role={m.role}
@@ -21,6 +22,7 @@ const m = member.data;
   data-specialisms={m.specialisms.join('|')}
   data-gender={m.gender}
   data-taking={String(m.taking)}
+  data-booking={m.booking}
 >
   <Photo photo={m.photo.id} width={600} alt={m.photo.alt} position={m.photo.position} ratio="4 / 5">
     <span class:list={['status', { 'status--full': !m.taking }]}><span class="status-dot"></span>{m.taking ? 'Taking clients' : 'Full at the moment'}</span>
