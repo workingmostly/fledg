@@ -1,0 +1,394 @@
+---
+/**
+ * Help me choose: a few questions, then suggested members. The matching runs
+ * in the browser and nothing is sent or stored, in keeping with "we never hold
+ * your data". Results are the same member cards as the Members page.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MemberCard from '../components/MemberCard.astro';
+import { links } from '../data/site';
+import { getMembers, SPECIALISMS, GENDERS, NEEDS } from '../data/members';
+
+const members = await getMembers();
+const cities = [...new Set(members.map((m) => m.data.city))].sort();
+---
+<BaseLayout
+  title="Help me choose · fledg"
+  description="Answer a few questions about what you’d like to work on, and we’ll suggest a coach and the specialists who might help. Your answers stay on your device."
+>
+  <section class="container intro">
+    <div class="eyebrow">Help me choose</div>
+    <h1 class="h1 intro-h1">Tell us what you need. We’ll suggest who to work with.</h1>
+    <p class="lead intro-lead">A few quick questions, then a coach to start with and the specialists they might bring in. Your answers stay in your browser: Fledg doesn’t store them or send them anywhere.</p>
+  </section>
+
+  <section class="container chooser">
+    <form class="questions" data-chooser novalidate>
+      <fieldset class="q">
+        <legend>What would you like help with?</legend>
+        <p class="q-hint">Choose as many as you like.</p>
+        <div class="options">
+          {NEEDS.map((n) => (
+            <label class="option"><input type="checkbox" name="need" value={n.disciplines.join('|')} /><span>{n.label}</span></label>
+          ))}
+        </div>
+        <p class="q-error" data-need-error hidden>Choose at least one thing you’d like help with.</p>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Does any of this apply to you?</legend>
+        <p class="q-hint">Optional.</p>
+        <div class="options">
+          {SPECIALISMS.map((s) => (
+            <label class="option"><input type="checkbox" name="specialism" value={s} /><span>{s}</span></label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Where are you?</legend>
+        <p class="q-hint">Members train people in person near them, and anywhere on video.</p>
+        <select name="city" class="select">
+          <option value="">Somewhere else, or video is fine</option>
+          {cities.map((c) => <option value={c}>{c}</option>)}
+        </select>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Would you like to work with someone of a particular gender?</legend>
+        <div class="options">
+          {GENDERS.map(([value, label]) => (
+            <label class="option"><input type="radio" name="gender" value={value} checked={value === 'any'} /><span>{value === 'any' ? 'No preference' : label}</span></label>
+          ))}
+        </div>
+      </fieldset>
+
+      <label class="taking"><input type="checkbox" name="taking" checked /><span>Only suggest members taking new clients</span></label>
+
+      <div class="submit-row">
+        <button type="submit" class="btn btn--primary">Show my suggestions</button>
+        <a href={links.members}>Or browse everyone</a>
+      </div>
+    </form>
+
+    <noscript><p class="noscript">This page needs JavaScript to make suggestions. You can still <a href={links.members}>browse and filter every member</a>.</p></noscript>
+
+    <div class="results" data-results hidden>
+      <div class="results-head">
+        <h2 class="h2 h2--sm" tabindex="-1" data-results-title>Your suggestions</h2>
+        <button type="button" class="again" data-again>Start again</button>
+      </div>
+
+      <div class="group" data-group="coach">
+        <h3 class="group-title">A coach to start with</h3>
+        <p class="group-intro">Your coach is the person you talk to every week. They write your programme with you and bring in specialists when you need them.</p>
+        <div class="picks" data-picks></div>
+        <p class="none" data-none hidden>No coaches match all of that at the moment. Try fewer answers, or <a href={links.members}>browse everyone</a>.</p>
+      </div>
+
+      <div class="group" data-group="specialist">
+        <h3 class="group-title">Specialists who could help too</h3>
+        <p class="group-intro">Your coach can bring any of them in. You pay each member directly, and you’ll know the cost before you agree.</p>
+        <div class="picks" data-picks></div>
+        <p class="none" data-none hidden>No specialists match that at the moment. Your coach can still suggest someone.</p>
+      </div>
+
+      <p class="next">Next, look at their profiles and book a free intro call. Nothing is agreed until you both decide it’s a good fit.</p>
+    </div>
+
+    <div class="pool" data-pool hidden>
+      {members.map((m) => <MemberCard member={m} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  type Card = {
+    el: HTMLElement;
+    name: string;
+    city: string;
+    role: string;
+    discipline: string;
+    specialisms: string[];
+    gender: string;
+    taking: boolean;
+  };
+
+  const form = document.querySelector<HTMLFormElement>('[data-chooser]');
+  const results = document.querySelector<HTMLElement>('[data-results]');
+  if (form && results) {
+    const cards: Card[] = [...document.querySelectorAll<HTMLElement>('[data-pool] [data-member-card]')].map((el) => ({
+      el,
+      name: el.dataset.name!,
+      city: el.dataset.city!,
+      role: el.dataset.role!,
+      discipline: el.dataset.discipline!,
+      specialisms: el.dataset.specialisms!.split('|'),
+      gender: el.dataset.gender!,
+      taking: el.dataset.taking === 'true',
+    }));
+    const needError = form.querySelector<HTMLElement>('[data-need-error]')!;
+    const title = results.querySelector<HTMLElement>('[data-results-title]')!;
+
+    const suggest = (role: string, disciplines: Set<string>, specialisms: string[], city: string, gender: string, takingOnly: boolean) =>
+      cards
+        .filter((c) => c.role === role)
+        .filter((c) => gender === 'any' || c.gender === gender)
+        .filter((c) => !takingOnly || c.taking)
+        .map((c) => {
+          const discipline = disciplines.has(c.discipline);
+          const shared = c.specialisms.filter((s) => specialisms.includes(s));
+          const local = city !== '' && c.city === city;
+          const score = (discipline ? 3 : 0) + shared.length + (local ? 1 : 0);
+          const why = [discipline && c.discipline, shared.length > 0 && `Works with ${shared.join(', ').toLowerCase()}`, local && `In ${c.city}`];
+          return { c, score, why: why.filter(Boolean).join(' · ') };
+        })
+        .filter((r) => r.score > 0)
+        .sort((a, b) => b.score - a.score || Number(b.c.taking) - Number(a.c.taking) || a.c.name.localeCompare(b.c.name))
+        .slice(0, 3);
+
+    const show = (group: string, picks: ReturnType<typeof suggest>) => {
+      const box = results.querySelector<HTMLElement>(`[data-group="${group}"]`)!;
+      const list = box.querySelector<HTMLElement>('[data-picks]')!;
+      list.replaceChildren(
+        ...picks.map(({ c, why }) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'pick';
+          const reason = document.createElement('p');
+          reason.className = 'why';
+          reason.textContent = why;
+          wrap.append(reason, c.el.cloneNode(true));
+          return wrap;
+        }),
+      );
+      list.hidden = picks.length === 0;
+      box.querySelector<HTMLElement>('[data-none]')!.hidden = picks.length > 0;
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const needs = data.getAll('need') as string[];
+      needError.hidden = needs.length > 0;
+      if (!needs.length) {
+        needError.scrollIntoView({ block: 'center' });
+        return;
+      }
+      const disciplines = new Set(needs.flatMap((n) => n.split('|')));
+      const specialisms = data.getAll('specialism') as string[];
+      const city = String(data.get('city') ?? '');
+      const gender = String(data.get('gender') ?? 'any');
+      const takingOnly = data.get('taking') !== null;
+
+      show('coach', suggest('coach', disciplines, specialisms, city, gender, takingOnly));
+      show('specialist', suggest('specialist', disciplines, specialisms, city, gender, takingOnly));
+      results.hidden = false;
+      title.focus({ preventScroll: true });
+      title.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    });
+
+    results.querySelector('[data-again]')!.addEventListener('click', () => {
+      form.reset();
+      results.hidden = true;
+      needError.hidden = true;
+      form.scrollIntoView({ behavior: 'auto', block: 'start' });
+    });
+  }
+</script>
+
+<style>
+  .intro {
+    padding-block: clamp(40px, 5vw, 80px) clamp(32px, 4vw, 56px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .intro-h1 {
+    max-width: 880px;
+    font-size: clamp(44px, 5.6vw, 84px);
+  }
+  .intro-lead { max-width: 640px; }
+
+  .chooser { padding-bottom: var(--section-pad); }
+  .questions {
+    max-width: 880px;
+    border-top: 1px solid var(--ink);
+  }
+  .q {
+    margin: 0;
+    padding: 28px 0;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .q legend {
+    float: left;
+    width: 100%;
+    padding: 0;
+    font-family: var(--serif);
+    font-size: clamp(23px, 2vw, 28px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .q legend + * { clear: both; }
+  .q-hint { margin: 0; font-size: 14px; color: var(--slate); }
+  .q-error { margin: 0; font-size: 14px; font-weight: 500; color: var(--leave-red); }
+  .q-error[hidden] { display: none; }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .option { position: relative; cursor: pointer; }
+  .option input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .option span {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink);
+    font-size: 15px;
+    transition: background-color var(--ease), border-color var(--ease), color var(--ease);
+  }
+  .option:hover span { border-color: var(--ink); }
+  .option input:checked + span {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .option input:focus-visible + span,
+  .taking input:focus-visible,
+  .select:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+  .select {
+    align-self: flex-start;
+    min-width: min(100%, 320px);
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+    font-size: 15px;
+  }
+  .taking {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .taking input { width: 18px; height: 18px; accent-color: var(--teal); margin: 0; }
+  .submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+    padding-top: 28px;
+  }
+  .submit-row .btn { border: 0; cursor: pointer; font-family: inherit; }
+  .submit-row a { font-size: 15px; }
+  .noscript {
+    max-width: 880px;
+    margin: 24px 0 0;
+    font-size: 15px;
+    color: var(--slate);
+  }
+
+  .results {
+    margin-top: clamp(56px, 7vw, 96px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 5vw, 64px);
+  }
+  .results[hidden] { display: none; }
+  .results-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px 24px;
+    flex-wrap: wrap;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ink);
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+  .results-head h2 { scroll-margin-top: calc(var(--header-h) + 24px); }
+  .results-head h2:focus { outline: none; }
+  .again {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--teal);
+    font-size: 15px;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    cursor: pointer;
+  }
+  .again:hover { color: var(--ink); }
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .group-title {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(26px, 2.2vw, 32px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .group-intro {
+    margin: 0 0 12px;
+    max-width: 640px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--slate);
+  }
+  .picks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    gap: 48px 24px;
+  }
+  .picks[hidden], .none[hidden] { display: none; }
+  .picks :global(.pick) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .picks :global(.why) {
+    margin: 0;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--teal-pale);
+    color: var(--teal-ink);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .none { margin: 0; font-size: 15px; color: var(--slate); }
+  .next {
+    margin: 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--serif);
+    font-size: clamp(21px, 1.8vw, 26px);
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+</style>

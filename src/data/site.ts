@@ -11,7 +11,7 @@ export const links = {
   faq: '#',
   join: '/#join',
   apply: '#',
-  suggest: '#',
+  choose: '/help-me-choose/',
   email: 'mailto:hello@fledg.org',
 } as const;
 

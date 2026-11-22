@@ -79,6 +79,10 @@ const members = defineCollection({
     length: z.string(),
     taking: z.boolean(),
     photo,
+    /** Where clients book an intro call, e.g. a Calendly link. */
+    booking: z.url().optional(),
+    /** Links to the member's own pages: Instagram, a website and so on. */
+    social: z.array(z.object({ label: z.string(), url: z.url() })).optional(),
     profile: profile.optional(),
   }),
 });

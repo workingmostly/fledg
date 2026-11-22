@@ -8,6 +8,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
 import Photo from '../../components/Photo.astro';
+import PlaceholderNote from '../../components/PlaceholderNote.astro';
 import { links, memberUrl } from '../../data/site';
 import { getMembers, getMember, firstName, type Member } from '../../data/members';
 
@@ -35,12 +36,34 @@ const bringsIn = await Promise.all(
   (p.bringsIn ?? []).map(async (b) => ({ ...b, member: await getMember(b.member) })),
 );
 
+/*
+ * Complementary members, for profiles that don't list who they bring in:
+ * people in other disciplines who work with the same kinds of client. Coaches
+ * are shown specialists; specialists are shown coaches first, then specialists.
+ */
+const complementary = bringsIn.length
+  ? []
+  : (await getMembers())
+      .filter((o) => o.id !== member.id && o.data.discipline !== m.discipline)
+      .filter((o) => m.role === 'specialist' || o.data.role === 'specialist')
+      .map((o) => ({ member: o, shared: o.data.specialisms.filter((s) => (m.specialisms as string[]).includes(s)) }))
+      .filter((c) => c.shared.length > 0)
+      .sort(
+        (a, b) =>
+          Number(b.member.data.role === 'coach') - Number(a.member.data.role === 'coach') ||
+          b.shared.length - a.shared.length ||
+          Number(b.member.data.taking) - Number(a.member.data.taking) ||
+          a.member.data.name.localeCompare(b.member.data.name),
+      )
+      .slice(0, 3);
+const social = m.social ?? [];
+
 const roleNoun = m.role === 'coach' ? 'coach' : m.title.toLowerCase();
 const payCadence = /month/.test(m.price) ? ' each month' : /session/.test(m.price) ? ' for each session' : '';
 const whatsappHref = p.contact?.whatsapp && `https://wa.me/44${p.contact.whatsapp.replace(/\s+/g, '').replace(/^0/, '')}`;
 
 const contactRows = [
-  { kind: 'Video', title: 'Book an intro call', note: p.contact?.hours, href: '#' },
+  { kind: 'Video', title: 'Book an intro call', note: p.contact?.hours, href: m.booking ?? '#' },
   p.contact?.whatsapp && {
     kind: 'WhatsApp',
     title: `Message ${first}`,
@@ -91,7 +114,7 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
         </dl>
 
         <div class="btn-row">
-          <Button href="#contact">Book a free intro call</Button>
+          <Button href={m.booking ?? '#contact'}>Book a free intro call</Button>
           {p.contact?.whatsapp && <Button href="#contact" variant="secondary">Message {first} on WhatsApp</Button>}
         </div>
       </div>
@@ -205,6 +228,37 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
     </section>
   )}
 
+  <!-- Complementary members, when the profile doesn't list its own -->
+  {complementary.length > 0 && (
+    <section class="ruled">
+      <div class="container p-section bring">
+        <div class="bring-head">
+          <div class="bring-title">
+            <div class="eyebrow">From the group</div>
+            <h2 class="h2 h2--sm">{m.role === 'coach' ? 'Specialists' : 'Members'} who complement {first}.</h2>
+          </div>
+          <p class="bring-intro">
+            {m.role === 'coach'
+              ? `Matched on who they work with. ${first} can bring any of them in when your goals need it, and you pay each one directly.`
+              : `Matched on who they work with. Coaches bring ${first} in when a client needs it, and you pay each member directly.`}
+          </p>
+        </div>
+        <div class="bring-grid">
+          {complementary.map((c) => (
+            <a href={memberUrl(c.member.id)} class="bring-card">
+              <Photo photo={c.member.data.photo.id} width={300} alt={c.member.data.name} position={c.member.data.photo.position} ratio="4 / 5" class="bring-photo" />
+              <div class="bring-text">
+                <span class="bring-name">{c.member.data.name}</span>
+                <span class="bring-label">{c.member.data.title} · {c.member.data.city}</span>
+                <span class="bring-when">Also works with: {c.shared.join(' · ')}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- Get in touch -->
   <section id="contact" class="band-duck">
     <div class="container p-section--lg contact">
@@ -224,6 +278,13 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
             <span class="arrow" aria-hidden="true">→</span>
           </a>
         ))}
+        {social.length > 0 && (
+          <div class="elsewhere">
+            <span class="elsewhere-label">Find {first} online</span>
+            {social.map((l) => <a href={l.url}>{l.label}</a>)}
+            <PlaceholderNote>Placeholder links</PlaceholderNote>
+          </div>
+        )}
         <p class="contact-small">No contract. You pay {first} directly{payCadence}, and you can stop whenever you like.</p>
       </div>
     </div>
@@ -633,6 +694,19 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
   .contact-title { font-family: var(--serif); font-size: 28px; line-height: 1.2; }
   .contact-note { font-size: 14px; color: oklch(0.30 0.03 220); }
   .arrow { font-size: 24px; }
+  .elsewhere {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid oklch(0.22 0.012 65 / 0.3);
+    font-size: 15px;
+    color: var(--on-duck);
+  }
+  .elsewhere-label { font-size: 13px; color: oklch(0.30 0.03 220); }
+  .elsewhere a { color: var(--ink); }
+  .elsewhere a:hover { color: var(--on-duck-eyebrow); }
   .contact-small {
     margin: 20px 0 0;
     font-size: 14px;

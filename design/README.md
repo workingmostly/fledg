@@ -228,3 +228,9 @@ These override the references and the sections above where they differ.
    - A small Pause/Play button sits beside the title. The slideshow also pauses while a mouse is over it, and doesn't play for people who prefer reduced motion.
    - The hero background stays paper, and "How it works" keeps its top border.
 4. **Primary buttons in duck egg.** Duck egg is used sparingly, on the primary calls to action: duck egg `#b7dee3` with ink text, turning deep teal with paper text on hover. This covers the `btn--primary` buttons and "Find a coach" in the header and mobile menu.
+5. **From coach feedback (November 2026)**
+   - More disciplines: Yoga, Pilates, Massage, Acupuncture and Talking therapy, each with a placeholder member so the filters aren't empty.
+   - Profiles: a member's `booking` link (a Calendly page, say) is where "Book a free intro call" and the "Book an intro call" row go. `social` links appear under "Find {name} online" in Get in touch.
+   - Profiles that don't list who they bring in show up to three complementary members: people in other disciplines who work with the same kinds of client. Coaches see specialists; specialists see coaches first.
+   - Help me choose (`/help-me-choose/`): questions about what you want help with, what applies to you, where you are and any gender preference, then up to three coaches and three specialists, each with the reason they were suggested. It runs in the browser; answers aren't stored or sent, in keeping with "we never hold your data". The Members page's "Not sure who to choose?" band links to it.
+   - Still to decide: a login so members can manage their own profiles.

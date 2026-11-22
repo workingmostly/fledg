@@ -14,6 +14,8 @@ const m = member.data;
   href={memberUrl(member.id)}
   class="member-card"
   data-member-card
+  data-name={m.name}
+  data-city={m.city}
   data-role={m.role}
   data-discipline={m.discipline}
   data-specialisms={m.specialisms.join('|')}

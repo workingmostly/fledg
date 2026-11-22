@@ -12,6 +12,7 @@ A static [Astro](https://astro.build) site built from the Claude Design handoff 
 | `/members/` | Members: browse and filter the collective |
 | `/members/{id}/` | Member profile, one per member, generated from one template |
 | `/where-the-money-goes/` | Itemised running costs |
+| `/help-me-choose/` | A few questions, then suggested coaches and specialists (runs in the browser; nothing is stored) |
 
 How it works, Principles, Join the collective (the application form) and FAQ haven't been designed yet. Their links point to `#` for now; change them in one place in `src/data/site.ts`.
 
@@ -48,11 +49,11 @@ public/favicon.*, icon-*    logo mark (lowercase "f" on duck egg); social avatar
 design/                    the original design references and spec (not deployed)
 ```
 
-Client-side JavaScript is limited to the mobile menu, the Members filters and the homepage photo slideshow. The one breakpoint is a CSS media query at 1100px (the nav collapses and the filters fold away); everything else reflows with flex-wrap and auto-fit grids.
+Client-side JavaScript is limited to the mobile menu, the Members filters, the homepage photo slideshow and the Help me choose questions. The one breakpoint is a CSS media query at 1100px (the nav collapses and the filters fold away); everything else reflows with flex-wrap and auto-fit grids.
 
 ## Editing content
 
-**Members.** Add a Markdown file to `src/content/members/`. The file name is the URL (`ruth.md` becomes `/members/ruth/`). The basic fields (name, role, discipline, specialisms, price and so on) fill the card on the Members page and the top of the profile. The optional `profile:` block adds the rest of the profile: quote, full qualification list, photos, how I work, outcomes, timeline, who they bring in and contact details. Each profile section only shows when its data is there. `ruth.md` has every field and is the one to copy.
+**Members.** Add a Markdown file to `src/content/members/`. The file name is the URL (`ruth.md` becomes `/members/ruth/`). The basic fields (name, role, discipline, specialisms, price and so on) fill the card on the Members page and the top of the profile. Optional `booking` (a Calendly or similar link for intro calls) and `social` (a list of labelled links) go on the profile's booking button and contact section. The optional `profile:` block adds the rest of the profile: quote, full qualification list, photos, how I work, outcomes, timeline, who they bring in and contact details. Each profile section only shows when its data is there. `ruth.md` has every field and is the one to copy.
 
 **Money.** Edit `src/data/money.ts`. The per-member figures, the total and the joining fee shown on the homepage are calculated from the yearly costs and the expected number of new members.
 

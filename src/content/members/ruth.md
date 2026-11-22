@@ -15,6 +15,13 @@ specialisms: [Beginners, "Desk-based jobs"]
 price: £110 a month
 length: 16 weeks
 taking: true
+# Placeholder links: swap for Ruth's own booking page and accounts.
+booking: https://calendly.com/
+social:
+  - label: Instagram
+    url: https://www.instagram.com/
+  - label: LinkedIn
+    url: https://www.linkedin.com/
 photo:
   id: 8770421
   position: 50% 0%

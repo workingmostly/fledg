@@ -2,7 +2,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Member = CollectionEntry<'members'>;
 
-export { DISCIPLINES, SPECIALISMS, ROLES, GENDERS } from './members-options';
+export { DISCIPLINES, SPECIALISMS, ROLES, GENDERS, NEEDS } from './members-options';
 
 export async function getMembers(): Promise<Member[]> {
   const members = await getCollection('members');

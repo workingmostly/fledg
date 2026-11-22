@@ -5,11 +5,16 @@ export const DISCIPLINES = [
   'Strength',
   'Running',
   'Conditioning',
+  'Yoga',
+  'Pilates',
+  'Mobility',
+  'Pre- and postnatal',
   'Nutrition',
   'Physiotherapy',
   'Sports therapy',
-  'Mobility',
-  'Pre- and postnatal',
+  'Massage',
+  'Acupuncture',
+  'Talking therapy',
 ] as const;
 
 export const SPECIALISMS = [
@@ -35,3 +40,22 @@ export const GENDERS = [
   ['man', 'Men'],
   ['nonbinary', 'Non-binary'],
 ] as const;
+
+/**
+ * "What would you like help with?" on the Help me choose page, in plain
+ * words, each mapped to the disciplines that cover it.
+ */
+export const NEEDS: { label: string; disciplines: (typeof DISCIPLINES)[number][] }[] = [
+  { label: 'Getting stronger', disciplines: ['Strength'] },
+  { label: 'Running', disciplines: ['Running'] },
+  { label: 'Fitness and stamina', disciplines: ['Conditioning'] },
+  { label: 'Yoga', disciplines: ['Yoga'] },
+  { label: 'Pilates', disciplines: ['Pilates'] },
+  { label: 'Moving more easily', disciplines: ['Mobility'] },
+  { label: 'Pregnancy and after', disciplines: ['Pre- and postnatal'] },
+  { label: 'Food and eating', disciplines: ['Nutrition'] },
+  { label: 'Pain or an injury', disciplines: ['Physiotherapy', 'Sports therapy'] },
+  { label: 'Massage', disciplines: ['Massage'] },
+  { label: 'Acupuncture', disciplines: ['Acupuncture'] },
+  { label: 'Stress and mental health', disciplines: ['Talking therapy'] },
+];
