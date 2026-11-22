@@ -32,7 +32,7 @@ const ariaCurrent = (section?: Section) =>
       ))}
       <span class="sep" aria-hidden="true"></span>
       <a href={join.href}>{join.label}</a>
-      <a href={links.members} class="nav-cta">Find a coach</a>
+      <a href={links.findCoach} class="nav-cta">Find a coach</a>
     </nav>
 
     <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
@@ -45,7 +45,7 @@ const ariaCurrent = (section?: Section) =>
     {[...items, join].map((item) => (
       <a href={item.href} aria-current={ariaCurrent(item.section)}>{item.label}</a>
     ))}
-    <a href={links.members} class="nav-panel-cta">Find a coach</a>
+    <a href={links.findCoach} class="nav-panel-cta">Find a coach</a>
   </nav>
 </header>
 

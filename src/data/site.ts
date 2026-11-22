@@ -11,7 +11,8 @@ export const links = {
   faq: '#',
   join: '/#join',
   apply: '#',
-  choose: '/help-me-choose/',
+  /** The questions that suggest a coach: where every "Find a coach" button goes. */
+  findCoach: '/find-a-coach/',
   email: 'mailto:hello@fledg.org',
 } as const;
 

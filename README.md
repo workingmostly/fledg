@@ -12,7 +12,7 @@ A static [Astro](https://astro.build) site built from the Claude Design handoff 
 | `/members/` | Members: browse and filter the collective |
 | `/members/{id}/` | Member profile, one per member, generated from one template |
 | `/where-the-money-goes/` | Itemised running costs |
-| `/help-me-choose/` | A few questions, then suggested coaches and specialists (runs in the browser; nothing is stored) |
+| `/find-a-coach/` | A few questions, then suggested coaches and specialists. Every "Find a coach" button leads here (runs in the browser; nothing is stored) |
 
 How it works, Principles, Join the collective (the application form) and FAQ haven't been designed yet. Their links point to `#` for now; change them in one place in `src/data/site.ts`.
 
@@ -49,7 +49,7 @@ public/favicon.*, icon-*    logo mark (lowercase "f" on duck egg); social avatar
 design/                    the original design references and spec (not deployed)
 ```
 
-Client-side JavaScript is limited to the mobile menu, the Members filters, the homepage photo slideshow and the Help me choose questions. The one breakpoint is a CSS media query at 1100px (the nav collapses and the filters fold away); everything else reflows with flex-wrap and auto-fit grids.
+Client-side JavaScript is limited to the mobile menu, the Members filters, the homepage photo slideshow and the Find a coach questions. The one breakpoint is a CSS media query at 1100px (the nav collapses and the filters fold away); everything else reflows with flex-wrap and auto-fit grids.
 
 ## Editing content
 

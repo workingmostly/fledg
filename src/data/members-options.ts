@@ -42,7 +42,7 @@ export const GENDERS = [
 ] as const;
 
 /**
- * "What would you like help with?" on the Help me choose page, in plain
+ * "What would you like help with?" on the Find a coach page, in plain
  * words, each mapped to the disciplines that cover it.
  */
 export const NEEDS: { label: string; disciplines: (typeof DISCIPLINES)[number][] }[] = [

@@ -1,6 +1,6 @@
 ---
 /**
- * Help me choose: a few questions, then suggested members. The matching runs
+ * Find a coach: a few questions, then suggested members. The matching runs
  * in the browser and nothing is sent or stored, in keeping with "we never hold
  * your data". Results are the same member cards as the Members page.
  */
@@ -13,11 +13,11 @@ const members = await getMembers();
 const cities = [...new Set(members.map((m) => m.data.city))].sort();
 ---
 <BaseLayout
-  title="Help me choose · fledg"
+  title="Find a coach · fledg"
   description="Answer a few questions about what you’d like to work on, and we’ll suggest a coach and the specialists who might help. Your answers stay on your device."
 >
   <section class="container intro">
-    <div class="eyebrow">Help me choose</div>
+    <div class="eyebrow">Find a coach</div>
     <h1 class="h1 intro-h1">Tell us what you need. We’ll suggest who to work with.</h1>
     <p class="lead intro-lead">A few quick questions, then a coach to start with and the specialists they might bring in. Your answers stay in your browser: Fledg doesn’t store them or send them anywhere.</p>
   </section>
